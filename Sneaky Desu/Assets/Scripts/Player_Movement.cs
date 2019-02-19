@@ -6,12 +6,16 @@ public class Player_Movement : MonoBehaviour
 {
     public static Vector3 originPosition;
 
+    public Animator animator;
+
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
 
     public float speed;
 
     private bool fowardDown, backwardsDown, rightDown, leftDown;
+
+    bool isWalking = false;
 
     private Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
@@ -23,6 +27,7 @@ public class Player_Movement : MonoBehaviour
 
     void FixedUpdate()
     {
+        animator.SetBool("isWalking", isWalking);
         //Game Controls Updated Every Frame
         if (Input.GetKey(KeyCode.UpArrow))
             MoveFoward();
@@ -36,15 +41,19 @@ public class Player_Movement : MonoBehaviour
         else if (Input.GetKey(KeyCode.RightArrow))
             MoveRight();
 
+        else isWalking = false;
+
     }
 
     void MoveFoward()
     {
+        
         fowardDown = Input.GetKey(KeyCode.UpArrow);
 
         //Going fowards
         if (fowardDown == true)
         {
+            isWalking = true;
             Vector2 move = new Vector2(0, (float)rateOfSpeed);
             if (rb.velocity.magnitude < maxSpeed)
                 rb.velocity += move;
@@ -54,11 +63,12 @@ public class Player_Movement : MonoBehaviour
 
     void MoveRight()
     {
-
+        
         rightDown = Input.GetKey(KeyCode.RightArrow);
 
         if (rightDown == true)
         {
+            isWalking = true;
             Vector3 xscale = transform.localScale;
             xscale.x = 1;
             transform.localScale = xscale;
@@ -74,12 +84,15 @@ public class Player_Movement : MonoBehaviour
 
     void MoveBackwards()
     {
+
+        
         backwardsDown = Input.GetKey(KeyCode.DownArrow);
 
 
         //Going backwards
         if (backwardsDown == true)
         {
+            isWalking = true;
             Vector2 move = new Vector2(0, (float)-rateOfSpeed);
             if (rb.velocity.magnitude < maxSpeed)
                 rb.velocity += move;
@@ -91,10 +104,12 @@ public class Player_Movement : MonoBehaviour
 
     void MoveLeft()
     {
+        
         leftDown = Input.GetKey(KeyCode.LeftArrow);
 
         if (leftDown == true)
         {
+            isWalking = true;
             Vector3 xscale = transform.localScale;
             xscale.x = -1;
             transform.localScale = xscale;

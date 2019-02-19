@@ -188,7 +188,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3c1975db5f5175c48b376daa296552fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39709af437b519b4793311e1e7077fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 135740216}
   rateOfSpeed: 1
   maxSpeed: 4
   speed: 0
@@ -316,7 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 135740218}
-  smoothOutDuration: 0.025
+  smoothOutDuration: 0.05
   offset: {x: 0, y: 0, z: -10}
 --- !u!20 &519420031
 Camera:
@@ -344,7 +345,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
