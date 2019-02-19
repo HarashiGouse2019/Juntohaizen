@@ -5,9 +5,9 @@ using UnityEngine;
 public class Player_Movement : MonoBehaviour
 {
     public static Vector3 originPosition;
+    Vector2 move;
 
     public Animator animator;
-    private AnimationState animState;
 
     bool col = false;
 
@@ -56,14 +56,32 @@ public class Player_Movement : MonoBehaviour
     {
         
         fowardDown = Input.GetKey(KeyCode.UpArrow);
-
+        
         //Going fowards
         if (fowardDown == true)
         {
             isWalking = true;
-            Vector2 move = new Vector2(0, (float)rateOfSpeed);
+
+            if (Input.GetKey(KeyCode.RightArrow) == true)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = 1;
+                transform.localScale = xscale;
+                move = new Vector2((float)rateOfSpeed, (float)rateOfSpeed);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) == true)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = -1;
+                transform.localScale = xscale;
+                move = new Vector2((float)-rateOfSpeed, (float)rateOfSpeed);
+            }
+            else
+                move = new Vector2(0, (float)rateOfSpeed);
+
             if (rb.velocity.magnitude < maxSpeed)
                 rb.velocity += move;
+                
             
         }
     } //The player moves up
@@ -100,7 +118,24 @@ public class Player_Movement : MonoBehaviour
         if (backwardsDown == true)
         {
             isWalking = true;
-            Vector2 move = new Vector2(0, (float)-rateOfSpeed);
+
+            if (Input.GetKey(KeyCode.RightArrow) == true)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = 1;
+                transform.localScale = xscale;
+                move = new Vector2((float)rateOfSpeed, (float)-rateOfSpeed);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) == true)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = -1;
+                transform.localScale = xscale;
+                move = new Vector2((float)-rateOfSpeed, (float)-rateOfSpeed);
+            }
+            else
+                move = new Vector2(0, (float)-rateOfSpeed);
+
             if (rb.velocity.magnitude < maxSpeed)
                 rb.velocity += move;
             
