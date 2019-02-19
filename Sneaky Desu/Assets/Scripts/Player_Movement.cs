@@ -7,6 +7,9 @@ public class Player_Movement : MonoBehaviour
     public static Vector3 originPosition;
 
     public Animator animator;
+    private AnimationState animState;
+
+    bool col = false;
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
@@ -29,19 +32,23 @@ public class Player_Movement : MonoBehaviour
     {
         animator.SetBool("isWalking", isWalking);
         //Game Controls Updated Every Frame
-        if (Input.GetKey(KeyCode.UpArrow))
-            MoveFoward();
 
-        else if (Input.GetKey(KeyCode.DownArrow))
-            MoveBackwards();
+        if (col == false)
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+                MoveFoward();
 
-        else if (Input.GetKey(KeyCode.LeftArrow))
-            MoveLeft();
+            else if (Input.GetKey(KeyCode.DownArrow))
+                MoveBackwards();
 
-        else if (Input.GetKey(KeyCode.RightArrow))
-            MoveRight();
+            else if (Input.GetKey(KeyCode.LeftArrow))
+                MoveLeft();
 
-        else isWalking = false;
+            else if (Input.GetKey(KeyCode.RightArrow))
+                MoveRight();
+
+            else isWalking = false;
+        }
 
     }
 
@@ -121,8 +128,25 @@ public class Player_Movement : MonoBehaviour
             if (rb.velocity.magnitude < maxSpeed)
                 rb.velocity += move;
             
-
         } 
 
     } //The player moves left
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Tilemap")
+        {
+            Debug.Log("Oh no!");
+            rb.velocity = -rb.velocity / maxSpeed;
+            col = true;
+        } 
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Tilemap")
+        {
+            Debug.Log("We good!");
+            col = false;
+        }
+    }
 }
