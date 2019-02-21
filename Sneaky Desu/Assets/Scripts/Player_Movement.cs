@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayerStats;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public class Player_Movement : MonoBehaviour
     Vector2 move;
 
     public Animator animator;
+    public PlayerStatusScript Status;
 
     bool col = false, step = false;
+    bool isWaiting = false;
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
@@ -51,7 +54,12 @@ public class Player_Movement : MonoBehaviour
             else if (Input.GetKey(KeyCode.RightArrow))
                 MoveRight();
 
-            else isWalking = false;
+            else
+            {
+                coroutine = RecoveryWhileIdle(1f);
+                if (isWaiting == false) StartCoroutine(coroutine); else StopCoroutine(coroutine);
+                isWalking = false;
+            }
         }
 
         if (isWalking == true)
@@ -182,9 +190,21 @@ public class Player_Movement : MonoBehaviour
         if (step == false)
         {
             FindObjectOfType<audioManager>().Play("Walk");
+            Status.DecreaseHealth(1f);
             step = true;
             yield return new WaitForSeconds((float)0.15);
             step = false;
         }
+    }
+
+    IEnumerator RecoveryWhileIdle(float value)
+    {
+        if (Status.healthUI.fillAmount != Status.maxHealth)
+        {
+            Status.IncreaseHealth(1f);
+            isWaiting = true;
+        }
+        yield return new WaitForSeconds(value);
+        isWaiting = false;
     }
 }
