@@ -9,7 +9,7 @@ public class Player_Movement : MonoBehaviour
 
     public Animator animator;
 
-    bool col = false;
+    bool col = false, step = false;
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
@@ -22,6 +22,8 @@ public class Player_Movement : MonoBehaviour
 
     private Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
+    IEnumerator coroutine;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
@@ -32,6 +34,8 @@ public class Player_Movement : MonoBehaviour
     {
         animator.SetBool("isWalking", isWalking);
         //Game Controls Updated Every Frame
+
+        coroutine = Walk();
 
         if (col == false)
         {
@@ -50,13 +54,18 @@ public class Player_Movement : MonoBehaviour
             else isWalking = false;
         }
 
+        if (isWalking == true)
+        {
+            StartCoroutine(coroutine);
+        }
+
     }
 
     void MoveFoward()
     {
-        
+
         fowardDown = Input.GetKey(KeyCode.UpArrow);
-        
+
         //Going fowards
         if (fowardDown == true)
         {
@@ -80,15 +89,15 @@ public class Player_Movement : MonoBehaviour
                 move = new Vector2(0, (float)rateOfSpeed);
 
             if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move;
-                
-            
+                rb.velocity += move * Time.fixedDeltaTime;
+
+
         }
     } //The player moves up
 
     void MoveRight()
     {
-        
+
         rightDown = Input.GetKey(KeyCode.RightArrow);
 
         if (rightDown == true)
@@ -102,7 +111,7 @@ public class Player_Movement : MonoBehaviour
 
             Vector2 move = new Vector2((float)rateOfSpeed, 0);
             if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move;
+                rb.velocity += move * Time.fixedDeltaTime;
 
         }
     } //The player moves right
@@ -110,7 +119,7 @@ public class Player_Movement : MonoBehaviour
     void MoveBackwards()
     {
 
-        
+
         backwardsDown = Input.GetKey(KeyCode.DownArrow);
 
 
@@ -137,16 +146,16 @@ public class Player_Movement : MonoBehaviour
                 move = new Vector2(0, (float)-rateOfSpeed);
 
             if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move;
-            
+                rb.velocity += move * Time.fixedDeltaTime;
+
         }
-       
-        
+
+
     } //The player moves down
 
     void MoveLeft()
     {
-        
+
         leftDown = Input.GetKey(KeyCode.LeftArrow);
 
         if (leftDown == true)
@@ -161,27 +170,21 @@ public class Player_Movement : MonoBehaviour
 
             Vector2 move = new Vector2((float)-rateOfSpeed, 0);
             if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move;
-            
-        } 
+                rb.velocity += move * Time.fixedDeltaTime;
 
-    } //The player moves left
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.name == "Tilemap")
-        {
-            Debug.Log("Oh no!");
-            rb.velocity = -rb.velocity / maxSpeed;
-            col = true;
-        } 
+        }
+
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    IEnumerator Walk()
     {
-        if (collision.gameObject.name == "Tilemap")
+       
+        if (step == false)
         {
-            Debug.Log("We good!");
-            col = false;
+            FindObjectOfType<audioManager>().Play("Walk");
+            step = true;
+            yield return new WaitForSeconds((float)0.15);
+            step = false;
         }
     }
 }

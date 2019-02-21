@@ -1,9 +1,11 @@
 fileFormatVersion: 2
-guid: 3c1975db5f5175c48b376daa296552fd
+guid: 0606ab0611255fd49877e1d8dd609927
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Jin_Idle_0
-    21300002: Jin_Idle_1
+    21300000: Swordsman_Guard_Walk_0
+    21300002: Swordsman_Guard_Walk_1
+    21300004: Swordsman_Guard_Walk_2
+    21300006: Swordsman_Guard_Walk_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -86,7 +88,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Jin_Idle_0
+      name: Swordsman_Guard_Walk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -94,19 +96,19 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 380869a3e35e1c04bb633dd8be5f93d8
+      spriteID: c53a750e0c1b11b49a35925e47874e5a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Jin_Idle_1
+      name: Swordsman_Guard_Walk_1
       rect:
         serializedVersion: 2
         x: 32
@@ -114,13 +116,53 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5924553be762986428ac45ca54a43e94
+      spriteID: 09cc2b9bed3cdd04a9c13a702fb691c3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swordsman_Guard_Walk_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 33
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d7a064d93033174e94beaef4d9daa9c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swordsman_Guard_Walk_3
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 0
+        width: 31
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00cc95a7c3d73804181128a9bf84af2e
       vertices: []
       indices: 
       edges: []
@@ -128,7 +170,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d01c1683e9a6d1f41b81474fe22220a1
+    spriteID: 5ce3e6c78460fa64d96544328bf545d2
     vertices: []
     indices: 
     edges: []
