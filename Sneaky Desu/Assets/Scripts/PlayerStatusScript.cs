@@ -53,8 +53,11 @@ namespace PlayerStats
             Debug.Log(levelProgressionUI.fillAmount);
             if (levelProgressionUI.fillAmount == currentHealth / maxHealth)
             {
+                float pastLevel = level;
                 level += 1;
                 levelProgressionUI.fillAmount = 0f;
+                FindObjectOfType<audioManager>().Play("LevelUp");
+                Debug.Log("You went from Level " + pastLevel + " to Level " + level + "!!!");
             }
             return value;
         }

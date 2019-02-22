@@ -35,7 +35,7 @@ public class ChaseBehavior : StateMachineBehaviour
         }
 
         //If Player is out of reach!!!
-        if (distance > IdleBehavior.fieldOfSight)
+        if (distance > IdleBehavior.fieldOfSight * 2)
         {
             animator.SetBool("isChasing", false);
         }
