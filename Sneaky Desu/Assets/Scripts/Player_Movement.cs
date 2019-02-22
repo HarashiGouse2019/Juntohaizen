@@ -189,7 +189,7 @@ public class Player_Movement : MonoBehaviour
        
         if (step == false)
         {
-            FindObjectOfType<audioManager>().Play("Walk");
+            FindObjectOfType<AudioManager>().Play("Walk");
             Status.DecreaseHealth(1f);
             step = true;
             yield return new WaitForSeconds((float)0.15);

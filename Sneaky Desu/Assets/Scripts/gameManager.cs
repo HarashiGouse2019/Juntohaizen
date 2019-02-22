@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 using Random = UnityEngine.Random;
 
-public class gameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static gameManager instance;
+    public static GameManager instance;
 
     public GameObject[] spawnPoint;
 
