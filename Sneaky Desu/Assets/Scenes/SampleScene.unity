@@ -494,6 +494,7 @@ MonoBehaviour:
   healthUI: {fileID: 1928112995}
   manaUI: {fileID: 477176877}
   levelProgressionUI: {fileID: 1210502854}
+  levelUI: {fileID: 74323101}
 --- !u!1 &477176875
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ namespace PlayerStats
         public Image manaUI;
         public Image levelProgressionUI;
 
+        public TextMeshProUGUI levelUI;
+
 
         // Start is called before the first frame update
         void Start()
@@ -36,9 +38,12 @@ namespace PlayerStats
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Return)) IncreaseLevel(1f);
-            if (Input.GetKeyDown(KeyCode.Equals)) IncreaseHealth(1f);
-            if (Input.GetKeyDown(KeyCode.Minus)) DecreaseHealth(1f);
+            if (Input.GetKey(KeyCode.Return)) IncreaseLevel(1f);
+            if (Input.GetKey(KeyCode.Backspace)) DecreaseLevel(1f);
+            if (Input.GetKey(KeyCode.Equals)) IncreaseHealth(1f);
+            if (Input.GetKey(KeyCode.Minus)) DecreaseHealth(1f);
+
+            levelUI.text = level.ToString();
 
         }
 
@@ -46,9 +51,22 @@ namespace PlayerStats
         {
             levelProgressionUI.fillAmount += value / 100f;
             Debug.Log(levelProgressionUI.fillAmount);
-            if (levelProgressionUI.fillAmount == 1f)
+            if (levelProgressionUI.fillAmount == currentHealth / maxHealth)
             {
-                levelProgressionUI.fillAmount = 0;
+                level += 1;
+                levelProgressionUI.fillAmount = 0f;
+            }
+            return value;
+        }
+
+        public float DecreaseLevel(float value)
+        {
+            levelProgressionUI.fillAmount -= value / 100f;
+            Debug.Log(levelProgressionUI.fillAmount);
+            if (levelProgressionUI.fillAmount < 1f / maxHealth && level != 0f)
+            {
+                level -= 1;
+                levelProgressionUI.fillAmount = maxHealth - 1f;
             }
             return value;
         }
