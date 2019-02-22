@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-public class audioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
     public Audio[] getAudio;
     // Start is called before the first frame update
