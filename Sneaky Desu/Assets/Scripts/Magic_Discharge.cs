@@ -43,18 +43,17 @@ public class Magic_Discharge : MonoBehaviour
     void Update()
     {
         //When the player shots lazers
-        if (Input.GetKeyDown(KeyCode.Space) || isKeyReleased == true)
+        if (Input.GetKeyDown(KeyCode.X) || isKeyReleased == true)
         {
             coroutine = Recoil();
 
             isKeyReleased = false;
             Instantiate(magicDischarge[type], magicSource.position, magicSource.localRotation); //A bullet will spawn with a set direction based on the player's direction
-            FindObjectOfType<AudioManager>().Play("Shoot");
             StartCoroutine(coroutine);
 
 
         }
-        if (Input.GetKeyUp(KeyCode.Space)) StopCoroutine(coroutine);
+        if (Input.GetKeyUp(KeyCode.X)) StopCoroutine(coroutine);
     }
 
     private IEnumerator Recoil()

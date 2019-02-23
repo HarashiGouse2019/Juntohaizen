@@ -9,7 +9,15 @@ public class Magic_Movement : MonoBehaviour
     public float radius = 0.1f;
 
     private Vector2 centre;
-    private float angle;
+
+    private float _angleValue;
+
+    public static float angle;
+
+    private void Awake()
+    {
+        angle = _angleValue;
+    }
 
     private void Update()
     {
@@ -19,5 +27,7 @@ public class Magic_Movement : MonoBehaviour
 
         var offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * radius;
         transform.position = centre + offset;
+
+        Debug.Log(Mathf.Cos(angle));
     }
 }
