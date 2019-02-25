@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using PlayerStats;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject[] spawnPoint;
+    public PlayerStatusScript PlayerStatus;
+
+    public GameObject MagicSource;
+
+    public Transform Target;
+
+    public List<GameObject> spawnPoint;
 
     public int lives;
 
@@ -29,6 +35,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         KeyCommand();
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Instantiate(MagicSource);
+        }
     }
 
     void KeyCommand()

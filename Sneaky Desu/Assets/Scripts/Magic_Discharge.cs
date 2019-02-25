@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using PlayerStats;
 
 public class Magic_Discharge : MonoBehaviour
 {
+    public PlayerStatusScript PlayerStatus;
+
     public float speedValue;
     public static float speed;
 
@@ -27,6 +30,8 @@ public class Magic_Discharge : MonoBehaviour
     public List<GameObject> magicDischarge;
     public int type;
 
+    bool canUseMana = true;
+
     IEnumerator coroutine;
 
     // Start is called before the first frame update
@@ -36,24 +41,37 @@ public class Magic_Discharge : MonoBehaviour
         buffSpeed = speed * dischargeAmount;
         type = (int) dischargeAmount - 1;
 
+        PlayerStatus = GameObject.FindObjectOfType<PlayerStatusScript>();
+
         Debug.Log("BuffSpeed is now" + buffSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         //When the player shots lazers
         if (Input.GetKeyDown(KeyCode.X) || isKeyReleased == true)
         {
-            coroutine = Recoil();
+            if (PlayerStatus.currentMana != 0)
+            {
 
-            isKeyReleased = false;
-            Instantiate(magicDischarge[type], magicSource.position, magicSource.localRotation); //A bullet will spawn with a set direction based on the player's direction
-            StartCoroutine(coroutine);
-
-
+                coroutine = Recoil();
+                PlayerStatus.DecreaseMana(1f);
+                isKeyReleased = false;
+                Instantiate(magicDischarge[type], magicSource.position, magicSource.localRotation); //A bullet will spawn with a set direction based on the player's direction
+                StartCoroutine(coroutine);
+            }
+            else
+            {
+                canUseMana = false;
+                StopCoroutine(coroutine);
+            }
         }
         if (Input.GetKeyUp(KeyCode.X)) StopCoroutine(coroutine);
+
+
+        Debug.Log("Current Mana: " + (PlayerStatus.currentMana * PlayerStatus.maxMana));
     }
 
     private IEnumerator Recoil()

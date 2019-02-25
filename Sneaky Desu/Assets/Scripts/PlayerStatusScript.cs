@@ -11,7 +11,7 @@ namespace PlayerStats
     {
 
         public float maxHealth = 100, maxMana = 100;
-        private float currentHealth, currentMana;
+        [HideInInspector] public float currentHealth, currentMana;
 
         [HideInInspector] public float levelProgression = 0, level = 0;
 
@@ -40,8 +40,8 @@ namespace PlayerStats
         {
             if (Input.GetKey(KeyCode.Return)) IncreaseLevel(1f);
             if (Input.GetKey(KeyCode.Backspace)) DecreaseLevel(1f);
-            if (Input.GetKey(KeyCode.Equals)) IncreaseHealth(1f);
-            if (Input.GetKey(KeyCode.Minus)) DecreaseHealth(1f);
+            if (Input.GetKey(KeyCode.Equals)) IncreaseMana(1f);
+            if (Input.GetKey(KeyCode.Minus)) DecreaseMana(1f);
 
             levelUI.text = level.ToString();
 
@@ -77,18 +77,27 @@ namespace PlayerStats
         public float IncreaseHealth(float value)
         {
             if (healthUI.fillAmount != maxHealth) healthUI.fillAmount += value / maxHealth;
+            currentHealth = healthUI.fillAmount;
             return value;
         }
 
         public float DecreaseHealth(float value)
         {
             if (healthUI.fillAmount != 0) healthUI.fillAmount -= value / maxHealth;
+            currentHealth = healthUI.fillAmount;
             return value;
         }
 
         public float IncreaseMana(float value)
         {
-
+           if (manaUI.fillAmount != maxMana) manaUI.fillAmount += value / maxMana;
+            currentMana = manaUI.fillAmount;
+            return value;
+        }
+        public float DecreaseMana(float value)
+        {
+            if (manaUI.fillAmount != 0) manaUI.fillAmount -= value / maxMana;
+            currentMana = manaUI.fillAmount;
             return value;
         }
     }
