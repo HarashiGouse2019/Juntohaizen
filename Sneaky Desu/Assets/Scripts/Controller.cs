@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+public abstract class Controller : MonoBehaviour
 {
+    public Pawn pawn;
+
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
-        
+        pawn = GetComponent<Pawn>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

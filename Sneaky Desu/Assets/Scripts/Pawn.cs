@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerStats;
 
-public class Player_Movement : MonoBehaviour
+public abstract class Pawn : MonoBehaviour
 {
     public static Vector3 originPosition;
     Vector2 move;
@@ -11,8 +11,11 @@ public class Player_Movement : MonoBehaviour
     public Animator animator;
     public PlayerStatusScript Status;
 
-    bool col = false, step = false;
-    bool isWaiting = false;
+    public bool col = false, step = false;
+
+    public bool isWaiting = false;
+
+    public bool isWalking = false;
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
@@ -21,55 +24,24 @@ public class Player_Movement : MonoBehaviour
 
     private bool fowardDown, backwardsDown, rightDown, leftDown;
 
-    bool isWalking = false;
+    public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
-    private Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
+    public IEnumerator coroutine;
 
-    IEnumerator coroutine;
-
-    void Awake()
+    // Start is called before the first frame update
+    public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
         originPosition = gameObject.transform.position;
     }
 
-    void FixedUpdate()
+    // Update is called once per frame
+    public virtual void Update()
     {
-        animator.SetBool("isWalking", isWalking);
-        //Game Controls Updated Every Frame
-
-        coroutine = Walk();
-
-        if (col == false)
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-                MoveFoward();
-
-            else if (Input.GetKey(KeyCode.DownArrow))
-                MoveBackwards();
-
-            else if (Input.GetKey(KeyCode.LeftArrow))
-                MoveLeft();
-
-            else if (Input.GetKey(KeyCode.RightArrow))
-                MoveRight();
-
-            else
-            {
-                coroutine = RecoveryWhileIdle(1f);
-                if (isWaiting == false) StartCoroutine(coroutine); else StopCoroutine(coroutine);
-                isWalking = false;
-            }
-        }
-
-        if (isWalking == true)
-        {
-            StartCoroutine(coroutine);
-        }
-
+        
     }
 
-    void MoveFoward()
+    public virtual void MoveFoward()
     {
 
         fowardDown = Input.GetKey(KeyCode.UpArrow);
@@ -103,7 +75,7 @@ public class Player_Movement : MonoBehaviour
         }
     } //The player moves up
 
-    void MoveRight()
+    public virtual void MoveRight()
     {
 
         rightDown = Input.GetKey(KeyCode.RightArrow);
@@ -124,7 +96,7 @@ public class Player_Movement : MonoBehaviour
         }
     } //The player moves right
 
-    void MoveBackwards()
+    public virtual void MoveBackwards()
     {
 
 
@@ -161,7 +133,7 @@ public class Player_Movement : MonoBehaviour
 
     } //The player moves down
 
-    void MoveLeft()
+    public virtual void MoveLeft()
     {
 
         leftDown = Input.GetKey(KeyCode.LeftArrow);
@@ -184,9 +156,9 @@ public class Player_Movement : MonoBehaviour
 
     }
 
-    IEnumerator Walk()
+    public IEnumerator Walk()
     {
-       
+
         if (step == false)
         {
             FindObjectOfType<AudioManager>().Play("Walk");
@@ -197,7 +169,7 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    IEnumerator RecoveryWhileIdle(float value)
+    public IEnumerator RecoveryWhileIdle(float value)
     {
         if (Status.healthUI.fillAmount != Status.maxHealth)
         {
