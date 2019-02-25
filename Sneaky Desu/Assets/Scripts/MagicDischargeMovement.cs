@@ -8,10 +8,12 @@ public class MagicDischargeMovement : MonoBehaviour
     public GameObject Player;
 
     float baseSpeed;
-    public float instanceDuration;
-    public float seconds = 0;
 
     Vector2 xscale;
+
+    private bool start;
+
+    IEnumerator delayCoroutine;
 
     // Start is called before the first frame update
     void Awake()
@@ -23,6 +25,8 @@ public class MagicDischargeMovement : MonoBehaviour
         gameObject.transform.localScale = xscale;
 
         baseSpeed = Magic_Discharge.buffSpeed;
+
+        delayCoroutine = Delay(1f);
     }
     void Start()
     {
@@ -50,22 +54,12 @@ public class MagicDischargeMovement : MonoBehaviour
                 break;
         }
         rb.velocity = transform.right * baseSpeed * Player.transform.localScale.x;
+
+        StartCoroutine(delayCoroutine);
     }
 
     void Update()
     {
-        if (Time.time > instanceDuration + 1)
-        {
-            instanceDuration = Time.time;
-            seconds++;
-            Debug.Log(seconds);
-        }
-
-        if (seconds == 2f)
-        {
-            Destroy(gameObject);
-        }
-
         Debug.Log("Buff Speed is currently " + baseSpeed);
     }
 
@@ -75,6 +69,14 @@ public class MagicDischargeMovement : MonoBehaviour
         {
             Destroy(col.gameObject);        
         }
+    }
+
+    IEnumerator Delay(float time)
+    {
+        start = true;
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
+        start = false;
     }
 }
 
