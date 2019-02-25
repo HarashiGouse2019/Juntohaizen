@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 028eb956669e6034f8b4832d6dc66adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerStatus: {fileID: 135740222}
+  PlayerStatus: {fileID: 0}
   MagicSource: {fileID: 530629263632409363, guid: 436ce60cda9934347b8f9e5459cd7d15,
     type: 3}
   Target: {fileID: 135740218}
@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 135740219}
   - component: {fileID: 135740220}
   - component: {fileID: 135740222}
+  - component: {fileID: 135740223}
   m_Layer: 0
   m_Name: Jin (Player)
   m_TagString: Player
@@ -443,11 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39709af437b519b4793311e1e7077fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 135740216}
-  Status: {fileID: 135740222}
-  rateOfSpeed: 20
-  maxSpeed: 100
-  speed: 0
+  pawn: {fileID: 135740223}
 --- !u!58 &135740220
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -507,6 +504,33 @@ MonoBehaviour:
   manaUI: {fileID: 477176877}
   levelProgressionUI: {fileID: 1210502854}
   levelUI: {fileID: 74323101}
+--- !u!114 &135740223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135740215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd78e31d6767fa348827d4eca74073b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Status: {fileID: 135740222}
+  move: {x: 0, y: 0}
+  animator: {fileID: 135740216}
+  col: 0
+  step: 0
+  isWaiting: 0
+  isWalking: 0
+  rateOfSpeed: 20
+  maxSpeed: 100
+  speed: 0
+  fowardDown: 0
+  backwardsDown: 0
+  rightDown: 0
+  leftDown: 0
+  rb: {fileID: 135740221}
 --- !u!4 &162664275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,

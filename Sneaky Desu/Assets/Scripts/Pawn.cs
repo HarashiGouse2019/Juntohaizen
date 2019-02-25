@@ -5,11 +5,13 @@ using PlayerStats;
 
 public abstract class Pawn : MonoBehaviour
 {
+    public PlayerStatusScript Status;
+
     public static Vector3 originPosition;
-    Vector2 move;
+    public Vector2 move;
 
     public Animator animator;
-    public PlayerStatusScript Status;
+    
 
     public bool col = false, step = false;
 
@@ -22,7 +24,7 @@ public abstract class Pawn : MonoBehaviour
 
     public float speed;
 
-    private bool fowardDown, backwardsDown, rightDown, leftDown;
+    public bool fowardDown, backwardsDown, rightDown, leftDown;
 
     public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
@@ -44,121 +46,26 @@ public abstract class Pawn : MonoBehaviour
     public virtual void MoveFoward()
     {
 
-        fowardDown = Input.GetKey(KeyCode.UpArrow);
 
-        //Going fowards
-        if (fowardDown == true)
-        {
-            isWalking = true;
-
-            if (Input.GetKey(KeyCode.RightArrow) == true)
-            {
-                Vector3 xscale = transform.localScale;
-                xscale.x = 1;
-                transform.localScale = xscale;
-                move = new Vector2((float)rateOfSpeed, (float)rateOfSpeed);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow) == true)
-            {
-                Vector3 xscale = transform.localScale;
-                xscale.x = -1;
-                transform.localScale = xscale;
-                move = new Vector2((float)-rateOfSpeed, (float)rateOfSpeed);
-            }
-            else
-                move = new Vector2(0, (float)rateOfSpeed);
-
-            if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move * Time.fixedDeltaTime;
-
-
-        }
     } //The player moves up
 
     public virtual void MoveRight()
     {
 
-        rightDown = Input.GetKey(KeyCode.RightArrow);
-
-        if (rightDown == true)
-        {
-            isWalking = true;
-            Vector3 xscale = transform.localScale;
-            xscale.x = 1;
-            transform.localScale = xscale;
-
-            //Going fowards
-
-            Vector2 move = new Vector2((float)rateOfSpeed, 0);
-            if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move * Time.fixedDeltaTime;
-
-        }
     } //The player moves right
 
     public virtual void MoveBackwards()
     {
-
-
-        backwardsDown = Input.GetKey(KeyCode.DownArrow);
-
-
-        //Going backwards
-        if (backwardsDown == true)
-        {
-            isWalking = true;
-
-            if (Input.GetKey(KeyCode.RightArrow) == true)
-            {
-                Vector3 xscale = transform.localScale;
-                xscale.x = 1;
-                transform.localScale = xscale;
-                move = new Vector2((float)rateOfSpeed, (float)-rateOfSpeed);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow) == true)
-            {
-                Vector3 xscale = transform.localScale;
-                xscale.x = -1;
-                transform.localScale = xscale;
-                move = new Vector2((float)-rateOfSpeed, (float)-rateOfSpeed);
-            }
-            else
-                move = new Vector2(0, (float)-rateOfSpeed);
-
-            if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move * Time.fixedDeltaTime;
-
-        }
-
 
     } //The player moves down
 
     public virtual void MoveLeft()
     {
 
-        leftDown = Input.GetKey(KeyCode.LeftArrow);
-
-        if (leftDown == true)
-        {
-            isWalking = true;
-            Vector3 xscale = transform.localScale;
-            xscale.x = -1;
-            transform.localScale = xscale;
-
-            //Going fowards
-
-
-            Vector2 move = new Vector2((float)-rateOfSpeed, 0);
-            if (rb.velocity.magnitude < maxSpeed)
-                rb.velocity += move * Time.fixedDeltaTime;
-
-        }
-
     }
 
     public IEnumerator Walk()
     {
-
         if (step == false)
         {
             FindObjectOfType<AudioManager>().Play("Walk");

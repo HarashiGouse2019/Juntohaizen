@@ -44,14 +44,13 @@ namespace PlayerStats
             if (Input.GetKey(KeyCode.Minus)) DecreaseMana(1f);
 
             levelUI.text = level.ToString();
-
         }
 
         public float IncreaseLevel(float value)
         {
             levelProgressionUI.fillAmount += value / 100f;
             Debug.Log(levelProgressionUI.fillAmount);
-            if (levelProgressionUI.fillAmount == currentHealth / maxHealth)
+            if (levelProgressionUI.fillAmount == 1f)
             {
                 float pastLevel = level;
                 level += 1;
@@ -66,11 +65,13 @@ namespace PlayerStats
         {
             levelProgressionUI.fillAmount -= value / 100f;
             Debug.Log(levelProgressionUI.fillAmount);
+
             if (levelProgressionUI.fillAmount < 1f / maxHealth && level != 0f)
             {
                 level -= 1;
                 levelProgressionUI.fillAmount = maxHealth - 1f;
             }
+
             return value;
         }
 
