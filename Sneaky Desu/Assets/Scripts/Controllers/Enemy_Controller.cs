@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Enemy_Controller : Controller
 {
-    bool isChasing = false, isAtPlayer = false;
+    const bool isChasing = false, isAtPlayer = false;
 
-    public Transform playerPosition;
+    [HideInInspector] public Transform playerPosition;
 
-    public GameObject target;
+    [HideInInspector] public GameObject target;
 
     [Range(1, 10)] public int fieldOfSightValue;
     public static int fieldOfSight;

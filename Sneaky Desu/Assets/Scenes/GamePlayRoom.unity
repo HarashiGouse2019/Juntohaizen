@@ -498,6 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move: {x: 0, y: 0}
   animator: {fileID: 135740216}
+  layerIndex: 0
   col: 0
   step: 0
   isWaiting: 0
@@ -510,6 +511,18 @@ MonoBehaviour:
   rightDown: 0
   leftDown: 0
   rb: {fileID: 135740221}
+--- !u!114 &226393881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+    type: 3}
+  m_PrefabInstance: {fileID: 886505139}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72494179ca9ed341a2be3488046aced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &477176875
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,6 +937,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: fieldOfSightValue
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: pawn
+      value: 
+      objectReference: {fileID: 226393881}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &886505140 stripped
@@ -22610,6 +22643,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: pawn
+      value: 
+      objectReference: {fileID: 226393881}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}

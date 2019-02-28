@@ -10,6 +10,7 @@ public class ChaseBehavior : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
    {
+        
         animator.Play("Chase");
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
    }
