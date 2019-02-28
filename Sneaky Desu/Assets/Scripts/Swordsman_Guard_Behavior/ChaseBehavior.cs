@@ -10,6 +10,7 @@ public class ChaseBehavior : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
    {
+        animator.Play("Chase");
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
    }
 
@@ -38,6 +39,11 @@ public class ChaseBehavior : StateMachineBehaviour
         if (distance > IdleBehavior.fieldOfSight * 2)
         {
             animator.SetBool("isChasing", false);
+        }
+
+        if (distance < IdleBehavior.fieldOfSight / 2)
+        {
+            animator.SetBool("isAtPlayer", true);
         }
     }
 

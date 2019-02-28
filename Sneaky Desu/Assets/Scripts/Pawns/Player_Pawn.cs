@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayerStats;
 
 public class Player_Pawn : Pawn
 {
+
     public override void Start()
     {
         base.Start();
@@ -127,5 +127,13 @@ public class Player_Pawn : Pawn
         }
 
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "hitbox")
+        {
+            GameManager.instance.DecreaseHealth(5f);
+        }
     }
 }

@@ -10,6 +10,7 @@ public class IdleBehavior : StateMachineBehaviour
    
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.Play("Idle");
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
         fieldOfSight = fieldOfSightValue;
     }

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using PlayerStats;
 
 public class Magic_Discharge : MonoBehaviour
 {
-    public PlayerStatusScript PlayerStatus;
 
     public float speedValue;
     public static float speed;
@@ -41,8 +39,6 @@ public class Magic_Discharge : MonoBehaviour
         buffSpeed = speed * dischargeAmount;
         type = (int) dischargeAmount - 1;
 
-        PlayerStatus = GameObject.FindObjectOfType<PlayerStatusScript>();
-
         Debug.Log("BuffSpeed is now" + buffSpeed);
     }
 
@@ -53,11 +49,11 @@ public class Magic_Discharge : MonoBehaviour
         //When the player shots lazers
         if (Input.GetKeyDown(KeyCode.X) || isKeyReleased == true)
         {
-            if (PlayerStatus.currentMana != 0)
+            if (GameManager.instance.currentMana != 0)
             {
 
                 coroutine = Recoil();
-                PlayerStatus.DecreaseMana(1f);
+                GameManager.instance.DecreaseMana(1f);
                 isKeyReleased = false;
                 Instantiate(magicDischarge[type], magicSource.position, magicSource.localRotation); //A bullet will spawn with a set direction based on the player's direction
                 StartCoroutine(coroutine);
@@ -71,7 +67,7 @@ public class Magic_Discharge : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.X)) StopCoroutine(coroutine);
 
 
-        Debug.Log("Current Mana: " + (PlayerStatus.currentMana * PlayerStatus.maxMana));
+        Debug.Log("Current Mana: " + (GameManager.instance.currentMana * GameManager.instance.maxMana));
     }
 
     private IEnumerator Recoil()

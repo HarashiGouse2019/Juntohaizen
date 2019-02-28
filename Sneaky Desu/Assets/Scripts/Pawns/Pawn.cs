@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayerStats;
+
 
 public abstract class Pawn : MonoBehaviour
 {
-    public PlayerStatusScript Status;
-
-    public static Vector3 originPosition;
+    public static Vector3 originPosition, currentPosition;
     public Vector2 move;
 
+    //Accessing our animation;
     public Animator animator;
-    
+    public AnimatorStateInfo stateInfo;
+    public int layerIndex;
+
 
     public bool col = false, step = false;
 
@@ -40,8 +41,10 @@ public abstract class Pawn : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        
+        currentPosition = gameObject.transform.position;
     }
+
+    //Player Behaviour Functions
 
     public virtual void MoveFoward()
     {
@@ -69,7 +72,8 @@ public abstract class Pawn : MonoBehaviour
         if (step == false)
         {
             FindObjectOfType<AudioManager>().Play("Walk");
-            Status.DecreaseHealth(1f);
+
+            GameManager.instance.DecreaseHealth(1f);
             step = true;
             yield return new WaitForSeconds((float)0.15);
             step = false;
@@ -78,12 +82,40 @@ public abstract class Pawn : MonoBehaviour
 
     public IEnumerator RecoveryWhileIdle(float value)
     {
-        if (Status.healthUI.fillAmount != Status.maxHealth)
+        if (GameManager.instance.healthUI.fillAmount != GameManager.instance.maxHealth)
         {
-            Status.IncreaseHealth(1f);
+            GameManager.instance.IncreaseHealth(1f);
             isWaiting = true;
         }
         yield return new WaitForSeconds(value);
         isWaiting = false;
     }
+
+    //Enemy Behaviour Functions
+
+    public virtual void StandIdle()
+    {
+
+    }
+
+    public virtual void ChaseAfter()
+    {
+
+    }
+
+    public virtual void Attack()
+    {
+
+    }
+
+    public virtual void Patrol()
+    {
+
+    }
+
+    public virtual void ReturnToLastPosition()
+    {
+
+    }
+
 }

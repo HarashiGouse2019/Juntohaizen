@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8944410476122337755}
   - component: {fileID: 4998581173798575959}
   - component: {fileID: 6813052163762502356}
+  - component: {fileID: 4551716248317498121}
   m_Layer: 0
   m_Name: Swordsman_Guard
   m_TagString: Enemy
@@ -138,3 +139,15 @@ CircleCollider2D:
   m_Offset: {x: -0.047141075, y: -0.015713692}
   serializedVersion: 2
   m_Radius: 0.40571785
+--- !u!114 &4551716248317498121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8944410476122337752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3fc3fb6b9c35104fadec3306cb6f4a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
