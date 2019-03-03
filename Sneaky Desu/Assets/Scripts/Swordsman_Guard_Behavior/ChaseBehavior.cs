@@ -12,6 +12,8 @@ public class ChaseBehavior : StateMachineBehaviour
    {
         
         animator.Play("Chase");
+        animator.SetBool("isChasing", false);
+        if (Swordsman_Guard_Pawn.HitBox != null) Destroy(Swordsman_Guard_Pawn.HitBox);
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
    }
 

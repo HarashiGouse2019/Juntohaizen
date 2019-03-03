@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy_Controller : Controller
 {
-    const bool isChasing = false, isAtPlayer = false;
+    bool isChasing = false;
+    bool isAtPlayer = false;
 
     [HideInInspector] public Transform playerPosition;
 
@@ -52,9 +53,10 @@ public class Enemy_Controller : Controller
             pawn.StandIdle();
         }
 
-        if (distance < fieldOfSight || (distance > 1 && isAtPlayer == true))
+        if (distance < fieldOfSight * 2)
         {
             pawn.ChaseAfter();
+            isAtPlayer = false;
 
         }
         if (distance < fieldOfSight / 2)

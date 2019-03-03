@@ -48,7 +48,6 @@ public class AttackBehavior : StateMachineBehaviour
         //If Player is out of reach!!!
         if (distance > 1)
         {
-            Destroy(Swordsman_Guard_Pawn.HitBox);
             animator.SetBool("isAtPlayer", false);
         }
         if (hitBoxExists == false)

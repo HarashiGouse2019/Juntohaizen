@@ -11,7 +11,7 @@ public class MagicDischargeMovement : MonoBehaviour
 
     Vector2 xscale;
 
-    private bool start;
+    private bool start = true;
 
     IEnumerator delayCoroutine;
 

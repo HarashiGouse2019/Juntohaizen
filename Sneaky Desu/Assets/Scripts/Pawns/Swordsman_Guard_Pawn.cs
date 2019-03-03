@@ -20,23 +20,22 @@ public class Swordsman_Guard_Pawn : Pawn
     public override void Update()
     {
         base.Update();
-        
-        if (animator.GetBool("isChasing") == false)
-        {
-            Destroy(this.HitBoxPrefab);
-        }
     }
 
     public override void StandIdle()
     {
-        
+        Debug.Log("Doing nothing Desu!!!");
         animator.SetBool("isChasing", false);
     }
 
     public override void ChaseAfter()
     {
+        Debug.Log("Going after Player Desu!!!");
 
+        animator.SetBool("isAtPlayer", false);
         animator.SetBool("isChasing", true);
+        if (HitBox != null) Destroy(HitBox);
+
         animator.transform.position = Vector2.MoveTowards(animator.transform.position, target.position, speed * Time.deltaTime);
 
         Vector2 heading = animator.transform.position - target.position;
@@ -48,12 +47,15 @@ public class Swordsman_Guard_Pawn : Pawn
 
     public override void Attack()
     {
+        Debug.Log("Attacking Desu!!!");
         animator.SetBool("isAtPlayer", true);
+
         if (HitBox == null)
         {
-            HitBox = Instantiate(HitBox);
+            HitBox = Instantiate(HitBox, gameObject.transform);
+            HitBox.transform.position = currentPosition;
         }
-        HitBox.transform.position = currentPosition;
+
     }
 
     public override void ReturnToLastPosition()
