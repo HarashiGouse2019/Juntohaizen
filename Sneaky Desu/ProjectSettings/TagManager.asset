@@ -8,6 +8,7 @@ TagManager:
   - levelNum
   - Enemy
   - hitbox
+  - Gem
   layers:
   - Default
   - TransparentFX

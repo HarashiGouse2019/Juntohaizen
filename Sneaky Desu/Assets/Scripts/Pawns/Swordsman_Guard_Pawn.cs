@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Swordsman_Guard_Pawn : Pawn
 {
-    public GameObject HitBoxPrefab;
+    
     public static GameObject HitBox;
 
     
@@ -13,7 +13,6 @@ public class Swordsman_Guard_Pawn : Pawn
     public override void Start()
     {
         base.Start();
-        HitBox = HitBoxPrefab;
         
     }
 
@@ -32,11 +31,9 @@ public class Swordsman_Guard_Pawn : Pawn
 
     public override void ChaseAfter()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) animator.Play("Chase");
+        animator.SetBool("isChasing", true);
 
         Debug.Log("Going after Player Desu!!!");
-
-        if (HitBox != null) Destroy(HitBox);
 
         transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
         
@@ -44,15 +41,11 @@ public class Swordsman_Guard_Pawn : Pawn
 
     public override void Attack()
     {
-        
 
+        animator.SetBool("isAtPlayer", true);
         Debug.Log("Attacking Desu!!!");
-
-        if (HitBox == null)
-        {
-            HitBox = Instantiate(HitBox, gameObject.transform);
-            HitBox.transform.position = currentPosition;
-        }
+        
+        
 
     }
 

@@ -8,13 +8,13 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public int gemInstances = 0;
+
     public static GameManager instance;
 
     public GameObject MagicSource;
 
     public Transform Target;
-
-    public List<GameObject> spawnPoint;
 
     public float maxHealth = 100, maxMana = 100;
 
@@ -52,11 +52,16 @@ public class GameManager : MonoBehaviour
         healthUI.fillAmount = currentHealth / maxHealth;
         manaUI.fillAmount = currentMana / maxMana;
         levelProgressionUI.fillAmount = levelProgression;
+
+        gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length;
     }
 
     void Update()
     {
         InitiateKeyInput();
+
+        if (currentHealth == 0) Die();
+        if (gemInstances == 0) Win();
     }
 
     void InitiateKeyInput()
@@ -131,5 +136,13 @@ public class GameManager : MonoBehaviour
         if (manaUI.fillAmount != 0) manaUI.fillAmount -= value / maxMana;
         currentMana = manaUI.fillAmount;
         return value;
+    }
+    public void Die()
+    {
+        SceneManager.LoadScene(3);
+    }
+    public void Win()
+    {
+        SceneManager.LoadScene(2);
     }
 }

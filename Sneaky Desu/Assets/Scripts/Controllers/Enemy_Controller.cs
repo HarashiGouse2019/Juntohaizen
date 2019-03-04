@@ -50,16 +50,19 @@ public class Enemy_Controller : Controller
         {
             pawn.StandIdle();
             isAtPlayer = false;
+            
         }
         if (pawn.distance < fieldOfSight && pawn.distance > 1)
         {
             pawn.ChaseAfter();
             isAtPlayer = false;
+            isChasing = true;
 
         }
         if (pawn.distance < 1)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Chase")) animator.Play("Attack");
+            isAtPlayer = true;
+           
             pawn.Attack();
         }
     }

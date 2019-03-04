@@ -129,6 +129,16 @@ public class Player_Pawn : Pawn
 
     }
 
+    private void OnTriggerEnter2D(Collider2D gem)
+    {
+        if (gem.gameObject.tag == "Gem")
+        {
+            GameManager.instance.IncreaseLevel(1f);
+            --GameManager.instance.gemInstances;
+            Destroy(gem.gameObject);
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.tag == "hitbox")

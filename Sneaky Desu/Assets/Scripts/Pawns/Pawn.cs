@@ -44,6 +44,7 @@ public abstract class Pawn : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
         originPosition = gameObject.transform.position;
+        playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -84,8 +85,6 @@ public abstract class Pawn : MonoBehaviour
         if (step == false)
         {
             FindObjectOfType<AudioManager>().Play("Walk");
-
-            GameManager.instance.DecreaseHealth(1f);
             step = true;
             yield return new WaitForSeconds((float)0.15);
             step = false;
