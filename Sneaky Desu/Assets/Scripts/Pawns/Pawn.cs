@@ -25,6 +25,14 @@ public abstract class Pawn : MonoBehaviour
 
     public float speed;
 
+    public Vector2 heading;
+
+    public float distance;
+
+    public Transform playerPosition;
+
+    public GameObject target;
+
     public bool fowardDown, backwardsDown, rightDown, leftDown;
 
     public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
@@ -42,6 +50,10 @@ public abstract class Pawn : MonoBehaviour
     public virtual void Update()
     {
         currentPosition = gameObject.transform.position;
+        //All Possible States
+        heading = transform.position - playerPosition.position;
+
+        distance = heading.magnitude; Debug.Log(distance);
     }
 
     //Player Behaviour Functions

@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pawn: {fileID: 747995408226139110}
+  animator: {fileID: 8944410476122337755}
   playerPosition: {fileID: 0}
   target: {fileID: 0}
   fieldOfSightValue: 3
@@ -177,7 +178,7 @@ MonoBehaviour:
   isWalking: 0
   rateOfSpeed: 0
   maxSpeed: 0
-  speed: 0
+  speed: 3
   fowardDown: 0
   backwardsDown: 0
   rightDown: 0

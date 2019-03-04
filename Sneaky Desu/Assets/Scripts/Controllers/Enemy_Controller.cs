@@ -1,26 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class Enemy_Controller : Controller
 {
     bool isChasing = false;
     bool isAtPlayer = false;
 
-    [HideInInspector] public Transform playerPosition;
-
-    [HideInInspector] public GameObject target;
+    public Animator animator;
 
     [Range(1, 10)] public int fieldOfSightValue;
     public static int fieldOfSight;
+
+    
 
     public override void Start()
     {
         base.Start();
 
         pawn.animator.Play("Idle");
-        target = GameObject.FindGameObjectWithTag("Player");
-        playerPosition = target.transform;
+        pawn.target = GameObject.FindGameObjectWithTag("Player");
+        pawn.playerPosition = pawn.target.transform;
         fieldOfSight = fieldOfSightValue;
     }
 
@@ -30,37 +31,35 @@ public class Enemy_Controller : Controller
         pawn.animator.SetBool("isAtPlayer", isAtPlayer);
         //Game Controls Updated Every Frame
 
-        //All Possible States
-        Vector2 heading = pawn.animator.transform.position - playerPosition.position;
+        
 
-        float distance = heading.magnitude;
-
-        if (playerPosition.position.x < pawn.transform.position.x)
+        if (pawn.playerPosition.position.x < pawn.transform.position.x)
         {
             Vector2 xscale = pawn.transform.localScale;
             xscale.x = -1;
             pawn.transform.localScale = xscale;
         }
-        else if (playerPosition.position.x > pawn.transform.position.x)
+        else if (pawn.playerPosition.position.x > pawn.transform.position.x)
         {
             Vector2 xscale = pawn.transform.localScale;
             xscale.x = 1;
             pawn.transform.localScale = xscale;
         }
 
-        if (distance > fieldOfSight * 2)
+        if (pawn.distance > fieldOfSight)
         {
             pawn.StandIdle();
+            isAtPlayer = false;
         }
-
-        if (distance < fieldOfSight * 2)
+        if (pawn.distance < fieldOfSight && pawn.distance > 1)
         {
             pawn.ChaseAfter();
             isAtPlayer = false;
 
         }
-        if (distance < fieldOfSight / 2)
+        if (pawn.distance < 1)
         {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Chase")) animator.Play("Attack");
             pawn.Attack();
         }
     }

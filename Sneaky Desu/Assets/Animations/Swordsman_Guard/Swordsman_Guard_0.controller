@@ -55,7 +55,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3de2cb108e4949c4aa95aed7d3f5d59a, type: 3}
   m_Name: 
@@ -193,8 +193,7 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1101507929302144250}
   - {fileID: 1101252509679696490}
-  m_StateMachineBehaviours:
-  - {fileID: 114100114523369676}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -247,8 +246,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101574497952739310}
-  m_StateMachineBehaviours:
-  - {fileID: 114410672673839788}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -275,8 +273,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101979478963886012}
-  m_StateMachineBehaviours:
-  - {fileID: 114034746949853004}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

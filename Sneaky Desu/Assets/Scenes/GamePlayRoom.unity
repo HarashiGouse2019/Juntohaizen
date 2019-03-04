@@ -506,6 +506,10 @@ MonoBehaviour:
   rateOfSpeed: 20
   maxSpeed: 100
   speed: 0
+  heading: {x: 0, y: 0}
+  distance: 0
+  playerPosition: {fileID: 0}
+  target: {fileID: 0}
   fowardDown: 0
   backwardsDown: 0
   rightDown: 0
@@ -924,6 +928,11 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 226393881}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &886505140 stripped
@@ -22564,6 +22573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
