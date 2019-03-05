@@ -7,8 +7,11 @@ using UnityEngine.Audio;
 public class MainMenu : MonoBehaviour
 {
 
+    //This is for our Main Menu, and we call these methods on the On Click events of our button
+
     public void Play()
     {
+        //This will load the game play scene
         SceneManager.LoadScene(1);
     }
 

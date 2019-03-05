@@ -60,8 +60,8 @@ public class Magic_Discharge : MonoBehaviour
             }
             else
             {
-                canUseMana = false;
                 StopCoroutine(coroutine);
+                canUseMana = false;
             }
         }
         if (Input.GetKeyUp(KeyCode.X)) StopCoroutine(coroutine);

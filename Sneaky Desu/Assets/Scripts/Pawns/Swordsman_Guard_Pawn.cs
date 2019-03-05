@@ -5,52 +5,42 @@ using UnityEngine;
 public class Swordsman_Guard_Pawn : Pawn
 {
     
-    public static GameObject HitBox;
+    public static GameObject HitBox; //The hitbox prefab that we'll instantiate
 
     
 
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();
+        base.Start(); //Our parent start method
         
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
+        base.Update(); //OUr parent update method
         
     }
 
+    //These are all the states that the enemy will use
     public override void StandIdle()
     {
         animator.Play("Idle");
-        Debug.Log("Doing nothing Desu!!!");
     }
 
     public override void ChaseAfter()
     {
         animator.SetBool("isChasing", true);
-
-        Debug.Log("Going after Player Desu!!!");
-
+        //A nice way for our enemy to chase after the player!!!
         transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        
     }
 
     public override void Attack()
     {
-
         animator.SetBool("isAtPlayer", true);
-        Debug.Log("Attacking Desu!!!");
-        
-        
-
     }
 
-    public override void ReturnToLastPosition()
-    {
-        
-    }
+    //The animations are controlled by the animator, so by setting a boolean, we can get a certain animation
+    //to play.
 }

@@ -5,15 +5,15 @@ using UnityEngine;
 public class Magic_Movement : MonoBehaviour
 {
 
-    public GameObject Player;
-    public float rotateSpeed = 5f;
-    public float radius = 0.1f;
+    public GameObject Player; //The player game object
+    public float rotateSpeed = 5f; //Rotations speed
+    public float radius = 0.1f; //The radius our magic will be taking
 
-    private Vector2 centre;
+    private Vector2 centre; //The center origin point or rotation (which will be the player)
 
-    private float _angleValue = 0;
+    private float _angleValue = 0; //This will have our angle value
 
-    public static float angle;
+    public static float angle; //This will be the static variable for other scripts to use this.
 
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class Magic_Movement : MonoBehaviour
 
     private void Update()
     {
+        //All this will cause our game object to circle around the player once activated
         centre = Player.transform.position;
 
         angle += rotateSpeed * Time.deltaTime;

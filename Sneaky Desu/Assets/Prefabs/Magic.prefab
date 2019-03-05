@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7513bf5833b6f9b4eb1a61994e80488f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerStatus: {fileID: 0}
   speedValue: 20
   recoilSpeed: 15
   dischargeAmount: 1

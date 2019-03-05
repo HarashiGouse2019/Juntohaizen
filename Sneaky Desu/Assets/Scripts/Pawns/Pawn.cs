@@ -5,8 +5,8 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
-    public static Vector3 originPosition, currentPosition;
-    public Vector2 move;
+    public static Vector3 originPosition, currentPosition; //the start position and our current position
+    public Vector2 move; //this will be used for our player movement
 
     //Accessing our animation;
     public Animator animator;
@@ -14,44 +14,45 @@ public abstract class Pawn : MonoBehaviour
     public int layerIndex;
 
 
-    public bool col = false, step = false;
+    public bool col = false, step = false; //One is used if we collide with something, the other is for making our stepping noises
 
-    public bool isWaiting = false;
+    public bool isWaiting = false; //If the player is idle
 
-    public bool isWalking = false;
+    public bool isWalking = false; //If the player is walking
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
 
-    public float speed;
+    public float speed; //Speed (this will be set for our Enemy pawn)
 
-    public Vector2 heading;
+    public Vector2 heading; //This will be used for our Enemey pawn to track down the player
 
-    public float distance;
+    public float distance; //This is for the enemy to know the distance between it and the player
 
-    public Transform playerPosition;
+    public Transform playerPosition; //Player position
 
-    public GameObject target;
+    public GameObject target; //Our target (which will be the player position)
 
-    public bool fowardDown, backwardsDown, rightDown, leftDown;
+    public bool fowardDown, backwardsDown, rightDown, leftDown; //Boolean used for player movement
 
     public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
-    public IEnumerator coroutine;
+    public IEnumerator coroutine; //our corountine identifier
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
-        originPosition = gameObject.transform.position;
-        playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+        originPosition = gameObject.transform.position; //The start position of this gameObject
+        playerPosition = GameObject.FindGameObjectWithTag("Player").transform; //The player's position
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
+        //All fo this is so the enemy can chase down the player
         currentPosition = gameObject.transform.position;
-        //All Possible States
+
         heading = transform.position - playerPosition.position;
 
         distance = heading.magnitude; Debug.Log(distance);
@@ -82,6 +83,7 @@ public abstract class Pawn : MonoBehaviour
 
     public IEnumerator Walk()
     {
+        //This will produce footstep noises as we move
         if (step == false)
         {
             FindObjectOfType<AudioManager>().Play("Walk");
@@ -93,6 +95,7 @@ public abstract class Pawn : MonoBehaviour
 
     public IEnumerator RecoveryWhileIdle(float value)
     {
+        //If we take any amount of damage and we happen to not be moving, we have our health increase by 1 by a defined value of seconds
         if (GameManager.instance.healthUI.fillAmount != GameManager.instance.maxHealth)
         {
             GameManager.instance.IncreaseHealth(1f);
@@ -104,27 +107,18 @@ public abstract class Pawn : MonoBehaviour
 
     //Enemy Behaviour Functions
 
+    //State for staying still
     public virtual void StandIdle()
     {
 
     }
-
+    //State for chasing after the player
     public virtual void ChaseAfter()
     {
 
     }
-
+    //State for attacking the player
     public virtual void Attack()
-    {
-
-    }
-
-    public virtual void Patrol()
-    {
-
-    }
-
-    public virtual void ReturnToLastPosition()
     {
 
     }
