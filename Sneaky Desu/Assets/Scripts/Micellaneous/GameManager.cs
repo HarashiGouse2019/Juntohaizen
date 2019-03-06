@@ -165,6 +165,8 @@ public class GameManager : MonoBehaviour
         return value;
     }
 
+    //Game State (Moving to losing or winning screen)
+
     public void Die()
     {
         //This will bring out our "Game Over" scene
