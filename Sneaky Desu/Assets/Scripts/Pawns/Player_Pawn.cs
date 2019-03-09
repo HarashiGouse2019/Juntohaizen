@@ -147,7 +147,7 @@ public class Player_Pawn : Pawn
         //This is for taking damage from the hit box
         if (col.gameObject.tag == "hitbox")
         {
-            GameManager.instance.DecreaseHealth(0.1f);
+            GameManager.instance.DecreaseHealth(10f);
         }
     }
 

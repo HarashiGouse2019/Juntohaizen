@@ -11,5 +11,4 @@ public abstract class Controller : MonoBehaviour
     {
         pawn = GetComponent<Pawn>(); //Grab anything that is of type Pawn
     }
-
 }
