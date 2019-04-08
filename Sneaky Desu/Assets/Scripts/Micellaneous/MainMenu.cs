@@ -6,13 +6,22 @@ using UnityEngine.Audio;
 
 public class MainMenu : MonoBehaviour
 {
-
-    //This is for our Main Menu, and we call these methods on the On Click events of our button
-
+    public Player_Pawn player = null;
+    private void Awake()
+    {
+        try
+        {
+            player = FindObjectOfType<Player_Pawn>();
+            Destroy(player.gameObject);
+        }
+        catch { };
+    }
     public void Play()
     {
-        //This will load the game play scene
-        SceneManager.LoadScene(1);
+        GameManager.instance.GUI_ACTIVE = true;
+        GameManager.instance.Goto_Scene("Level1-1");
+        GameManager.instance.currentHealth = GameManager.instance.maxHealth;
+        GameManager.instance.healthUI.fillAmount = GameManager.instance.currentHealth / GameManager.instance.maxHealth;
     }
 
     public void ReturnToMainMenu()

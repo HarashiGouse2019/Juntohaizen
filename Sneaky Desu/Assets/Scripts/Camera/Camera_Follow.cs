@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class Camera_Follow : MonoBehaviour
 {
+    public static Camera_Follow camera;
+
     //The Targeted GameObject to manipulate its position through it's Transform Component
-    public Transform target;
+    public GameObject target;
 
     //Used to set the duration of the camera smoothing out and in towards the player
     public float smoothOutDuration = 0.125f;
@@ -12,9 +14,14 @@ public class Camera_Follow : MonoBehaviour
     //Setting the offset of the camera
     public Vector3 offset;
 
+    void Start()
+    {
+        target = FindObjectOfType<Player_Pawn>().gameObject;
+    }
+
     void FixedUpdate()
     {                                                                                               /********************************************************/
-        Vector3 setCoordinate = target.position + offset;                                           //We create a Vector3 that will grab the Player's       *
+        Vector3 setCoordinate = target.transform.position + offset;                                           //We create a Vector3 that will grab the Player's       *
                                                                                                     //position and add it to the camera offset              *
         Vector3 smoothPosition = Vector3.Lerp(transform.position, setCoordinate, smoothOutDuration);//We'll create another Vector3 that will go from        *
                                                                                                     //it's current spot to the player in a smooth motion    *

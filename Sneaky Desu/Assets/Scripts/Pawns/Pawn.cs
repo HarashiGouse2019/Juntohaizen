@@ -39,6 +39,12 @@ public abstract class Pawn : MonoBehaviour
 
     public IEnumerator coroutine; //our corountine identifier
 
+    [Header("Key Mapping")]
+    //Map movement to a selected key
+    public KeyCode right = KeyCode.RightArrow;
+    public KeyCode left = KeyCode.LeftArrow;
+    public KeyCode jump = KeyCode.Z;
+
     // Start is called before the first frame update
     public virtual void Start()
     {

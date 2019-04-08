@@ -8,6 +8,10 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public List<GameObject> enemyInstances;
+
+    public GameObject playerPrefab;
+
     public int gemInstances = 0; //How many gems are in game
 
     public static GameManager instance; //For singleton implementation
@@ -25,13 +29,19 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float levelProgression = 0, level = 0; //How far we are to our next level, and our current level
 
     [Header("Player Status UI Reference")]
+    public RawImage GUIParent; // This is just the background interface
     public Image healthUI; //Reference our Health 
     public Image manaUI; //Reference our Mana
     public Image levelProgressionUI; //Reference how close we are to our level
-
     public TextMeshProUGUI levelUI; //Reference our Level UI text
-
     public SpriteRenderer PlayerImage; //The image that the player takes on.
+    public bool GUI_ACTIVE;
+
+    [Header("Spawn Destination")]
+    public string Scene_Name;
+
+    [Header("Set Spawn Coordinates")]
+    public float posx, posy;
 
     void Awake()
     {
@@ -42,12 +52,14 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+
+        enemyInstances = new List<GameObject>();
     }
 
     void Start()
@@ -66,6 +78,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //Set our GUI value to our GUI_ACTIVE boolean
+        GUIParent.gameObject.SetActive(GUI_ACTIVE);
+
         InitiateKeyInput(); //All input from the keyboard will be called in this method
         
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
@@ -75,9 +90,6 @@ public class GameManager : MonoBehaviour
                 Instantiate(MagicSource);
             magicSourceMade = true;
         }
-
-        if (currentHealth == 0) Die(); //If we don't have any more health, this will call the Die() method
-        if (gemInstances == 0) Win(); //If we collect all the gems in the scene, this will call the Win() method
     }
 
     void InitiateKeyInput()
@@ -139,6 +151,7 @@ public class GameManager : MonoBehaviour
         //If the fillAmount is not maxed out, we'll continue to increase our health
         if (healthUI.fillAmount != maxHealth) healthUI.fillAmount += value / maxHealth;
         currentHealth = healthUI.fillAmount;
+
         return value;
     }
 
@@ -147,7 +160,14 @@ public class GameManager : MonoBehaviour
         //If the fillAmount is not 0, continue to decrease our health
         if (healthUI.fillAmount != 0) healthUI.fillAmount -= value / maxHealth;
         currentHealth = healthUI.fillAmount;
+        if (currentHealth == 0)
+        {
+            GUI_ACTIVE = false;
+            Die();
+        }
         return value;
+
+        SceneManager.LoadScene(3);
     }
 
     public float IncreaseMana(float value)
@@ -177,5 +197,13 @@ public class GameManager : MonoBehaviour
     {
         //This will take us to our "Victory" scene
         SceneManager.LoadScene(2);
+    }
+
+    //Scene Managing
+    public void Goto_Scene(string scene_name)
+    {
+        scene_name = Scene_Name;
+        if (scene_name != null) SceneManager.LoadScene(scene_name);
+
     }
 }
