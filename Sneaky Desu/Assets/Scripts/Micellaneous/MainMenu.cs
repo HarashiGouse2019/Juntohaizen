@@ -7,21 +7,21 @@ using UnityEngine.Audio;
 public class MainMenu : MonoBehaviour
 {
     public Player_Pawn player = null;
-    private void Awake()
-    {
-        try
-        {
-            player = FindObjectOfType<Player_Pawn>();
-            Destroy(player.gameObject);
-        }
-        catch { };
-    }
+    public Player_Spawn player_spawn;
+
     public void Play()
     {
+        //Set starting position!!!
+        GameManager.instance.Scene_Name = "Level1-1";
+        GameManager.instance.posx = 0f;
+        GameManager.instance.posy = -2.5f;
+
+        player_spawn.gameObject.SetActive(true);
         GameManager.instance.GUI_ACTIVE = true;
         GameManager.instance.Goto_Scene("Level1-1");
         GameManager.instance.currentHealth = GameManager.instance.maxHealth;
         GameManager.instance.healthUI.fillAmount = GameManager.instance.currentHealth / GameManager.instance.maxHealth;
+        Instantiate(GameManager.instance.playerPrefab);
     }
 
     public void ReturnToMainMenu()

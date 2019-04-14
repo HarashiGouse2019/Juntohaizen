@@ -31,39 +31,41 @@ public class Enemy_Controller : Controller
         pawn.animator.SetBool("isAtPlayer", isAtPlayer);
         //Game Controls Updated Every Frame
 
-        
-        //The enemy faces the direction of the player depending on rather the x value is positive or negative from target's position
-        if (pawn.playerPosition.position.x < pawn.transform.position.x)
+        if (Player_Controller.player_controller.isInGround != true)
         {
-            Vector2 xscale = pawn.transform.localScale; //Grab our local scale
-            xscale.x = -1; //Have it reflect over the y-axis
-            pawn.transform.localScale = xscale; //Give the modified value to our scale, resulting in the enemy looking the left
-        }
-        else if (pawn.playerPosition.position.x > pawn.transform.position.x)
-        {
-            Vector2 xscale = pawn.transform.localScale; //Grab our local scale
-            xscale.x = 1;  //Have it reflect over the y-axis
-            pawn.transform.localScale = xscale;  //Give the modified value to our scale, resulting in the enemy looking the right
-        }
+            //The enemy faces the direction of the player depending on rather the x value is positive or negative from target's position
+            if (pawn.playerPosition.position.x < pawn.transform.position.x)
+            {
+                Vector2 xscale = pawn.transform.localScale; //Grab our local scale
+                xscale.x = -1; //Have it reflect over the y-axis
+                pawn.transform.localScale = xscale; //Give the modified value to our scale, resulting in the enemy looking the left
+            }
+            else if (pawn.playerPosition.position.x > pawn.transform.position.x)
+            {
+                Vector2 xscale = pawn.transform.localScale; //Grab our local scale
+                xscale.x = 1;  //Have it reflect over the y-axis
+                pawn.transform.localScale = xscale;  //Give the modified value to our scale, resulting in the enemy looking the right
+            }
 
-        if (pawn.distance > fieldOfSight) //If enemy is out of reach
-        {
-            pawn.StandIdle();
-            isAtPlayer = false;
-            
-        }
-        if (pawn.distance < fieldOfSight && pawn.distance > 1) //If enemy sees player
-        {
-            pawn.ChaseAfter();
-            isAtPlayer = false;
-            isChasing = true;
+            if (pawn.distance > fieldOfSight) //If enemy is out of reach
+            {
+                pawn.StandIdle();
+                isAtPlayer = false;
 
-        }
-        if (pawn.distance < 1) //If enemy makes contact with the player
-        {
-            isAtPlayer = true;
-           
-            pawn.Attack();
+            }
+            if (pawn.distance < fieldOfSight && pawn.distance > 1) //If enemy sees player
+            {
+                pawn.ChaseAfter();
+                isAtPlayer = false;
+                isChasing = true;
+
+            }
+            if (pawn.distance < 1) //If enemy makes contact with the player
+            {
+                isAtPlayer = true;
+
+                pawn.Attack();
+            }
         }
     }
 }

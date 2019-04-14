@@ -14,17 +14,15 @@ public class Player_Spawn : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
         }
 
-        Instantiate(GameManager.instance.playerPrefab);
-        coordinates = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
         Debug.Log("Coordinates: " + coordinates);
-        GameManager.instance.playerPrefab.transform.position = coordinates;
+        GameManager.instance.playerPrefab.transform.position = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
         Debug.Log("Player was created");
 
     }

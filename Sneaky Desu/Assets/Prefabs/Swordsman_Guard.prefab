@@ -170,21 +170,32 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   animator: {fileID: 8944410476122337755}
   layerIndex: 0
+  transitionOn: 0
   col: 0
   step: 0
   isWaiting: 0
   isWalking: 0
+  isDescending: 0
+  isInGround: 0
+  isAscending: 0
   rateOfSpeed: 0
   maxSpeed: 0
   speed: 3
+  transitionDuration: 0.35
   heading: {x: 0, y: 0}
   distance: 0
-  playerPosition: {fileID: 0}
-  target: {fileID: 0}
+  playerPosition: {fileID: 4787750246169100357, guid: c956c63443ccd414d87c8310474b02ff,
+    type: 3}
+  target: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   fowardDown: 0
   backwardsDown: 0
   rightDown: 0
   leftDown: 0
   rb: {fileID: 4998581173798575959}
-  HitBoxPrefab: {fileID: 2526487989510727041, guid: 79738d8ad889fc44a97ca813456e71b3,
-    type: 3}
+  right: 275
+  left: 276
+  up: 273
+  down: 274
+  descendKey: 120
+  ascendKey: 120
+  jump: 122

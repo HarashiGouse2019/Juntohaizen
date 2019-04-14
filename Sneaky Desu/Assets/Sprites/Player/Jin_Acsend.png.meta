@@ -1,11 +1,12 @@
 fileFormatVersion: 2
-guid: c8b0e81c87ba9d742980e702625bf99b
+guid: 4fb02fd6969b523498566e9c19a634c9
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Blob (PlayerWalk)_0
-    21300002: Blob (PlayerWalk)_1
-    21300004: Blob (PlayerWalk)_2
-    21300006: Blob (PlayerWalk)_3
+    21300000: Jin_Acsend_0
+    21300002: Jin_Acsend_1
+    21300004: Jin_Acsend_2
+    21300006: Jin_Acsend_3
+    21300008: Jin_Acsend_4
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -35,7 +36,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -88,7 +89,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Blob (PlayerWalk)_0
+      name: Jin_Acsend_0
       rect:
         serializedVersion: 2
         x: 0
@@ -102,13 +103,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58cdc58d76614234bbf798e544af689b
+      spriteID: 0713b23c6a88f24469ff4c423094933c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blob (PlayerWalk)_1
+      name: Jin_Acsend_1
       rect:
         serializedVersion: 2
         x: 32
@@ -122,13 +123,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c76b6d3d715ed6343abfa89e8c1cb80f
+      spriteID: f3b39b0d4a5e013448ab56aa361d07fa
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blob (PlayerWalk)_2
+      name: Jin_Acsend_2
       rect:
         serializedVersion: 2
         x: 64
@@ -142,13 +143,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec862d40a47b95047b196a5a9db92f97
+      spriteID: cf41d23b1bcf76242945bf13e3a371f7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blob (PlayerWalk)_3
+      name: Jin_Acsend_3
       rect:
         serializedVersion: 2
         x: 96
@@ -162,7 +163,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 113543047faf81449b1c2d085dbd0a1d
+      spriteID: 4f00ae388e1edea4da3373d98b0025e2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jin_Acsend_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5312fb97850483b4db20b4c3fcfe2762
       vertices: []
       indices: 
       edges: []
@@ -170,7 +191,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 27433716f11673148af8873a1c97968c
+    spriteID: d5be84bc159d6a04889e04ab99ef0270
     vertices: []
     indices: 
     edges: []

@@ -8,22 +8,26 @@ public abstract class Pawn : MonoBehaviour
     public static Vector3 originPosition, currentPosition; //the start position and our current position
     public Vector2 move; //this will be used for our player movement
 
+    public Player_Controller controller;
+
     //Accessing our animation;
+    [Header("Animator")]
     public Animator animator;
     public AnimatorStateInfo stateInfo;
     public int layerIndex;
 
+    [HideInInspector] public bool transitionOn = false; //The transition between hiding in the ground and ascending from the ground
 
-    public bool col = false, step = false; //One is used if we collide with something, the other is for making our stepping noises
+    [HideInInspector] public bool col = false, step = false; //One is used if we collide with something, the other is for making our stepping noises
 
-    public bool isWaiting = false; //If the player is idle
-
-    public bool isWalking = false; //If the player is walking
+    [HideInInspector] public bool isWaiting = false; //If the player is idle
 
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
 
     public float speed; //Speed (this will be set for our Enemy pawn)
+
+    public float transitionDuration = 0.35f;
 
     public Vector2 heading; //This will be used for our Enemey pawn to track down the player
 
@@ -38,30 +42,34 @@ public abstract class Pawn : MonoBehaviour
     public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
 
     public IEnumerator coroutine; //our corountine identifier
+    public IEnumerator transitionCoroutine; //Specifically for transitions from hiding in ground to ascending
 
-    [Header("Key Mapping")]
-    //Map movement to a selected key
-    public KeyCode right = KeyCode.RightArrow;
-    public KeyCode left = KeyCode.LeftArrow;
-    public KeyCode jump = KeyCode.Z;
+    
+
+    public virtual void Awake()
+    {
+
+    }
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
+        controller = GetComponent<Player_Controller>();
         originPosition = gameObject.transform.position; //The start position of this gameObject
-        playerPosition = GameObject.FindGameObjectWithTag("Player").transform; //The player's position
+        playerPosition = FindObjectOfType<Player_Pawn>().transform; //The player's position
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
+
         //All fo this is so the enemy can chase down the player
         currentPosition = gameObject.transform.position;
 
         heading = transform.position - playerPosition.position;
 
-        distance = heading.magnitude; Debug.Log(distance);
+        distance = heading.magnitude;
     }
 
     //Player Behaviour Functions
@@ -87,6 +95,21 @@ public abstract class Pawn : MonoBehaviour
 
     }
 
+    public virtual void Descend()
+    {
+
+    } //The player transforms as he merges to the ground
+
+    public virtual void Ascend()
+    {
+
+    } //The player transforms as he surfaces from the ground
+
+    public virtual void LockTarget(bool enable)
+    {
+     
+    }
+
     public IEnumerator Walk()
     {
         //This will produce footstep noises as we move
@@ -97,6 +120,24 @@ public abstract class Pawn : MonoBehaviour
             yield return new WaitForSeconds((float)0.15);
             step = false;
         }
+    }
+
+    public IEnumerator DescendTransition(float duration)
+    {
+        transitionOn = true;
+        yield return new WaitForSeconds(duration);
+        controller.isDescending = false;
+        controller.isInGround = true;
+        transitionOn = false;
+    }
+
+    public IEnumerator AscendTransition(float duration)
+    {
+        transitionOn = true;
+        yield return new WaitForSeconds(duration);
+        controller.isAscending = false;
+        controller.isInGround = false;
+        transitionOn = false;
     }
 
     public IEnumerator RecoveryWhileIdle(float value)

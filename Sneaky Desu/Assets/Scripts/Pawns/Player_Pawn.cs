@@ -5,6 +5,11 @@ using UnityEngine;
 public class Player_Pawn : Pawn
 {
 
+    public override void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     public override void Start()
     {
         base.Start(); //Our parent start method
@@ -13,26 +18,37 @@ public class Player_Pawn : Pawn
     public override void Update()
     {
         base.Update(); //Our parent update method
+
+        //Set up all animator parameters
+        animator.SetBool("isWalking", controller.isWalking);
+        animator.SetBool("isDescending", controller.isDescending);
+        animator.SetBool("isInGround", controller.isInGround);
+        animator.SetBool("isAscending", controller.isAscending);
+
+        if (GameManager.instance.currentHealth == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void MoveFoward()
     {
-        fowardDown = Input.GetKey(KeyCode.UpArrow);
+        fowardDown = Input.GetKey(controller.up);
 
         //Going fowards
         if (fowardDown == true)
         {
-            isWalking = true;
+            controller.isWalking = true;
 
             //Deciding if we press right or left as we move up. This is what helps us diagonally move
-            if (Input.GetKey(KeyCode.RightArrow) == true)
+            if (Input.GetKey(controller.right) == true)
             {
                 Vector3 xscale = transform.localScale;
                 xscale.x = 1;
                 transform.localScale = xscale;
                 move = new Vector2((float)rateOfSpeed, (float)rateOfSpeed);
             }
-            else if (Input.GetKey(KeyCode.LeftArrow) == true)
+            else if (Input.GetKey(controller.left) == true)
             {
                 Vector3 xscale = transform.localScale;
                 xscale.x = -1;
@@ -52,11 +68,11 @@ public class Player_Pawn : Pawn
     public override void MoveLeft()
     {
 
-        leftDown = Input.GetKey(KeyCode.LeftArrow);
+        leftDown = Input.GetKey(controller.left);
 
         if (leftDown == true)
         {
-            isWalking = true;
+            controller.isWalking = true;
             Vector3 xscale = transform.localScale;
             xscale.x = -1;
             transform.localScale = xscale;
@@ -75,11 +91,11 @@ public class Player_Pawn : Pawn
     public override void MoveRight()
     {
 
-        rightDown = Input.GetKey(KeyCode.RightArrow);
+        rightDown = Input.GetKey(controller.right);
 
         if (rightDown == true)
         {
-            isWalking = true;
+            controller.isWalking = true;
             Vector3 xscale = transform.localScale;
             xscale.x = 1;
             transform.localScale = xscale;
@@ -96,22 +112,22 @@ public class Player_Pawn : Pawn
     public override void MoveBackwards()
     {
 
-        backwardsDown = Input.GetKey(KeyCode.DownArrow);
+        backwardsDown = Input.GetKey(controller.down);
 
         //Going backwards
         if (backwardsDown == true)
         {
-            isWalking = true;
+            controller.isWalking = true;
 
             //Deciding if we press right or left as we move up. This is what helps us diagonally move
-            if (Input.GetKey(KeyCode.RightArrow) == true)
+            if (Input.GetKey(controller.right) == true)
             {
                 Vector3 xscale = transform.localScale;
                 xscale.x = 1;
                 transform.localScale = xscale;
                 move = new Vector2((float)rateOfSpeed, (float)-rateOfSpeed);
             }
-            else if (Input.GetKey(KeyCode.LeftArrow) == true)
+            else if (Input.GetKey(controller.left) == true)
             {
                 Vector3 xscale = transform.localScale;
                 xscale.x = -1;
@@ -125,8 +141,46 @@ public class Player_Pawn : Pawn
                 rb.velocity += move * Time.fixedDeltaTime;
 
         }
+    }
 
+    public override void LockTarget(bool enable)
+    {
+        //const float lockDistance = 2f;
 
+        //if ()
+
+        switch (enable)
+        {
+            case true:
+                FindObjectOfType<AudioManager>().Play("LockOn");
+                Debug.Log("Lock On");
+                break;
+            case false:
+                FindObjectOfType<AudioManager>().Play("LockOff");
+                Debug.Log("Lock Off");
+                break;
+        }
+    }
+
+    public override void Descend()
+    {
+        if (transitionOn == false && controller.isInGround == false) {
+            controller.isWalking = false;
+            controller.isDescending = true;
+            transitionCoroutine = DescendTransition(transitionDuration);
+            StartCoroutine(transitionCoroutine);
+        } 
+    }
+
+    public override void Ascend()
+    {
+        if (transitionOn == false)
+        {
+            controller.isWalking = false;
+            controller.isAscending = true;
+            transitionCoroutine = AscendTransition(transitionDuration);
+            StartCoroutine(transitionCoroutine);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D gem)
