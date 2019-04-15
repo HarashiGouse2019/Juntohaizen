@@ -8,13 +8,13 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance; //For singleton implementation
+
     public List<GameObject> enemyInstances;
 
     public GameObject playerPrefab;
 
     public int gemInstances = 0; //How many gems are in game
-
-    public static GameManager instance; //For singleton implementation
 
     public GameObject MagicSource; //This will be a prefab that we instantiate when our level value is greater than 0
 
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         }
 
         enemyInstances = new List<GameObject>();
+        
     }
 
     void Start()
@@ -72,12 +73,13 @@ public class GameManager : MonoBehaviour
         healthUI.fillAmount = currentHealth / maxHealth;
         manaUI.fillAmount = currentMana / maxMana;
         levelProgressionUI.fillAmount = levelProgression;
-
+  
         gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
     }
 
     void Update()
     {
+
         //Set our GUI value to our GUI_ACTIVE boolean
         GUIParent.gameObject.SetActive(GUI_ACTIVE);
 

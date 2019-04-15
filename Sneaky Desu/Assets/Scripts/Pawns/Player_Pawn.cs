@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_Pawn : Pawn
 {
+    public float lockOnDistance;
 
     public override void Awake()
     {
@@ -18,6 +19,11 @@ public class Player_Pawn : Pawn
     public override void Update()
     {
         base.Update(); //Our parent update method
+
+        foreach (GameObject obj in GameManager.instance.enemyInstances)
+        {
+            lockOnDistance = Vector3.Distance(obj.transform.position, transform.position);
+        }
 
         //Set up all animator parameters
         animator.SetBool("isWalking", controller.isWalking);
@@ -145,21 +151,24 @@ public class Player_Pawn : Pawn
 
     public override void LockTarget(bool enable)
     {
-        //const float lockDistance = 2f;
 
-        //if ()
+        float lockDistance = 8f;
 
-        switch (enable)
-        {
-            case true:
-                FindObjectOfType<AudioManager>().Play("LockOn");
-                Debug.Log("Lock On");
-                break;
-            case false:
-                FindObjectOfType<AudioManager>().Play("LockOff");
-                Debug.Log("Lock Off");
-                break;
+        if (lockOnDistance <= lockDistance) {
+            switch (enable)
+            {
+                case true:
+                    FindObjectOfType<AudioManager>().Play("LockOn");
+                    //Camera_Follow.camera.InitiateLockOn(obj.transform);
+                    Debug.Log("Lock On");
+                    break;
+                case false:
+                    FindObjectOfType<AudioManager>().Play("LockOff");
+                    Debug.Log("Lock Off");
+                    break;
+            }
         }
+
     }
 
     public override void Descend()

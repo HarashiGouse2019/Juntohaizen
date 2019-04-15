@@ -31,5 +31,10 @@ public class Camera_Follow : MonoBehaviour
                                                                                                     //in position every frame assuring that it smoothes out.*
                                                                                                     /********************************************************/
     }
+
+    public void InitiateLockOn(Transform target)
+    {
+        gameObject.transform.LookAt(target.position);
+    }
 }
 

@@ -7,13 +7,11 @@ public class Swordsman_Guard_Pawn : Pawn
     
     public static GameObject HitBox; //The hitbox prefab that we'll instantiate
 
-    
-
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start(); //Our parent start method
-        
+        base.Start(); //Our parent start method;
+        GameManager.instance.enemyInstances.Add(gameObject);
     }
 
     // Update is called once per frame
