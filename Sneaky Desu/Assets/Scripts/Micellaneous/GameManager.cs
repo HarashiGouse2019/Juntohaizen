@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     public string Scene_Name;
 
     [Header("Set Spawn Coordinates")]
-    public float posx, posy;
+    public float posx;
+    public float posy;
 
     void Awake()
     {
@@ -207,8 +208,12 @@ public class GameManager : MonoBehaviour
         if (scene_name != null) SceneManager.LoadScene(scene_name);
     }
 
+    //Scan all possible enemies in the current scene. This will be needed for our lock-on system.
     public int ScanAllEnemies()
     {
+        //We create an array of all instances of GameObjects with the tag "Enemy"
+        //We iterate through the array's length, and add each one into our list.
+        //This continues until our list is equal to our GameObject array.
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         if (enemyInstances.Count < enemies.Length)
         {
@@ -217,6 +222,6 @@ public class GameManager : MonoBehaviour
                 enemyInstances.Add(enemies[i]);
             }
         }
-        return enemyInstances.Count;
+        return enemyInstances.Count; //We then return the value of all instances through our List<GameObject>
     }
 }

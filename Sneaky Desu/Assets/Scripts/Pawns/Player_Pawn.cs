@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Player_Pawn : Pawn
 {
+    public static Player_Pawn playerpawn;
+
     public GameObject crossHair;
     public  GameObject closestObject;
+    public GameObject enemyTarget;
     public float lockOnDistance;
+    public bool targetNear = false;
+    public float dist = 0f, targetDist, closest = 4f;
 
     public override void Awake()
     {
@@ -22,8 +27,6 @@ public class Player_Pawn : Pawn
     {
         base.Update(); //Our parent update method
 
-        GameObject target = GetClosestEnemy();
-
         //Set up all animator parameters
         animator.SetBool("isWalking", controller.isWalking);
         animator.SetBool("isDescending", controller.isDescending);
@@ -34,6 +37,14 @@ public class Player_Pawn : Pawn
         {
             Destroy(gameObject);
         }
+
+        GetClosestEnemy();
+        if (closestObject == null)
+        {
+            targetNear = false;
+        }
+
+        Debug.Log("Target Near?: " + targetNear);
     }
 
     public override void MoveFoward()
@@ -153,49 +164,54 @@ public class Player_Pawn : Pawn
         switch (enable)
         {
             case true:
-               
-                //Camera_Follow.camera.InitiateLockOn(obj.transform);
-                float closest = 12f;
-                closestObject = null;
-                for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
-                {
-                    float dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
-                    if (dist < closest)
+                    if (targetNear == true)
                     {
-                        closest = dist;
-                        closestObject = GameManager.instance.enemyInstances[i];
+                        //closest = dist;
                         Instantiate(crossHair);
-                        target = closestObject;
-                        crossHair.transform.position = new Vector2(target.transform.position.x, target.transform.position.y);
+                        crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
                         FindObjectOfType<AudioManager>().Play("LockOn");
-                    } else
-                    {
-                        enable = false;
                     }
-                }
-                
                 break;
             case false:
                 FindObjectOfType<AudioManager>().Play("LockOff");
                 break;
         }
+
     }
 
-    //public override GameObject GetClosestEnemy()
-    //{
-    //    float closest = 12f;
-    //    GameObject closestObject = null;
-    //    for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
-    //    {
-    //        float dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
-    //        if (dist < closest)
-    //        {
-    //            closest = dist;
-    //            closestObject = GameManager.instance.enemyInstances[i];
-    //        }
-    //    }
-    //    return closestObject;
-    //}
+    public override GameObject GetClosestEnemy()
+    {
+        //We'll iterate through a list of enemy GameObjects, and see which one is closest to us.
+        //Once we get the closest one, we assign that object into the closestObject gameObject
+        //We then create our crossHair on our new target.
+        for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
+        {
+            dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+            if (dist <= closest)
+            {
+                //closest = dist;
+                closestObject = GameManager.instance.enemyInstances[i];
+                enemyTarget = closestObject;
+                crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
+                targetNear = true;
+                return closestObject;
+            }
+        }
+
+        //The function will still try to look for the closest enemy in the scene. If the current target is far, closestObject is set to null;
+        if (enemyTarget != null)
+        {
+            if (Vector3.Distance(enemyTarget.transform.position, transform.position) > closest)
+            {
+                targetNear = false;
+                closestObject = null;
+                enemyTarget = closestObject;
+                crossHair.transform.position = new Vector2(transform.position.x, transform.position.y);
+                Player_Controller.player_controller.toggleLock = targetNear;
+            }
+        }
+        return null;
+    }
 
     public override void Descend()
     {

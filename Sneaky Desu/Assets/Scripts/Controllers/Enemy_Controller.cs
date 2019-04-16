@@ -29,10 +29,9 @@ public class Enemy_Controller : Controller
     {
         pawn.animator.SetBool("isChasing", isChasing); //Makes a transition from idle to chase or from chase to idle depending on our boolean
         pawn.animator.SetBool("isAtPlayer", isAtPlayer);
-        //Game Controls Updated Every Frame
-
         if (Player_Controller.player_controller.isInGround != true)
         {
+            //Game Controls Updated Every Frame
             //The enemy faces the direction of the player depending on rather the x value is positive or negative from target's position
             if (pawn.playerPosition.position.x < pawn.transform.position.x)
             {
@@ -66,6 +65,11 @@ public class Enemy_Controller : Controller
 
                 pawn.Attack();
             }
+        } else
+        {
+            pawn.StandIdle();
+            isAtPlayer = false;
+            isChasing = false;
         }
     }
 }

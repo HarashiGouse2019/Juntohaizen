@@ -16,7 +16,6 @@ public class Swordsman_Guard_Pawn : Pawn
     public override void Start()
     {
         base.Start(); //Our parent start method;
-        //GameManager.instance.enemyInstances.Add(gameObject);
         
     }
 

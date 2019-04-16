@@ -6,6 +6,8 @@ public class Player_Controller : Controller
 {
     public static Player_Controller player_controller;
 
+    public Player_Pawn player;
+
     [HideInInspector] public bool toggleLock = false;
 
     [HideInInspector] public bool isWalking = false; //If the player is walking
@@ -32,6 +34,7 @@ public class Player_Controller : Controller
     {
         if (player_controller == null)
             player_controller = this;
+        player = FindObjectOfType<Player_Pawn>();
     }
 
     public override void Start()
@@ -84,10 +87,14 @@ public class Player_Controller : Controller
                 {
                     if (d == 0)
                     {
+
                         switch (toggleLock)
                         {
                             case false:
-                                toggleLock = true;
+                                if (player.targetNear == true)
+                                    toggleLock = true;
+                                else
+                                   toggleLock = false;
                                 break;
                             case true:
                                 toggleLock = false;
@@ -97,7 +104,8 @@ public class Player_Controller : Controller
                         pawn.LockTarget(toggleLock);
                         d = 1;
                     }
-                } else if (Input.GetKeyUp(lockOnKey))
+                }
+                else if (Input.GetKeyUp(lockOnKey))
                 {
                     d = 0;
                 }

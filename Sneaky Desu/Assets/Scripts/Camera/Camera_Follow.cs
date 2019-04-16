@@ -25,8 +25,7 @@ public class Camera_Follow : MonoBehaviour
         Vector3 setCoordinate;
         Vector3 smoothPosition;
         if (Player_Controller.player_controller.toggleLock == false)
-        {
-            setCoordinate = target.transform.position + offset;
+        {  setCoordinate = target.transform.position + offset;
             smoothPosition = Vector3.Lerp(transform.position, setCoordinate, smoothOutDuration);
             transform.position = smoothPosition;
         } else
