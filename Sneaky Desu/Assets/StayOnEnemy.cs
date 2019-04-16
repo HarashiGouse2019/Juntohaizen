@@ -5,6 +5,7 @@ using UnityEngine;
 public class StayOnEnemy : MonoBehaviour
 {
     static StayOnEnemy aim;
+    GameObject target;
     private void Awake()
     {
         if (aim == null )
@@ -19,7 +20,17 @@ public class StayOnEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject target = FindObjectOfType<Player_Pawn>().closestObject;
+        //Exception Handing try...catch statement
+        //Try to find a player pawn. If it can't
+        //it will destroy itself;
+        try {
+            target = FindObjectOfType<Player_Pawn>().closestObject;
+        }
+        catch
+        {
+            Destroy(gameObject);
+        }
+            
         if (target != null)
         {
             gameObject.transform.position = target.transform.position;

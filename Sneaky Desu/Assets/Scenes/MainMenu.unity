@@ -2915,6 +2915,12 @@ MonoBehaviour:
     pitch: 1
     enableLoop: 0
     source: {fileID: 0}
+  - name: Shoot000
+    clip: {fileID: 8300000, guid: 482e829d940513b43a8cfb0f7e0e542f, type: 3}
+    volume: 1
+    pitch: 1
+    enableLoop: 0
+    source: {fileID: 0}
 --- !u!4 &1099938031
 Transform:
   m_ObjectHideFlags: 0

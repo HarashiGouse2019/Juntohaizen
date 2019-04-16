@@ -47,9 +47,9 @@ public class Magic_Discharge : MonoBehaviour
     {
 
         //When the player shots lazers
-        if (Input.GetKeyDown(KeyCode.X) || isKeyReleased == true)
+        if (Input.GetKeyDown(Player_Controller.player_controller.shoot) || isKeyReleased == true)
         {
-            if (GameManager.instance.currentMana != 0)
+            if (GameManager.instance.currentMana != 0 || canUseMana)
             {
 
                 coroutine = Recoil();
@@ -64,7 +64,7 @@ public class Magic_Discharge : MonoBehaviour
                 canUseMana = false;
             }
         }
-        if (Input.GetKeyUp(KeyCode.X)) StopCoroutine(coroutine);
+        if (Input.GetKeyUp(Player_Controller.player_controller.shoot)) StopCoroutine(coroutine);
 
 
         Debug.Log("Current Mana: " + (GameManager.instance.currentMana * GameManager.instance.maxMana));

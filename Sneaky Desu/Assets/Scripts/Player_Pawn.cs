@@ -43,8 +43,6 @@ public class Player_Pawn : Pawn
         {
             targetNear = false;
         }
-
-        Debug.Log("Target Near?: " + targetNear);
     }
 
     public override void MoveFoward()

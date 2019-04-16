@@ -82,10 +82,13 @@ public class MagicDischargeMovement : MonoBehaviour
 
     IEnumerator Delay(float time)
     {
-        start = true;
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject); //Destroys self after the yield time
-        start = false;
+        if (start == false)
+        {
+            start = true;
+            yield return new WaitForSeconds(time);
+            Destroy(gameObject); //Destroys self after the yield time
+            start = false;
+        }
     }
 }
 
