@@ -124,21 +124,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -214,6 +199,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 55237452}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &55237451 stripped
@@ -245,21 +245,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (10)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -336,6 +321,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 65311818}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &65311817 stripped
@@ -367,21 +367,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -458,6 +443,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 183882896}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &183882895 stripped
@@ -489,21 +489,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (12)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -580,6 +565,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 188807968}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &188807967 stripped
@@ -703,21 +703,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -793,6 +778,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 476204396}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &476204395 stripped
@@ -853,6 +853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  crossHair: {fileID: 89679608673880405, guid: d748cfbc5adcd094e8d964691633ff46, type: 3}
   smoothOutDuration: 0.05
   offset: {x: 0, y: 0, z: -10}
 --- !u!20 &519420031
@@ -922,21 +923,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1013,6 +999,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 530298142}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &530298141 stripped
@@ -1044,21 +1045,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (18)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1135,6 +1121,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 660421186}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &660421185 stripped
@@ -1166,21 +1167,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (13)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1257,6 +1243,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 669504257}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &669504256 stripped
@@ -1288,21 +1289,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (19)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1379,6 +1365,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 796617951}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &796617950 stripped
@@ -1410,21 +1411,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (17)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1501,6 +1487,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 797278245}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &797278244 stripped
@@ -1532,21 +1533,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1623,6 +1609,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 882510772}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &882510771 stripped
@@ -1654,21 +1655,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1745,6 +1731,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 226393881}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &886505140 stripped
@@ -1764,21 +1765,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (11)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1855,6 +1841,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 896785981}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &896785980 stripped
@@ -1886,21 +1887,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -1977,6 +1963,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1029387331}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1029387330 stripped
@@ -4649,21 +4650,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4739,6 +4725,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1352955902}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1352955901 stripped
@@ -4817,21 +4818,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard (15)
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4907,6 +4893,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1600260197}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1600260196 stripped
@@ -4938,21 +4939,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (16)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -5029,6 +5015,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1738687903}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1738687902 stripped
@@ -18302,21 +18303,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18392,6 +18378,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1947253538}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1947253537 stripped
@@ -18423,21 +18424,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -18514,6 +18500,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 1999812655}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &1999812654 stripped
@@ -18545,21 +18546,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Swordsman_Guard (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
@@ -18636,6 +18622,21 @@ PrefabInstance:
       propertyPath: pawn
       value: 
       objectReference: {fileID: 2022682534}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ceeeaa6e19821b4fa6d9de007a2a763, type: 3}
 --- !u!4 &2022682533 stripped
@@ -18719,21 +18720,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Swordsman_Guard
       objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
-        type: 3}
-      propertyPath: playerPosition
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8944410476122337733, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18802,6 +18788,21 @@ PrefabInstance:
     - target: {fileID: 4551716248317498121, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
         type: 3}
       propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 747995408226139110, guid: 0ceeeaa6e19821b4fa6d9de007a2a763,
+        type: 3}
+      propertyPath: playerPosition
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []

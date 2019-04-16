@@ -199,3 +199,5 @@ MonoBehaviour:
   rightDown: 0
   leftDown: 0
   rb: {fileID: 4787750246169100354}
+  crossHair: {fileID: 89679608673880405, guid: d748cfbc5adcd094e8d964691633ff46, type: 3}
+  lockOnDistance: 0

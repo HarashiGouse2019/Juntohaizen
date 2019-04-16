@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player_Pawn : Pawn
 {
+    public GameObject crossHair;
+    public  GameObject closestObject;
     public float lockOnDistance;
 
     public override void Awake()
@@ -20,10 +22,7 @@ public class Player_Pawn : Pawn
     {
         base.Update(); //Our parent update method
 
-        foreach (GameObject obj in GameManager.instance.enemyInstances)
-        {
-            lockOnDistance = Vector3.Distance(obj.transform.position, transform.position);
-        }
+        GameObject target = GetClosestEnemy();
 
         //Set up all animator parameters
         animator.SetBool("isWalking", controller.isWalking);
@@ -151,25 +150,52 @@ public class Player_Pawn : Pawn
 
     public override void LockTarget(bool enable)
     {
-
-        float lockDistance = 8f;
-
-        if (lockOnDistance <= lockDistance) {
-            switch (enable)
-            {
-                case true:
-                    FindObjectOfType<AudioManager>().Play("LockOn");
-                    //Camera_Follow.camera.InitiateLockOn(obj.transform);
-                    Debug.Log("Lock On");
-                    break;
-                case false:
-                    FindObjectOfType<AudioManager>().Play("LockOff");
-                    Debug.Log("Lock Off");
-                    break;
-            }
+        switch (enable)
+        {
+            case true:
+               
+                //Camera_Follow.camera.InitiateLockOn(obj.transform);
+                float closest = 12f;
+                closestObject = null;
+                for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
+                {
+                    float dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+                    if (dist < closest)
+                    {
+                        closest = dist;
+                        closestObject = GameManager.instance.enemyInstances[i];
+                        Instantiate(crossHair);
+                        target = closestObject;
+                        crossHair.transform.position = new Vector2(target.transform.position.x, target.transform.position.y);
+                        FindObjectOfType<AudioManager>().Play("LockOn");
+                    } else
+                    {
+                        enable = false;
+                    }
+                }
+                
+                break;
+            case false:
+                FindObjectOfType<AudioManager>().Play("LockOff");
+                break;
         }
-
     }
+
+    //public override GameObject GetClosestEnemy()
+    //{
+    //    float closest = 12f;
+    //    GameObject closestObject = null;
+    //    for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
+    //    {
+    //        float dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+    //        if (dist < closest)
+    //        {
+    //            closest = dist;
+    //            closestObject = GameManager.instance.enemyInstances[i];
+    //        }
+    //    }
+    //    return closestObject;
+    //}
 
     public override void Descend()
     {

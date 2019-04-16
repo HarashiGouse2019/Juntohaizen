@@ -110,6 +110,12 @@ public abstract class Pawn : MonoBehaviour
      
     }
 
+    public virtual GameObject GetClosestEnemy()
+    {
+
+        return null;
+    }
+
     public IEnumerator Walk()
     {
         //This will produce footstep noises as we move

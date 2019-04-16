@@ -7,6 +7,7 @@ public class Camera_Follow : MonoBehaviour
 
     //The Targeted GameObject to manipulate its position through it's Transform Component
     public GameObject target;
+    public GameObject crossHair;
 
     //Used to set the duration of the camera smoothing out and in towards the player
     public float smoothOutDuration = 0.125f;
@@ -20,16 +21,24 @@ public class Camera_Follow : MonoBehaviour
     }
 
     void FixedUpdate()
-    {                                                                                               /********************************************************/
-        Vector3 setCoordinate = target.transform.position + offset;                                           //We create a Vector3 that will grab the Player's       *
-                                                                                                    //position and add it to the camera offset              *
-        Vector3 smoothPosition = Vector3.Lerp(transform.position, setCoordinate, smoothOutDuration);//We'll create another Vector3 that will go from        *
-                                                                                                    //it's current spot to the player in a smooth motion    *
-                                                                                                    //with a set amount of time.                            *
-        transform.position = smoothPosition;                                                        //The smoothPosition variable will then be added to     *
-                                                                                                    //the Camera's Transforma Component, applying the change*
-                                                                                                    //in position every frame assuring that it smoothes out.*
-                                                                                                    /********************************************************/
+    {
+        Vector3 setCoordinate;
+        Vector3 smoothPosition;
+        if (Player_Controller.player_controller.toggleLock == false)
+        {
+            setCoordinate = target.transform.position + offset;
+            smoothPosition = Vector3.Lerp(transform.position, setCoordinate, smoothOutDuration);
+            transform.position = smoothPosition;
+        } else
+        {
+            Vector3 combinedView = target.transform.position + crossHair.transform.position;
+            setCoordinate = combinedView + offset;
+            smoothPosition = Vector3.Lerp(transform.position, setCoordinate/2, smoothOutDuration);
+            transform.position = smoothPosition;
+        }
+                                                            
+                                                                                          
+                                                                                          
     }
 
     public void InitiateLockOn(Transform target)

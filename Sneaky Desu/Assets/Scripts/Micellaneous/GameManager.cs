@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         }
 
         enemyInstances = new List<GameObject>();
+
         
     }
 
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
         levelProgressionUI.fillAmount = levelProgression;
   
         gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
+
     }
 
     void Update()
@@ -92,6 +94,8 @@ public class GameManager : MonoBehaviour
                 Instantiate(MagicSource);
             magicSourceMade = true;
         }
+
+        ScanAllEnemies();
     }
 
     void InitiateKeyInput()
@@ -99,8 +103,6 @@ public class GameManager : MonoBehaviour
         //Simply quits the game when on standalone
         if (Input.GetKey(KeyCode.Escape))
             Application.Quit();
-        
-            
         
         //These inputs are here in order to test the UI 
         if (Input.GetKey(KeyCode.Return)) IncreaseLevel(1f);
@@ -123,7 +125,6 @@ public class GameManager : MonoBehaviour
             level += 1;
             levelProgressionUI.fillAmount = 0f;
             FindObjectOfType<AudioManager>().Play("LevelUp");
-            Debug.Log("You went from Level " + pastLevel + " to Level " + level + "!!!");
         }
         return value;
 
@@ -168,8 +169,6 @@ public class GameManager : MonoBehaviour
             Die();
         }
         return value;
-
-        SceneManager.LoadScene(3);
     }
 
     public float IncreaseMana(float value)
@@ -206,6 +205,18 @@ public class GameManager : MonoBehaviour
     {
         scene_name = Scene_Name;
         if (scene_name != null) SceneManager.LoadScene(scene_name);
+    }
 
+    public int ScanAllEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (enemyInstances.Count < enemies.Length)
+        {
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemyInstances.Add(enemies[i]);
+            }
+        }
+        return enemyInstances.Count;
     }
 }
