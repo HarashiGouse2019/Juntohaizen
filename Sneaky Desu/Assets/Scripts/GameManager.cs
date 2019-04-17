@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using static MasterSounds.AudioManager;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -49,23 +50,22 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        //If our Game Manager does not exists, create one, and do not destroy it.
-        //If there's an extra one, we'll destroy the extra one.
-        //This is our singleton design pattern in use.
+        ////If our Game Manager does not exists, create one, and do not destroy it.
+        ////If there's an extra one, we'll destroy the extra one.
+        ////This is our singleton design pattern in use.
 
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
+        //    DontDestroyOnLoad(this);
+            
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
 
-        enemyInstances = new List<GameObject>();
-
-        
+        //enemyInstances = new List<GameObject>();
     }
 
     void Start()
@@ -78,27 +78,28 @@ public class GameManager : MonoBehaviour
         healthUI.fillAmount = currentHealth / maxHealth;
         manaUI.fillAmount = currentMana / maxMana;
         levelProgressionUI.fillAmount = levelProgression;
-  
-        //gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
 
     }
 
     void Update()
     {
 
+        //gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
+
         //Set our GUI value to our GUI_ACTIVE boolean
         GUIParent.gameObject.SetActive(GUI_ACTIVE);
 
         InitiateKeyInput(); //All input from the keyboard will be called in this method
-        
+
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
-        
+
         if (level == 1 && magicSourceMade == false)
         {
-                Instantiate(MagicSource);
+            Instantiate(MagicSource);
             magicSourceMade = true;
         }
 
+        if (MagicSource == null) magicSourceMade = false;
         ScanAllEnemies();
     }
 
@@ -130,7 +131,7 @@ public class GameManager : MonoBehaviour
             float pastLevel = level;
             level += 1;
             levelProgressionUI.fillAmount = 0f;
-            FindObjectOfType<AudioManager>().Play("LevelUp");
+            audioManager.Play("LevelUp");
         }
         return value;
 
@@ -228,5 +229,15 @@ public class GameManager : MonoBehaviour
             }
         }
         return enemyInstances.Count; //We then return the value of all instances through our List<GameObject>
+    }
+
+    public void ResetAllValues()
+    {
+        enemyInstances = new List<GameObject>();
+        healthUI.fillAmount = maxHealth; //Current health is set to a defined max health
+        manaUI.fillAmount = maxMana; //Current mana is set to a defined max mana
+        level = 0;
+        levelProgressionUI.fillAmount = 0f;
+        magicSourceMade = false;
     }
 }

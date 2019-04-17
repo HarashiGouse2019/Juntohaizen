@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - hitbox
   - Gem
+  - Lives
+  - xLives
   layers:
   - Default
   - TransparentFX

@@ -2984,6 +2984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41d3bc7b091b6c64a8d2cb1b06b5fe99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   player: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   player_spawn: {fileID: 684083356}
 --- !u!1 &1099938029
@@ -3046,11 +3047,23 @@ MonoBehaviour:
     pitch: 1
     enableLoop: 0
     source: {fileID: 0}
-  - name: Juntohaizen OST
+  - name: JuntohaizenOST
     clip: {fileID: 8300000, guid: faf529f27b114e546b35fa6abc49b156, type: 3}
     volume: 1
     pitch: 1
     enableLoop: 1
+    source: {fileID: 0}
+  - name: Shoot001
+    clip: {fileID: 8300000, guid: 0a62228dee854b546a2394d092046ea5, type: 3}
+    volume: 1
+    pitch: 1
+    enableLoop: 0
+    source: {fileID: 0}
+  - name: Shoot002
+    clip: {fileID: 8300000, guid: 7508d8a0d14c7a74b9226a000324779a, type: 3}
+    volume: 1
+    pitch: 1
+    enableLoop: 0
     source: {fileID: 0}
   volumeAdjust: {fileID: 1167734309}
 --- !u!4 &1099938031

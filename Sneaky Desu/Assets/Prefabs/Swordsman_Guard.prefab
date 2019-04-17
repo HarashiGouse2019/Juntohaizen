@@ -168,16 +168,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {x: 0, y: 0}
+  controller: {fileID: 0}
   animator: {fileID: 8944410476122337755}
   layerIndex: 0
   transitionOn: 0
   col: 0
   step: 0
   isWaiting: 0
-  isWalking: 0
-  isDescending: 0
-  isInGround: 0
-  isAscending: 0
   rateOfSpeed: 0
   maxSpeed: 0
   speed: 3
@@ -192,10 +189,5 @@ MonoBehaviour:
   rightDown: 0
   leftDown: 0
   rb: {fileID: 4998581173798575959}
-  right: 275
-  left: 276
-  up: 273
-  down: 274
-  descendKey: 120
-  ascendKey: 120
-  jump: 122
+  lootChances: {fileID: 7080915813307541139, guid: 0be821a860c353d4b8bd9d9aa3a1bbdb,
+    type: 3}

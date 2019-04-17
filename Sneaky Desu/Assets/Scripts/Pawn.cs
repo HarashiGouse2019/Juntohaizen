@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MasterSounds.AudioManager;
 
 
 public abstract class Pawn : MonoBehaviour
@@ -33,6 +34,8 @@ public abstract class Pawn : MonoBehaviour
 
     public float distance; //This is for the enemy to know the distance between it and the player
 
+    [HideInInspector] public float enemyHealth;
+
     public Transform playerPosition; //Player position
 
     public GameObject target; //Our target (which will be the player position)
@@ -43,6 +46,7 @@ public abstract class Pawn : MonoBehaviour
 
     public IEnumerator coroutine; //our corountine identifier
     public IEnumerator transitionCoroutine; //Specifically for transitions from hiding in ground to ascending
+    public IEnumerator manaUsageCoroutine;
 
     
 
@@ -121,7 +125,7 @@ public abstract class Pawn : MonoBehaviour
         //This will produce footstep noises as we move
         if (step == false)
         {
-            FindObjectOfType<AudioManager>().Play("Walk");
+            audioManager.Play("Walk");
             step = true;
             yield return new WaitForSeconds((float)0.15);
             step = false;
@@ -156,6 +160,16 @@ public abstract class Pawn : MonoBehaviour
         }
         yield return new WaitForSeconds(value);
         isWaiting = false;
+    }
+
+    //This is for example, when you are hiding in the ground, you are using a little bit of your mana.
+    public IEnumerator PassiveManaUsage(float value, float decreaseBy)
+    {
+        if (GameManager.instance.manaUI.fillAmount != 0)
+        {
+            GameManager.instance.DecreaseMana(decreaseBy);
+        }
+        yield return new WaitForSeconds(value);
     }
 
     //Enemy Behaviour Functions

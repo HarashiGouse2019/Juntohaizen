@@ -18,6 +18,8 @@ public class ObjectPooler : MonoBehaviour
 
     public Player_Pawn player;
 
+    private GameObject objectToSpawn;
+
     #region Singleton
 
     public static ObjectPooler instance;
@@ -62,7 +64,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, int quantity = 1)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -70,10 +72,15 @@ public class ObjectPooler : MonoBehaviour
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
+        
+        for (int i = 0; i < quantity; i++)
+        {
+            objectToSpawn = poolDictionary[tag].Dequeue();
+            objectToSpawn.SetActive(true);
+
+            objectToSpawn.transform.position = position;
+            objectToSpawn.transform.rotation = rotation;
+        }
         Vector3 scalex = objectToSpawn.transform.localScale;
         scalex.x = player.gameObject.transform.localScale.x;
         objectToSpawn.transform.localScale = scalex;

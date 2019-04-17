@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using static MasterSounds.AudioManager;
 
 public class Magic_Discharge : MonoBehaviour
 {
 
+    public static Magic_Discharge magic_discarge;
+
     ObjectPooler objectPooler;
+    GameManager manager;
 
     public float speedValue;
     public static float speed;
 
     [Range(1, 20)] public int recoilSpeed;
 
-    bool isKeyReleased;
+    bool isKeyReleased, ready = true;
 
     enum DISCHARGE_AMOUNT
     {
@@ -38,6 +42,7 @@ public class Magic_Discharge : MonoBehaviour
     void Awake()
     {
         objectPooler = ObjectPooler.instance;
+        manager = GameManager.instance;
 
         speed = speedValue;
         buffSpeed = speed * dischargeAmount;
@@ -48,44 +53,57 @@ public class Magic_Discharge : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+        if (manager.currentMana != 0) canUseMana = true;
+        else canUseMana = false;
 
         //When the player shots lazers
-        if (Input.GetKeyDown(Player_Controller.player_controller.shoot) || isKeyReleased == true)
+        if (Input.GetKey(Player_Controller.player_controller.shoot))
         {
-            if (GameManager.instance.currentMana != 0 )
+            isKeyReleased = false;
+            coroutine = Recoil();
+            if (manager.currentMana != 0)
             {
-
-                coroutine = Recoil();
-                GameManager.instance.DecreaseMana(1f);
-                isKeyReleased = false;
-                FindObjectOfType<AudioManager>().Play("Shoot000");
-
-                //Instantiate(magicDischarge[type], magicSource.position, magicSource.localRotation); //A bullet will spawn with a set direction based on the player's direction
-                UseMagic();
-                StartCoroutine(coroutine);
+                if (ready == true)
+                {
+                    manager.DecreaseMana(1f);
+                    UseMagic();
+                    StartCoroutine(coroutine);
+                    
+                    ready = false;
+                }
             }
             else
             {
                 StopCoroutine(coroutine);
-                canUseMana = false;
             }
         }
-        if (Input.GetKeyUp(Player_Controller.player_controller.shoot)) StopCoroutine(coroutine);
+        else if (Input.GetKeyUp(Player_Controller.player_controller.shoot))
+        {
+            isKeyReleased = true;
+            ready = true;
+            StopCoroutine(coroutine);
+        }
     }
 
     public void UseMagic()
     {
-        switch(type)
+        if (canUseMana == true)
         {
-            case 0:
-                objectPooler.SpawnFromPool("LowMana", magicSource.position, magicSource.localRotation);
-                break;
-            case 1:
-                objectPooler.SpawnFromPool("MediumMana", magicSource.position, magicSource.localRotation);
-                break;
-            case 2:
-                objectPooler.SpawnFromPool("HighMana", magicSource.position, magicSource.localRotation);
-                break;
+            switch (type)
+            {
+                case 0:
+                    audioManager.Play("Shoot000");
+                    objectPooler.SpawnFromPool("LowMana", magicSource.position, magicSource.localRotation);
+                    break;
+                case 1:
+                    audioManager.Play("Shoot001");
+                    objectPooler.SpawnFromPool("MediumMana", magicSource.position, magicSource.localRotation);
+                    break;
+                case 2:
+                    audioManager.Play("Shoot002");
+                    objectPooler.SpawnFromPool("HighMana", magicSource.position, magicSource.localRotation);
+                    break;
+            }
         }
     }
 
@@ -93,6 +111,6 @@ public class Magic_Discharge : MonoBehaviour
     {
         float value = (float)recoilSpeed;
         yield return new WaitForSeconds(1 / value);
-        isKeyReleased = true;
+        ready = true;
     }
 }

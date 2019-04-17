@@ -23,6 +23,10 @@ public class Magic_Movement : MonoBehaviour
 
     private void Update()
     {
+        if (Player == null)
+        {
+            Player = FindObjectOfType<Player_Pawn>().gameObject;
+        }
         //All this will cause our game object to circle around the player once activated
         centre = Player.transform.position;
 

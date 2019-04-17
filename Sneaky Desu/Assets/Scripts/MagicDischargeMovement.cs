@@ -26,7 +26,7 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 
         baseSpeed = Magic_Discharge.buffSpeed; //The basespeed will be modified depend on the level
 
-        delayCoroutine = Delay(1f); //delay by 1 second
+        delayCoroutine = Delay(0.60f); //delay by 1 second
     }
     public void OnObjectSpawn()
     {
@@ -72,12 +72,27 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+
+        Magic_Discharge magic_discharge = FindObjectOfType<Magic_Discharge>();
+
         //If we hit an enemy, destory itself and the object that it collises with.
         if (col.gameObject.tag == "Enemy")
         {
-            Destroy(col.gameObject); //Destroys enemy
-            Destroy(gameObject); //Destroys self
+            switch(magic_discharge.type)
+            {
+                case 0:
+                    TakeDamage(col.gameObject, 1f);
+                    break;
+                case 1:
+                    TakeDamage(col.gameObject, 5f);
+                    break;
+                case 2:
+                    TakeDamage(col.gameObject, 10f);
+                    break;
+            }
+            gameObject.SetActive(false); //Deactivates itself since it's from an Object Pool
         }
+        
     }
 
     IEnumerator Delay(float time)
@@ -89,6 +104,12 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
             gameObject.SetActive(false); //Destroys self after the yield time
             start = false;
         }
+    }
+
+    void TakeDamage(GameObject victim, float damage)
+    {
+        Pawn enemy = victim.GetComponent<Pawn>();
+        enemy.enemyHealth -= damage;
     }
 }
 

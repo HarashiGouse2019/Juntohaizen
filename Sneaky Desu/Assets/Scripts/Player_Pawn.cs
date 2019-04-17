@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MasterSounds.AudioManager;
 
 public class Player_Pawn : Pawn
 {
@@ -35,6 +36,8 @@ public class Player_Pawn : Pawn
 
         if (GameManager.instance.currentHealth == 0)
         {
+            GameManager.instance.ResetAllValues();
+            ObjectPooler.instance.poolDictionary.Clear();
             Destroy(gameObject);
         }
 
@@ -42,6 +45,13 @@ public class Player_Pawn : Pawn
         if (closestObject == null)
         {
             targetNear = false;
+        }
+
+        //Checking if hiding in the ground
+        if (controller.isInGround == true)
+        {
+            manaUsageCoroutine = PassiveManaUsage(1f, 1f);
+            StartCoroutine(manaUsageCoroutine);
         }
     }
 
@@ -167,11 +177,11 @@ public class Player_Pawn : Pawn
                         //closest = dist;
                         Instantiate(crossHair);
                         crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
-                        FindObjectOfType<AudioManager>().Play("LockOn");
+                    audioManager.Play("LockOn");
                     }
                 break;
             case false:
-                FindObjectOfType<AudioManager>().Play("LockOff");
+                audioManager.Play("LockOff");
                 break;
         }
 
@@ -182,17 +192,21 @@ public class Player_Pawn : Pawn
         //We'll iterate through a list of enemy GameObjects, and see which one is closest to us.
         //Once we get the closest one, we assign that object into the closestObject gameObject
         //We then create our crossHair on our new target.
-        for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
+        if (GameManager.instance.enemyInstances != null)
         {
-            dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
-            if (dist <= closest)
+            for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
             {
-                //closest = dist;
-                closestObject = GameManager.instance.enemyInstances[i];
-                enemyTarget = closestObject;
-                crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
-                targetNear = true;
-                return closestObject;
+
+                dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+                if (dist <= closest)
+                {
+                    //closest = dist;
+                    closestObject = GameManager.instance.enemyInstances[i];
+                    enemyTarget = closestObject;
+                    crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
+                    targetNear = true;
+                    return closestObject;
+                }
             }
         }
 
@@ -232,16 +246,30 @@ public class Player_Pawn : Pawn
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D gem)
+    private void OnTriggerEnter2D(Collider2D col)
     {
+        GameManager manager; //Get a reference of our Game Manager
+
+        manager = GameManager.instance; //Have it equal to the static instance of Game Manager
+
+        Collider2D collectibles = col;
+
         //If we come across some gems, we'll increase our level, our mana, decrease the existing amount of 
         //active gems in the scene and destory the gem game object that we collide with.
-        if (gem.gameObject.tag == "Gem")
+        if (collectibles.gameObject.tag == "Gem")
         {
-            GameManager.instance.IncreaseLevel(2f);
-            GameManager.instance.IncreaseMana(1f);
-            GameManager.instance.totalGems++;
-            Destroy(gem.gameObject);
+            manager.IncreaseLevel(2f);
+            manager.IncreaseMana(1f);
+            manager.totalGems++;
+            collectibles.gameObject.SetActive(false);
+        } else if (collectibles.gameObject.tag == "Lives")
+        {
+            manager.IncreaseHealth(5f);
+            collectibles.gameObject.SetActive(false);
+        } else if (collectibles.gameObject.tag == "xLives")
+        {
+            manager.IncreaseHealth(20f);
+            collectibles.gameObject.SetActive(false);
         }
     }
 
@@ -250,7 +278,7 @@ public class Player_Pawn : Pawn
         //This is for taking damage from the hit box
         if (col.gameObject.tag == "hitbox")
         {
-            GameManager.instance.DecreaseHealth(10f);
+            GameManager.instance.DecreaseHealth(3f);
         }
     }
 
