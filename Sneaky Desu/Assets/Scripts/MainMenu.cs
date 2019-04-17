@@ -9,6 +9,11 @@ public class MainMenu : MonoBehaviour
     public Player_Pawn player = null;
     public Player_Spawn player_spawn;
 
+    public void Awake()
+    {
+        FindObjectOfType<AudioManager>().Play("Juntohaizen OST");
+    }
+
     public void Play()
     {
         //Set starting position!!!

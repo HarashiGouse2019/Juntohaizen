@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagicDischargeMovement : MonoBehaviour
+public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 {
     public Rigidbody2D rb; //We use this in able to apply physics to our object
     public GameObject Player; //A reference to our player game object
@@ -28,7 +28,7 @@ public class MagicDischargeMovement : MonoBehaviour
 
         delayCoroutine = Delay(1f); //delay by 1 second
     }
-    void Start()
+    public void OnObjectSpawn()
     {
 
         //Whenever we are shooting, our point of fire will be rotating around the player
@@ -40,21 +40,21 @@ public class MagicDischargeMovement : MonoBehaviour
             case 1:
                 if (Mathf.Sign(Mathf.Cos(Magic_Movement.angle)) == -1)
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed;
+                    baseSpeed = Magic_Discharge.buffSpeed + 5;
                 }
                 else
                 {
-                    baseSpeed += 5;
+                    baseSpeed = Magic_Discharge.buffSpeed - 5;
                 }
                 break;
             case -1:
                 if (Mathf.Sign(Mathf.Cos(Magic_Movement.angle)) == 1)
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed;
+                    baseSpeed = Magic_Discharge.buffSpeed + 5;
                 }
                 else
                 {
-                    baseSpeed += 5;
+                    baseSpeed = Magic_Discharge.buffSpeed - 5;
                 }
                 break;
         }
@@ -86,7 +86,7 @@ public class MagicDischargeMovement : MonoBehaviour
         {
             start = true;
             yield return new WaitForSeconds(time);
-            Destroy(gameObject); //Destroys self after the yield time
+            gameObject.SetActive(false); //Destroys self after the yield time
             start = false;
         }
     }

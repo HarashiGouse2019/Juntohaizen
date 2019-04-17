@@ -1,10 +1,14 @@
 ﻿using UnityEngine.Audio;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     public Audio[] getAudio;
+    //public Slider volumeAdjust; //Reference to our volume slider in the options menu
+
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -18,7 +22,12 @@ public class AudioManager : MonoBehaviour
             a.source.loop = a.enableLoop;
         }
     }
-
+    // Update is called once per frame
+    void Update()
+    {
+        //Audio.a = Array.FindAll(getAudio, sound => sound.name == name);
+        //a.source.volume = volumeAdjust.value; //Chaning the volume of our audio based on our slider fill value.
+    }
     // Update is called once per frame
     public void Play(string name)
     {

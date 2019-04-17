@@ -240,7 +240,7 @@ public class Player_Pawn : Pawn
         {
             GameManager.instance.IncreaseLevel(2f);
             GameManager.instance.IncreaseMana(1f);
-            --GameManager.instance.gemInstances;
+            GameManager.instance.totalGems++;
             Destroy(gem.gameObject);
         }
     }

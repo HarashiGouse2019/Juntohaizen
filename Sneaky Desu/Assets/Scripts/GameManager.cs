@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,8 +15,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
 
-    public int gemInstances = 0; //How many gems are in game
-
+    public int totalGems = 0;
+    
     public GameObject MagicSource; //This will be a prefab that we instantiate when our level value is greater than 0
 
     bool magicSourceMade = false; //Rather or not we have an instance of our defined prefab
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
     public Image healthUI; //Reference our Health 
     public Image manaUI; //Reference our Mana
     public Image levelProgressionUI; //Reference how close we are to our level
+    public RawImage gemCountUI;
+    public TextMeshProUGUI gemAmount;
     public TextMeshProUGUI levelUI; //Reference our Level UI text
     public SpriteRenderer PlayerImage; //The image that the player takes on.
     public bool GUI_ACTIVE;
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
         manaUI.fillAmount = currentMana / maxMana;
         levelProgressionUI.fillAmount = levelProgression;
   
-        gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
+        //gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
 
     }
 
@@ -110,8 +113,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Backspace)) DecreaseLevel(1f);
         if (Input.GetKey(KeyCode.Equals)) IncreaseMana(1f);
         if (Input.GetKey(KeyCode.Minus)) DecreaseMana(1f);
+        if (Input.GetKey(KeyCode.M)) totalGems++;
 
-        levelUI.text = level.ToString(); //Text only takes a string, however level is an integer.
+        levelUI.text = level.ToString();
+        gemAmount.text = totalGems.ToString("D4");//Text only takes a string, however level is an integer.
         //By having ".ToString()", we are able to convert the integer to a string.
         //Meaning the numbers can dynamically be changed based on the value of our level variable.
     }
