@@ -29,19 +29,19 @@ public class Player_Controller : Controller
     public KeyCode ascendKey = KeyCode.X;  //
     public KeyCode shoot = KeyCode.Z; //Default for shooting
     public KeyCode lockOnKey = KeyCode.LeftShift; //Default for locking on/off
-
+    
     public void Awake()
     {
         if (player_controller == null)
             player_controller = this;
         player = FindObjectOfType<Player_Pawn>();
+
     }
 
     public override void Start()
     {
         base.Start(); //Calls our parent start function
         pawn.transitionCoroutine = pawn.DescendTransition(1f);
-        
     }
 
     void Update()

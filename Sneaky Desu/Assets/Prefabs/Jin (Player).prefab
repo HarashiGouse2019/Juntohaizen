@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4787750246169100357}
   - component: {fileID: 4787750246169100358}
+  - component: {fileID: 8893616148823447017}
   - component: {fileID: 4787750246169100359}
   - component: {fileID: 4787750246169100354}
   - component: {fileID: 4787750246169100355}
@@ -84,6 +85,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8893616148823447017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787750246169100360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a12a6f1a1f7679140ba609877403377d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &4787750246169100359
 Animator:
   serializedVersion: 3
@@ -167,6 +180,7 @@ MonoBehaviour:
   ascendKey: 120
   shoot: 122
   lockOnKey: 32
+  DPadController: {fileID: 0}
 --- !u!114 &4787750246169100352
 MonoBehaviour:
   m_ObjectHideFlags: 0
