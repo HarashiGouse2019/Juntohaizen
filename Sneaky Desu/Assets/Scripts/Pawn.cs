@@ -190,4 +190,10 @@ public abstract class Pawn : MonoBehaviour
 
     }
 
+    //These functions are made for enemy Sorcerer
+    public virtual void MoveAbout()
+    {
+
+    }
+
 }

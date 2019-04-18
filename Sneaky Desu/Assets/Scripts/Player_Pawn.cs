@@ -47,11 +47,18 @@ public class Player_Pawn : Pawn
             targetNear = false;
         }
 
+        CircleCollider2D collider = GetComponent<CircleCollider2D>();
         //Checking if hiding in the ground
         if (controller.isInGround == true)
         {
+
+            collider.enabled = false;
             manaUsageCoroutine = PassiveManaUsage(1f, 1f);
+
             StartCoroutine(manaUsageCoroutine);
+        }  else
+        {
+            collider.enabled = true;
         }
     }
 

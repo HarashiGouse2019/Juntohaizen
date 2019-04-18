@@ -64,6 +64,15 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (player == null)
+        {
+            player = FindObjectOfType<Player_Pawn>();
+            poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        }
+    }
+
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, int quantity = 1)
     {
         if (!poolDictionary.ContainsKey(tag))

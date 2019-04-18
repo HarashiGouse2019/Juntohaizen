@@ -15,7 +15,7 @@ public class Swordsman_Guard_Pawn : Pawn
     {
         base.Start(); //Our parent start method;
         instance = this;
-        enemyHealth = 10f;
+        enemyHealth = 3f;
     }
 
     // Update is called once per frame

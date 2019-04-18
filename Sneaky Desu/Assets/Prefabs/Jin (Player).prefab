@@ -139,7 +139,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.00999999, y: 0.021800041}
   serializedVersion: 2
-  m_Radius: 0.34
+  m_Radius: 0.32
 --- !u!114 &4787750246169100356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pawn: {fileID: 4787750246169100352}
+  player: {fileID: 0}
   toggleLock: 0
   isWalking: 0
   isDescending: 0
@@ -192,6 +193,7 @@ MonoBehaviour:
   transitionDuration: 0.35
   heading: {x: 0, y: 0}
   distance: 0
+  enemyHealth: 0
   playerPosition: {fileID: 0}
   target: {fileID: 0}
   fowardDown: 0
@@ -200,4 +202,10 @@ MonoBehaviour:
   leftDown: 0
   rb: {fileID: 4787750246169100354}
   crossHair: {fileID: 89679608673880405, guid: d748cfbc5adcd094e8d964691633ff46, type: 3}
+  closestObject: {fileID: 0}
+  enemyTarget: {fileID: 0}
   lockOnDistance: 0
+  targetNear: 0
+  dist: 0
+  targetDist: 0
+  closest: 4

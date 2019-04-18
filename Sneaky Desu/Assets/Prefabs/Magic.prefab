@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedValue: 20
   recoilSpeed: 15
-  dischargeAmount: 2
+  dischargeAmount: 1
   magicSource: {fileID: 530629263632409364}
   magicDischarge:
   - {fileID: 3304159668034850865, guid: f447433a5cbf8504183f4f58e0c548b2, type: 3}
