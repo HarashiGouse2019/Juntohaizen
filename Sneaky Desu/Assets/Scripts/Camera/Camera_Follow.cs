@@ -17,7 +17,7 @@ public class Camera_Follow : MonoBehaviour
 
     void Start()
     {
-        target = FindObjectOfType<Sorcerer_Pawn>().gameObject;
+        target = FindObjectOfType<Player_Pawn>().gameObject;
     }
 
     void FixedUpdate()

@@ -74,16 +74,43 @@ public class Player_Pawn : Pawn
             //Deciding if we press right or left as we move up. This is what helps us diagonally move
             if (Input.GetKey(controller.right) == true)
             {
-                Vector3 xscale = transform.localScale;
-                xscale.x = 1;
-                transform.localScale = xscale;
+                if (controller.toggleLock == false)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = 1;
+                    transform.localScale = xscale;
+                }
+                else
+                {
+                    if (transform.position.x > closestObject.transform.position.x)
+                    {
+                        Vector3 xscale = transform.localScale;
+                        xscale.x = -1;
+                        transform.localScale = xscale;
+                    }
+                }
+
                 move = new Vector2((float)rateOfSpeed, (float)rateOfSpeed);
             }
             else if (Input.GetKey(controller.left) == true)
             {
-                Vector3 xscale = transform.localScale;
-                xscale.x = -1;
-                transform.localScale = xscale;
+                if (controller.toggleLock == false)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = -1;
+                    transform.localScale = xscale;
+                }
+                else
+                {
+                    if (transform.position.x < closestObject.transform.position.x)
+                    {
+                        Vector3 xscale = transform.localScale;
+                        xscale.x = 1;
+                        transform.localScale = xscale;
+                    }
+                }
+
+
                 move = new Vector2((float)-rateOfSpeed, (float)rateOfSpeed);
             }
             else
@@ -104,9 +131,22 @@ public class Player_Pawn : Pawn
         if (leftDown == true)
         {
             controller.isWalking = true;
-            Vector3 xscale = transform.localScale;
-            xscale.x = -1;
-            transform.localScale = xscale;
+            if (controller.toggleLock == false)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = -1;
+                transform.localScale = xscale;
+            }
+            else
+            {
+                if (transform.position.x < closestObject.transform.position.x)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = 1;
+                    transform.localScale = xscale;
+                }
+            }
+
 
             //Going fowards
 
@@ -127,9 +167,22 @@ public class Player_Pawn : Pawn
         if (rightDown == true)
         {
             controller.isWalking = true;
-            Vector3 xscale = transform.localScale;
-            xscale.x = 1;
-            transform.localScale = xscale;
+            if (controller.toggleLock == false)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = 1;
+                transform.localScale = xscale;
+
+            }
+            else
+            {
+                if (transform.position.x > closestObject.transform.position.x)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = -1;
+                    transform.localScale = xscale;
+                }
+            }
 
             //Going fowards
 
@@ -153,16 +206,40 @@ public class Player_Pawn : Pawn
             //Deciding if we press right or left as we move up. This is what helps us diagonally move
             if (Input.GetKey(controller.right) == true)
             {
-                Vector3 xscale = transform.localScale;
-                xscale.x = 1;
-                transform.localScale = xscale;
+                if (controller.toggleLock == false)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = 1;
+                    transform.localScale = xscale;
+                } else
+                {
+                    if (transform.position.x > closestObject.transform.position.x)
+                    {
+                        Vector3 xscale = transform.localScale;
+                        xscale.x = -1;
+                        transform.localScale = xscale;
+                    }
+                }
+
                 move = new Vector2((float)rateOfSpeed, (float)-rateOfSpeed);
             }
             else if (Input.GetKey(controller.left) == true)
             {
-                Vector3 xscale = transform.localScale;
-                xscale.x = -1;
-                transform.localScale = xscale;
+                if (controller.toggleLock == false)
+                {
+                    Vector3 xscale = transform.localScale;
+                    xscale.x = -1;
+                    transform.localScale = xscale;
+                } else
+                {
+                    if (transform.position.x < closestObject.transform.position.x)
+                    {
+                        Vector3 xscale = transform.localScale;
+                        xscale.x = 1;
+                        transform.localScale = xscale;
+                    }
+                }
+
                 move = new Vector2((float)-rateOfSpeed, (float)-rateOfSpeed);
             }
             else
