@@ -29,6 +29,7 @@ public class Player_Controller : Controller
     public KeyCode ascendKey = KeyCode.X;  //
     public KeyCode shoot = KeyCode.Z; //Default for shooting
     public KeyCode lockOnKey = KeyCode.LeftShift; //Default for locking on/off
+    public KeyCode interact = KeyCode.C; //interacting with save points
     
     public void Awake()
     {

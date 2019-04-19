@@ -11,6 +11,9 @@ TagManager:
   - Gem
   - Lives
   - xLives
+  - SavePoint
+  - TextBox
+  - Dialogue
   layers:
   - Default
   - TransparentFX

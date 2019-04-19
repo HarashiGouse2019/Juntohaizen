@@ -10,6 +10,8 @@ public class Sorcerer_Pawn : Pawn
 
     public GameObject plamsaPrefab;
 
+    public float walkSpeed;
+
     public int[] angles = { 0, 90, 180, 270 };
     public int dir = 0;
     public bool isMoving = true;
@@ -25,7 +27,7 @@ public class Sorcerer_Pawn : Pawn
         
         instance = this;
         enemyHealth = 20f;
-        speed = 1f;
+        walkSpeed = 1f;
     }
 
     // Update is called once per frame
@@ -36,7 +38,7 @@ public class Sorcerer_Pawn : Pawn
         
 
         //If the enemy's health reaches to 0
-        if (enemyHealth < 1)
+        if (enemyHealth == 0)
         {
             Player_Controller.player_controller.toggleLock = false;
             Instantiate(lootChances);
@@ -57,24 +59,24 @@ public class Sorcerer_Pawn : Pawn
     {
         if (timeToChangeDirections == true)
         {
-            speed = 1f;
+            walkSpeed = 1f;
             switch (angles[dir])
             {
                 
                 case 0:
-                    direction = new Vector2(speed, 0);
+                    direction = new Vector2(walkSpeed, 0);
                     StartCoroutine(ChangeDirection());
                     break;
                 case 90:
-                    direction = new Vector2(0, speed);
-                    StartCoroutine(ChangeDirection());
+                    direction = new Vector2(0, walkSpeed);
+                       StartCoroutine(ChangeDirection());
                     break;
                 case 180:
-                    direction = new Vector2(-speed, 0);
-                    StartCoroutine(ChangeDirection());
+                    direction = new Vector2(-walkSpeed, 0);
+                       StartCoroutine(ChangeDirection());
                     break;
                 case 270:
-                    direction = new Vector2(0, -speed);
+                    direction = new Vector2(0, -walkSpeed);
                     StartCoroutine(ChangeDirection());
                     break;
             }

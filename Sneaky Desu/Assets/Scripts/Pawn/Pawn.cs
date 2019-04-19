@@ -48,8 +48,6 @@ public abstract class Pawn : MonoBehaviour
     public IEnumerator transitionCoroutine; //Specifically for transitions from hiding in ground to ascending
     public IEnumerator manaUsageCoroutine;
 
-    
-
     public virtual void Awake()
     {
 
@@ -118,6 +116,11 @@ public abstract class Pawn : MonoBehaviour
     {
 
         return null;
+    }
+
+    public virtual void SavePlayer()
+    {
+
     }
 
     public IEnumerator Walk()

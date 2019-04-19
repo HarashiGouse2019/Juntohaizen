@@ -38,7 +38,7 @@ public class Player_Pawn : Pawn
         {
             GameManager.instance.ResetAllValues();
             ObjectPooler.instance.poolDictionary.Clear();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         GetClosestEnemy();
@@ -330,6 +330,11 @@ public class Player_Pawn : Pawn
         }
     }
 
+    public override void SavePlayer()
+    {
+        SaveLoadSystem.SavePlayer(this);
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         GameManager manager; //Get a reference of our Game Manager
@@ -337,6 +342,7 @@ public class Player_Pawn : Pawn
         manager = GameManager.instance; //Have it equal to the static instance of Game Manager
 
         Collider2D collectibles = col;
+
 
         //If we come across some gems, we'll increase our level, our mana, decrease the existing amount of 
         //active gems in the scene and destory the gem game object that we collide with.
@@ -354,15 +360,25 @@ public class Player_Pawn : Pawn
         {
             manager.IncreaseHealth(20f);
             collectibles.gameObject.SetActive(false);
-        }
+        } 
     }
 
     private void OnTriggerStay2D(Collider2D col)
     {
+        Collider2D savePoint = col;
+
         //This is for taking damage from the hit box
         if (col.gameObject.tag == "hitbox")
         {
             GameManager.instance.DecreaseHealth(3f);
+        }
+        else if (savePoint.gameObject.tag == "SavePoint")
+        {
+            Debug.Log(savePoint.tag);
+            if (Input.GetKeyDown(controller.interact))
+            {
+                SavePlayer(); Debug.Log("You Just Saved!!!!");
+            }
         }
     }
 

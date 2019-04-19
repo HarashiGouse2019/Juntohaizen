@@ -13,8 +13,6 @@ public class Enemy_Controller : Controller
     [Range(1, 10)] public int fieldOfSightValue; //How far our enemy can see or sense the player
     public static int fieldOfSight; //This is used for other scripts to reference our field of view value
 
-    
-
     public override void Start()
     {
         base.Start(); //The start of the parent class

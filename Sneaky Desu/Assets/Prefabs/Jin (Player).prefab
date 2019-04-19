@@ -8,13 +8,14 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4787750246169100357}
+  - component: {fileID: 4920462535734378938}
   - component: {fileID: 4787750246169100358}
   - component: {fileID: 4787750246169100359}
   - component: {fileID: 4787750246169100354}
   - component: {fileID: 4787750246169100355}
   - component: {fileID: 4787750246169100356}
   - component: {fileID: 4787750246169100352}
+  - component: {fileID: 5315211758305872410}
   m_Layer: 0
   m_Name: Jin (Player)
   m_TagString: Player
@@ -22,20 +23,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4787750246169100357
-Transform:
+--- !u!224 &4920462535734378938
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4787750246169100360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 15.181006, y: -0.5797918}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &4787750246169100358
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -167,6 +173,7 @@ MonoBehaviour:
   ascendKey: 120
   shoot: 122
   lockOnKey: 32
+  interact: 99
 --- !u!114 &4787750246169100352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +216,20 @@ MonoBehaviour:
   dist: 0
   targetDist: 0
   closest: 4
+--- !u!114 &5315211758305872410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787750246169100360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffe719222d2aa342aca391923b249c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  COMMENTS: 'I created this object ALL BY MY SELF!!!!
+
+    I shall not credit anyone''s work except my own!!!
+
+'

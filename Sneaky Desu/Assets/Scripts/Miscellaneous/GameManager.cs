@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance; //For singleton implementation
 
     public List<GameObject> enemyInstances;
@@ -43,10 +44,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Spawn Destination")]
     public string Scene_Name;
+    [HideInInspector] public Scene currentScene;
 
     [Header("Set Spawn Coordinates")]
     public float posx;
     public float posy;
+
+
 
     void Awake()
     {
@@ -65,7 +69,7 @@ public class GameManager : MonoBehaviour
         //    Destroy(gameObject);
         //}
 
-        //enemyInstances = new List<GameObject>();
+        Instantiate(playerPrefab);
     }
 
     void Start()
@@ -79,12 +83,16 @@ public class GameManager : MonoBehaviour
         manaUI.fillAmount = currentMana / maxMana;
         levelProgressionUI.fillAmount = levelProgression;
 
+        playerPrefab = FindObjectOfType<Player_Pawn>().gameObject;
+
+        playerPrefab.SetActive(false);
     }
 
     void Update()
     {
-
-        //gemInstances = GameObject.FindGameObjectsWithTag("Gem").Length; //Give use the value of existing gem game objects
+        
+        //Get the current active scene
+        currentScene = SceneManager.GetActiveScene();
 
         //Set our GUI value to our GUI_ACTIVE boolean
         GUIParent.gameObject.SetActive(GUI_ACTIVE);
@@ -93,7 +101,7 @@ public class GameManager : MonoBehaviour
 
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
 
-        if (level == 1 && magicSourceMade == false)
+        if (level > 0 && magicSourceMade == false)
         {
             Instantiate(MagicSource);
             magicSourceMade = true;
