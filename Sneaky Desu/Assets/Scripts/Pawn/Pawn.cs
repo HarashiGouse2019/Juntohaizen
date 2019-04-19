@@ -23,6 +23,8 @@ public abstract class Pawn : MonoBehaviour
 
     [HideInInspector] public bool isWaiting = false; //If the player is idle
 
+    [HideInInspector] public bool manaDrop = false;
+
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
 
@@ -171,8 +173,10 @@ public abstract class Pawn : MonoBehaviour
         if (GameManager.instance.manaUI.fillAmount != 0)
         {
             GameManager.instance.DecreaseMana(decreaseBy);
+            manaDrop = true;
         }
         yield return new WaitForSeconds(value);
+        manaDrop = false;
     }
 
     //Enemy Behaviour Functions

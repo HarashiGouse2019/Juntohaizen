@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2743470337968864032}
   - component: {fileID: 6836177498326777685}
   - component: {fileID: 2447163116867998598}
+  - component: {fileID: 5397111487626228506}
   m_Layer: 0
   m_Name: SavePoint
   m_TagString: SavePoint
@@ -96,3 +97,22 @@ CircleCollider2D:
   m_Offset: {x: 0.0029277802, y: 0}
   serializedVersion: 2
   m_Radius: 0.33703995
+--- !u!95 &5397111487626228506
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7818841157783611310}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f090177f31cd05945a68d4ea8ffcec01, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

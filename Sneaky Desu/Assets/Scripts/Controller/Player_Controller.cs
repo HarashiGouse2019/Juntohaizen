@@ -93,12 +93,19 @@ public class Player_Controller : Controller
                         {
                             case false:
                                 if (player.targetNear == true)
+                                {
                                     toggleLock = true;
+                                    
+                                }
                                 else
-                                   toggleLock = false;
+                                {
+                                    toggleLock = false;
+                                    Magic_Movement.radius = 1f;
+                                }
                                 break;
                             case true:
                                 toggleLock = false;
+                                Magic_Movement.radius = 1f;
                                 break;
 
                         }

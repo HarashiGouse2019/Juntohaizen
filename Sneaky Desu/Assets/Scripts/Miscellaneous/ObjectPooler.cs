@@ -75,6 +75,7 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, int quantity = 1)
     {
+
         if (!poolDictionary.ContainsKey(tag))
         {
             Debug.LogWarning("Pool with tag: " + tag + " doesn't exist");

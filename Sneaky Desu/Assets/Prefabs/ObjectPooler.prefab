@@ -56,3 +56,21 @@ MonoBehaviour:
     prefab: {fileID: 2966800488066394359, guid: d9b2b89852d3cf842b0ae2f631cca3c7,
       type: 3}
     size: 10
+  - tag: Gem
+    prefab: {fileID: 257190614644368065, guid: 85c6c9f299ce3aa4baa58b79f5372021, type: 3}
+    size: 100
+  - tag: Lives
+    prefab: {fileID: 190831196047417734, guid: d92b9fd8fe9d2cc4a8af93bab0398793, type: 3}
+    size: 100
+  - tag: xGem
+    prefab: {fileID: 257190614644368065, guid: 85c6c9f299ce3aa4baa58b79f5372021, type: 3}
+    size: 200
+  - tag: xLives
+    prefab: {fileID: 4921604464603928877, guid: b57f781b24ce4e643ac025b5924a93e5,
+      type: 3}
+    size: 100
+  - tag: enemyPlasma
+    prefab: {fileID: 2966800488066394359, guid: d9b2b89852d3cf842b0ae2f631cca3c7,
+      type: 3}
+    size: 100
+  player: {fileID: 0}

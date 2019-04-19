@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     public float posx;
     public float posy;
 
+    [Header("Object Pooler")]
+    public ObjectPooler ObjectPooler;
+
 
 
     void Awake()
@@ -68,7 +71,6 @@ public class GameManager : MonoBehaviour
         //{
         //    Destroy(gameObject);
         //}
-
         Instantiate(playerPrefab);
     }
 

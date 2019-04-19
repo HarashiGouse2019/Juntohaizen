@@ -194,6 +194,7 @@ MonoBehaviour:
   col: 0
   step: 0
   isWaiting: 0
+  manaDrop: 0
   rateOfSpeed: 20
   maxSpeed: 100
   speed: 0

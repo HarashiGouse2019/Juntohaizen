@@ -13,6 +13,7 @@ public class Player_Pawn : Pawn
     public float lockOnDistance;
     public bool targetNear = false;
     public float dist = 0f, targetDist, closest = 4f;
+    CircleCollider2D player_collider; 
 
     public override void Awake()
     {
@@ -22,6 +23,7 @@ public class Player_Pawn : Pawn
     public override void Start()
     {
         base.Start(); //Our parent start method
+        player_collider = GetComponent<CircleCollider2D>();
     }
 
     public override void Update()
@@ -37,7 +39,6 @@ public class Player_Pawn : Pawn
         if (GameManager.instance.currentHealth == 0)
         {
             GameManager.instance.ResetAllValues();
-            ObjectPooler.instance.poolDictionary.Clear();
             gameObject.SetActive(false);
         }
 
@@ -47,18 +48,23 @@ public class Player_Pawn : Pawn
             targetNear = false;
         }
 
-        CircleCollider2D collider = GetComponent<CircleCollider2D>();
+        
         //Checking if hiding in the ground
         if (controller.isInGround == true)
         {
 
-            collider.enabled = false;
-            manaUsageCoroutine = PassiveManaUsage(1f, 1f);
+            player_collider.radius = 0.1f;
+            player_collider.offset = new Vector2(-0.00999999f, -0.4f);
+
+            manaUsageCoroutine = PassiveManaUsage(1f, 1f);;
 
             StartCoroutine(manaUsageCoroutine);
         }  else
         {
-            collider.enabled = true;
+            player_collider.radius = 0.32f;
+            player_collider.offset = new Vector2(-0.00999999f, 0.02180004f);
+
+
         }
     }
 
@@ -261,11 +267,13 @@ public class Player_Pawn : Pawn
                         //closest = dist;
                         Instantiate(crossHair);
                         crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
-                    audioManager.Play("LockOn");
+                        audioManager.Play("LockOn");
+                        Magic_Movement.radius = 0.5f;
                     }
                 break;
             case false:
                 audioManager.Play("LockOff");
+                
                 break;
         }
 
@@ -304,8 +312,10 @@ public class Player_Pawn : Pawn
                 enemyTarget = closestObject;
                 crossHair.transform.position = new Vector2(transform.position.x, transform.position.y);
                 Player_Controller.player_controller.toggleLock = targetNear;
+                Magic_Movement.radius = 1f;
             }
         }
+        Magic_Movement.radius = 1f;
         return null;
     }
 
@@ -388,6 +398,19 @@ public class Player_Pawn : Pawn
         if (col.gameObject.tag == "hitbox")
         {
             Destroy(col.gameObject);
+        }
+
+        if (col.gameObject.tag == "Enemy")
+        {
+            player_collider.isTrigger = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            player_collider.isTrigger = true;
         }
     }
 }

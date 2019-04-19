@@ -95,8 +95,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  pawn: {fileID: 0}
   rotateSpeed: 5
-  radius: -1
+  _radius: -1
 --- !u!114 &530629263632409366
 MonoBehaviour:
   m_ObjectHideFlags: 0
