@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 using static MasterSounds.AudioManager;
 
 public class MainMenu : MonoBehaviour
@@ -18,6 +19,8 @@ public class MainMenu : MonoBehaviour
     Vector3 position;
     PlayerData data;
 
+    public Button loadButton;
+
     public void Start()
     {
         manager = GameManager.instance;
@@ -26,11 +29,13 @@ public class MainMenu : MonoBehaviour
 
     public void Update()
     {
-        string path = Application.persistentDataPath + "/player.sav";
+        string path = Application.persistentDataPath + "/hai.zen";
         try
         {
             if (File.Exists(path))
             {
+
+                loadButton.interactable = true;
 
                 sceneBeforeSave = manager.currentScene;
 
@@ -59,6 +64,9 @@ public class MainMenu : MonoBehaviour
                 manager.levelProgression = data.levelProgression;
                 //manager.levelProgressionUI.fillAmount = data.levelProgression / 100f; 
 
+            } else
+            {
+                loadButton.interactable = false;
             }
         } catch
         {
@@ -76,10 +84,13 @@ public class MainMenu : MonoBehaviour
         position.x = manager.posx;
         position.y = manager.posy;
 
-        
+        if (Player_Pawn.playerpawn != null)
+            Player_Pawn.playerpawn.player_collider.isTrigger = false;
 
         manager.currentHealth = manager.maxHealth;
         manager.healthUI.fillAmount = manager.currentHealth / manager.maxHealth;
+        manager.currentMana = manager.maxMana;
+        manager.manaUI.fillAmount = manager.currentMana / manager.maxMana;
 
         audioManager.Stop("JuntohaizenOST");
 
@@ -90,7 +101,7 @@ public class MainMenu : MonoBehaviour
 
   
  
-       manager.playerPrefab.SetActive(true);
+        manager.playerPrefab.SetActive(true);
         manager.playerPrefab.transform.position = position;
 
         manager.Goto_Scene("Level1-1");

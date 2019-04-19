@@ -38,7 +38,7 @@ public class Sorcerer_Pawn : Pawn
         
 
         //If the enemy's health reaches to 0
-        if (enemyHealth == 0)
+        if (this.enemyHealth == 0)
         {
             Player_Controller.player_controller.toggleLock = false;
             Instantiate(lootChances);

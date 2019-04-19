@@ -152,6 +152,7 @@ public abstract class Pawn : MonoBehaviour
         yield return new WaitForSeconds(duration);
         controller.isAscending = false;
         controller.isInGround = false;
+        manaDrop = false;
         transitionOn = false;
     }
 
@@ -168,15 +169,16 @@ public abstract class Pawn : MonoBehaviour
     }
 
     //This is for example, when you are hiding in the ground, you are using a little bit of your mana.
-    public IEnumerator PassiveManaUsage(float value, float decreaseBy)
+    public IEnumerator PassiveManaUsage(float duration, float decreaseBy)
     {
         if (GameManager.instance.manaUI.fillAmount != 0)
         {
+
             GameManager.instance.DecreaseMana(decreaseBy);
             manaDrop = true;
+            yield return new WaitForSeconds(duration);
+            manaDrop = false;
         }
-        yield return new WaitForSeconds(value);
-        manaDrop = false;
     }
 
     //Enemy Behaviour Functions

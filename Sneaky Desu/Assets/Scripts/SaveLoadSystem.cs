@@ -7,7 +7,7 @@ public static class SaveLoadSystem
     public static void SavePlayer(Player_Pawn player)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.sav";
+        string path = Application.persistentDataPath + "/hai.zen";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         PlayerData data = new PlayerData(player);
@@ -18,7 +18,7 @@ public static class SaveLoadSystem
 
     public static PlayerData LoadPlayer()
     {
-        string path = Application.persistentDataPath + "/player.sav";
+        string path = Application.persistentDataPath + "/hai.zen";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

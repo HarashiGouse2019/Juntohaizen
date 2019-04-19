@@ -10,10 +10,12 @@ public class Player_Pawn : Pawn
     public GameObject crossHair;
     public  GameObject closestObject;
     public GameObject enemyTarget;
+    public GameObject MagicSource; //This will be a prefab that we instantiate when our level value is greater than 0
     public float lockOnDistance;
     public bool targetNear = false;
     public float dist = 0f, targetDist, closest = 4f;
-    CircleCollider2D player_collider; 
+    public CircleCollider2D player_collider;
+
 
     public override void Awake()
     {
@@ -36,11 +38,21 @@ public class Player_Pawn : Pawn
         animator.SetBool("isInGround", controller.isInGround);
         animator.SetBool("isAscending", controller.isAscending);
 
-        if (GameManager.instance.currentHealth == 0)
+        Debug.Log("isInGround: " + controller.isInGround); manaUsageCoroutine = PassiveManaUsage(0.2f, 1f);
+        Debug.Log("CurrentMana: " + GameManager.instance.currentMana);
+
+        if (GameManager.instance.currentHealth == 0 )
         {
             GameManager.instance.ResetAllValues();
+            closestObject = null;
+            controller.toggleLock = false;
+            player_collider.isTrigger = true;
+            MagicSource.SetActive(false);
             gameObject.SetActive(false);
         }
+
+        if (GameManager.instance.currentMana == 0)
+            Ascend();
 
         GetClosestEnemy();
         if (closestObject == null)
@@ -56,14 +68,13 @@ public class Player_Pawn : Pawn
             player_collider.radius = 0.1f;
             player_collider.offset = new Vector2(-0.00999999f, -0.4f);
 
-            manaUsageCoroutine = PassiveManaUsage(1f, 1f);;
+            if (manaDrop == false) StartCoroutine(manaUsageCoroutine);
 
-            StartCoroutine(manaUsageCoroutine);
         }  else
         {
             player_collider.radius = 0.32f;
             player_collider.offset = new Vector2(-0.00999999f, 0.02180004f);
-
+            player_collider.isTrigger = false;
 
         }
     }
@@ -326,15 +337,21 @@ public class Player_Pawn : Pawn
             controller.isDescending = true;
             transitionCoroutine = DescendTransition(transitionDuration);
             StartCoroutine(transitionCoroutine);
-        } 
+        }
+
+        //When you want to Ascend
+        if (Input.GetKeyDown(controller.ascendKey))
+            Ascend();
     }
 
     public override void Ascend()
     {
-        if (transitionOn == false)
+        StopCoroutine(manaUsageCoroutine);
+        if (transitionOn == false && controller.isInGround == true)
         {
             controller.isWalking = false;
             controller.isAscending = true;
+            manaDrop = false;
             transitionCoroutine = AscendTransition(transitionDuration);
             StartCoroutine(transitionCoroutine);
         }

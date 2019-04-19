@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
 
-    public int totalGems = 0;
-    
-    public GameObject MagicSource; //This will be a prefab that we instantiate when our level value is greater than 0
+    Player_Pawn player;
 
+    public int totalGems = 0;
+  
     bool magicSourceMade = false; //Rather or not we have an instance of our defined prefab
 
     public Transform Target; //The target that the prefab will be using; It's the origin of our player
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         levelProgressionUI.fillAmount = levelProgression;
 
         playerPrefab = FindObjectOfType<Player_Pawn>().gameObject;
+        player = FindObjectOfType<Player_Pawn>();
 
         playerPrefab.SetActive(false);
     }
@@ -102,14 +103,16 @@ public class GameManager : MonoBehaviour
         InitiateKeyInput(); //All input from the keyboard will be called in this method
 
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
+        Debug.Log("magicSourceMade? : " + magicSourceMade);
 
         if (level > 0 && magicSourceMade == false)
         {
-            Instantiate(MagicSource);
+            
+            player.MagicSource.SetActive(true);
             magicSourceMade = true;
         }
 
-        if (MagicSource == null) magicSourceMade = false;
+        if (player.MagicSource.activeInHierarchy == false) magicSourceMade = false;
         ScanAllEnemies();
     }
 

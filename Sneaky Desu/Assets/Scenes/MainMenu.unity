@@ -2992,6 +2992,7 @@ MonoBehaviour:
   manager: {fileID: 0}
   player: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   player_spawn: {fileID: 684083356}
+  loadButton: {fileID: 1952236906}
 --- !u!4 &1098270215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2340308038348384282, guid: cd16836e33261ea4e8137a94145d0332,
@@ -4687,7 +4688,7 @@ MonoBehaviour:
     m_NormalColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0.20784314}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

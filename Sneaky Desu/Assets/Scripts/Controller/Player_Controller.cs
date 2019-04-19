@@ -79,7 +79,8 @@ public class Player_Controller : Controller
                 }
 
                 if (Input.GetKeyDown(descendKey))
-                    pawn.Descend(); //Hides 
+                    if (GameManager.instance.currentMana != 0)
+                        pawn.Descend(); //Hides 
 
                 else if (Input.GetKeyUp(ascendKey))
                     pawn.Ascend();
