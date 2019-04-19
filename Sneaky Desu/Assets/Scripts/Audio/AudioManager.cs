@@ -30,7 +30,13 @@ namespace MasterSounds
 
         private void Update()
         {
-            MusicVolume(volumeAdjust.value);
+            try
+            {
+                MusicVolume(volumeAdjust.value);
+            } catch
+            {
+                return;
+            }
         }
 
         // Update is called once per frame
