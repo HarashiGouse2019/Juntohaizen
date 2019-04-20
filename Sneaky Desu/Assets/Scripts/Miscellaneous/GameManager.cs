@@ -20,7 +20,9 @@ public class GameManager : MonoBehaviour
     Player_Pawn player;
 
     public int totalGems = 0;
-  
+
+    public bool typeIn = false;
+
     bool magicSourceMade = false; //Rather or not we have an instance of our defined prefab
 
     public Transform Target; //The target that the prefab will be using; It's the origin of our player
@@ -53,6 +55,10 @@ public class GameManager : MonoBehaviour
     [Header("Object Pooler")]
     public ObjectPooler ObjectPooler;
 
+    [Header("Text Box")]
+    public RawImage textBoxUI;
+    public TextMeshProUGUI dialogue;
+
 
 
     void Awake()
@@ -64,8 +70,8 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-        //    DontDestroyOnLoad(this);
-            
+            //    DontDestroyOnLoad(this);
+
         }
         //else
         //{
@@ -93,7 +99,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
         //Get the current active scene
         currentScene = SceneManager.GetActiveScene();
 
@@ -107,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         if (level > 0 && magicSourceMade == false)
         {
-            
+
             player.MagicSource.SetActive(true);
             magicSourceMade = true;
         }
@@ -121,7 +126,7 @@ public class GameManager : MonoBehaviour
         //Simply quits the game when on standalone
         if (Input.GetKey(KeyCode.Escape))
             Application.Quit();
-        
+
         //These inputs are here in order to test the UI 
         if (Input.GetKey(KeyCode.Return)) IncreaseLevel(1f);
         if (Input.GetKey(KeyCode.Backspace)) DecreaseLevel(1f);
@@ -242,6 +247,22 @@ public class GameManager : MonoBehaviour
             }
         }
         return enemyInstances.Count; //We then return the value of all instances through our List<GameObject>
+    }
+
+    public IEnumerator DisplayText(string text, float textspeed)
+    {
+        typeIn = false;
+        if (textBoxUI.gameObject.activeInHierarchy == false) textBoxUI.gameObject.SetActive(true);
+        char[] textArray = text.ToCharArray();
+
+        foreach (char singleLetter in textArray)
+        {
+            dialogue.text = dialogue.text + singleLetter;
+            yield return new WaitForSeconds(textspeed);
+            typeIn = true;
+        }
+
+     
     }
 
     public void ResetAllValues()

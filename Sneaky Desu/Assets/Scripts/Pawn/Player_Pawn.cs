@@ -31,7 +31,7 @@ public class Player_Pawn : Pawn
     public override void Update()
     {
         base.Update(); //Our parent update method
-
+        
         //Set up all animator parameters
         animator.SetBool("isWalking", controller.isWalking);
         animator.SetBool("isDescending", controller.isDescending);
