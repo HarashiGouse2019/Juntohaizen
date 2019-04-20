@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 257190614644368070}
   - component: {fileID: 257190614644368071}
   - component: {fileID: 257190614644368064}
+  - component: {fileID: 5650573279103335342}
+  - component: {fileID: 6313606951856074255}
   m_Layer: 0
   m_Name: Gem
   m_TagString: Gem
@@ -106,3 +108,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15038492, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &5650573279103335342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257190614644368065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af69496426df0449af14b3c1a36df6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &6313606951856074255
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257190614644368065}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

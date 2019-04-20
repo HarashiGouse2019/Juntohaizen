@@ -49,20 +49,20 @@ public class MainMenu : MonoBehaviour
 
                 //Load player health data
                 manager.currentHealth = data.health;
-                //manager.maxHealth = data.maxHealth;
-                //manager.healthUI.fillAmount = data.health / data.maxHealth;
+                manager.maxHealth = data.maxHealth;
+                manager.healthUI.fillAmount = data.health;
 
                 //Load mana data
                 manager.currentMana = data.mana;
-                //manager.maxMana = data.maxMana;
-                //manager.manaUI.fillAmount = data.mana / data.maxMana;
+                manager.maxMana = data.maxMana;
+                manager.manaUI.fillAmount = data.mana;
 
                 //Get the current level
                 manager.level = data.level;
 
                 //And next level progression
                 manager.levelProgression = data.levelProgression;
-                //manager.levelProgressionUI.fillAmount = data.levelProgression / 100f; 
+                manager.levelProgressionUI.fillAmount = data.levelProgression;
 
             } else
             {

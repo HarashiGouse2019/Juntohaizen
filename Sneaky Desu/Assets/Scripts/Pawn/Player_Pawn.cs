@@ -77,6 +77,21 @@ public class Player_Pawn : Pawn
             player_collider.isTrigger = false;
 
         }
+
+        if (controller.toggleLock == true)
+        {
+            if (transform.position.x > closestObject.transform.position.x)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = -1;
+                transform.localScale = xscale;
+            } else if (transform.position.x < closestObject.transform.position.x)
+            {
+                Vector3 xscale = transform.localScale;
+                xscale.x = 1;
+                transform.localScale = xscale;
+            }
+        }
     }
 
     public override void MoveFoward()
@@ -401,7 +416,8 @@ public class Player_Pawn : Pawn
         }
         else if (savePoint.gameObject.tag == "SavePoint")
         {
-            Debug.Log(savePoint.tag);
+            SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
+            StartCoroutine(obj.Show(0.005f));
             if (Input.GetKeyDown(controller.interact))
             {
                 SavePlayer(); Debug.Log("You Just Saved!!!!");
@@ -411,6 +427,8 @@ public class Player_Pawn : Pawn
 
     private void OnTriggerExit2D(Collider2D col)
     {
+        Collider2D savePoint = col;
+
         //We'll destory the hitbox so that it doesn't mysterious linger in the game invisble
         if (col.gameObject.tag == "hitbox")
         {
@@ -421,6 +439,14 @@ public class Player_Pawn : Pawn
         {
             player_collider.isTrigger = false;
         }
+
+        if (savePoint.gameObject.tag == "SavePoint")
+        {
+            SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
+            obj.toggle = true;
+            StartCoroutine(obj.Hide());
+        }
+           
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

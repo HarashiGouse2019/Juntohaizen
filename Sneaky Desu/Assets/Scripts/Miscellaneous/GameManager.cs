@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
     public float IncreaseLevel(float value)
     {
         levelProgressionUI.fillAmount += value / 100f; //Level will always go to 100. If it didn't, we would have "value / maxLevel"
-       // Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
+        levelProgression = levelProgressionUI.fillAmount;// Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
         if (levelProgressionUI.fillAmount == 1f)
         {
             float pastLevel = level;
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
     public float DecreaseLevel(float value)
     {
         levelProgressionUI.fillAmount -= value / 100f;//Level will always go to 100. If it didn't, we would have "value / maxLevel"
-                                                      // Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
+        levelProgression = levelProgressionUI.fillAmount;                                     // Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
         Debug.Log(levelProgressionUI.fillAmount);
 
         if (levelProgressionUI.fillAmount < 1f / maxHealth && level != 0f)

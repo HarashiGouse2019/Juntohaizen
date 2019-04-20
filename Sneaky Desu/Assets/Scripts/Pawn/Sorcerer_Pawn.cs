@@ -41,8 +41,8 @@ public class Sorcerer_Pawn : Pawn
         if (this.enemyHealth == 0)
         {
             Player_Controller.player_controller.toggleLock = false;
-            Instantiate(lootChances);
-            lootChances.transform.position = transform.position;
+            GameObject loot = Instantiate(lootChances.gameObject);
+            loot.transform.position = transform.position;
             Destroy(gameObject);
         }
 

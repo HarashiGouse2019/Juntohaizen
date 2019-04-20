@@ -5,17 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData
 {
-    public float health, mana, level, levelProgression, maxHealth, maxMana;
+    public float health, mana, level, levelProgression, maxHealth, maxMana; //All values
+    public float healthFill, manaFill, levelProFill; //All GUI bars
     public float[] position;
 
     public PlayerData (Player_Pawn player)
     {
         health = GameManager.instance.currentHealth;
         maxHealth = GameManager.instance.maxHealth;
+        healthFill = health / maxHealth;
+
         mana = GameManager.instance.currentMana;
         maxMana = GameManager.instance.maxMana;
+        manaFill = mana / maxMana;
+
         level = GameManager.instance.level;
         levelProgression = GameManager.instance.levelProgression;
+        levelProFill = levelProgression / 100f;
 
         position = new float[3];
         position[0] = player.transform.position.x;
