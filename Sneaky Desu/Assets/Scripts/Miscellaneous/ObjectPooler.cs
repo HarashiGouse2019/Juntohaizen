@@ -73,7 +73,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, int quantity = 1)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
     {
 
         if (!poolDictionary.ContainsKey(tag))
@@ -82,15 +82,14 @@ public class ObjectPooler : MonoBehaviour
             return null;
         }
 
-        
-        for (int i = 0; i < quantity; i++)
-        {
-            objectToSpawn = poolDictionary[tag].Dequeue();
-            objectToSpawn.SetActive(true);
 
-            objectToSpawn.transform.position = position;
-            objectToSpawn.transform.rotation = rotation;
-        }
+
+        objectToSpawn = poolDictionary[tag].Dequeue();
+        objectToSpawn.SetActive(true);
+
+        objectToSpawn.transform.position = position;
+        objectToSpawn.transform.rotation = rotation;
+
         Vector3 scalex = objectToSpawn.transform.localScale;
         scalex.x = player.gameObject.transform.localScale.x;
         objectToSpawn.transform.localScale = scalex;

@@ -24,7 +24,6 @@ public class Sorcerer_Pawn : Pawn
     public override void Start()
     {
         base.Start(); //Our parent start method;
-        
         instance = this;
         enemyHealth = 20f;
         walkSpeed = 1f;

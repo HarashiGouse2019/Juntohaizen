@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static MasterSounds.AudioManager;
 
 public class Player_Pawn : Pawn
 {
@@ -26,20 +25,18 @@ public class Player_Pawn : Pawn
     {
         base.Start(); //Our parent start method
         player_collider = GetComponent<CircleCollider2D>();
+        
     }
 
     public override void Update()
     {
         base.Update(); //Our parent update method
-        
+        manaUsageCoroutine = PassiveManaUsage(0.05f, 1f);
         //Set up all animator parameters
         animator.SetBool("isWalking", controller.isWalking);
         animator.SetBool("isDescending", controller.isDescending);
         animator.SetBool("isInGround", controller.isInGround);
         animator.SetBool("isAscending", controller.isAscending);
-
-        Debug.Log("isInGround: " + controller.isInGround); manaUsageCoroutine = PassiveManaUsage(0.2f, 1f);
-        Debug.Log("CurrentMana: " + GameManager.instance.currentMana);
 
         if (GameManager.instance.currentHealth == 0 )
         {
@@ -64,10 +61,10 @@ public class Player_Pawn : Pawn
         //Checking if hiding in the ground
         if (controller.isInGround == true)
         {
-
+            
             player_collider.radius = 0.1f;
             player_collider.offset = new Vector2(-0.00999999f, -0.4f);
-
+            
             if (manaDrop == false) StartCoroutine(manaUsageCoroutine);
 
         }  else
@@ -293,12 +290,12 @@ public class Player_Pawn : Pawn
                         //closest = dist;
                         Instantiate(crossHair);
                         crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
-                        audioManager.Play("LockOn");
+                    AudioManager.audioManager.Play("LockOn");
                         Magic_Movement.radius = 0.5f;
                     }
                 break;
             case false:
-                audioManager.Play("LockOff");
+                AudioManager.audioManager.Play("LockOff");
                 
                 break;
         }

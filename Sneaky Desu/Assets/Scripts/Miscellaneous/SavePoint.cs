@@ -26,7 +26,6 @@ public class SavePoint : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(toggle);
         saveAlpha.color = alpha;
         if (toggle == true)
         {

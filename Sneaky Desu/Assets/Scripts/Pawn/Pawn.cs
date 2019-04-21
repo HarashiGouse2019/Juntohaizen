@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static MasterSounds.AudioManager;
 
 
 public abstract class Pawn : MonoBehaviour
@@ -130,7 +129,7 @@ public abstract class Pawn : MonoBehaviour
         //This will produce footstep noises as we move
         if (step == false)
         {
-            audioManager.Play("Walk");
+            AudioManager.audioManager.Play("Walk");
             step = true;
             yield return new WaitForSeconds((float)0.15);
             step = false;

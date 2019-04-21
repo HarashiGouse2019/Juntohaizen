@@ -219,7 +219,7 @@ MonoBehaviour:
     type: 3}
   totalGems: 0
   typeIn: 0
-  Target: {fileID: 4787750246169100357, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
+  Target: {fileID: 4920462535734378938, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   maxHealth: 100
   maxMana: 100
   currentHealth: 0
@@ -2268,6 +2268,7 @@ MonoBehaviour:
   dialogue:
   - I don't know what this is.
   - What is this...
+  delay: 0
 --- !u!1 &654773303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3340,7 +3341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41d3bc7b091b6c64a8d2cb1b06b5fe99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
+  manager: {fileID: 47764352}
   player: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   player_spawn: {fileID: 684083356}
   loadButton: {fileID: 1952236906}

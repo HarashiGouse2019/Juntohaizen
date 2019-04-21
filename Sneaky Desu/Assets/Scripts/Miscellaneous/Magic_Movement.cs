@@ -7,7 +7,7 @@ public class Magic_Movement : MonoBehaviour
 
     public GameObject Player; //The player game object
 
-    public Player_Pawn pawn;
+    public Pawn pawn;
 
     public float rotateSpeed = 5f; //Rotations speed
     [HideInInspector] public static float radius = 1f; //The radius our magic will be taking
@@ -34,8 +34,6 @@ public class Magic_Movement : MonoBehaviour
         {
             Player = FindObjectOfType<Player_Pawn>().gameObject;
         }
-
-        Debug.Log(Player_Controller.player_controller.toggleLock);
 
         //All this will cause our game object to circle around the player once activated
         centre = Player.transform.position;

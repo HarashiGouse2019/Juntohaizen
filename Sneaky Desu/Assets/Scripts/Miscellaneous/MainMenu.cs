@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using static MasterSounds.AudioManager;
 
 public class MainMenu : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class MainMenu : MonoBehaviour
 
     public Player_Pawn player;
     public Player_Spawn player_spawn;
+
+    bool fileSearchStart = false;
 
     Scene sceneBeforeSave;
 
@@ -24,7 +25,7 @@ public class MainMenu : MonoBehaviour
     public void Start()
     {
         manager = GameManager.instance;
-        audioManager.Play("JuntohaizenOST");
+        AudioManager.audioManager.Play("JuntohaizenOST");
     }
 
     public void Update()
@@ -32,7 +33,7 @@ public class MainMenu : MonoBehaviour
         string path = Application.persistentDataPath + "/hai.zen";
         try
         {
-            if (File.Exists(path))
+            if (File.Exists(path) && fileSearchStart == false)
             {
 
                 loadButton.interactable = true;
@@ -63,10 +64,11 @@ public class MainMenu : MonoBehaviour
                 //And next level progression
                 manager.levelProgression = data.levelProgression;
                 manager.levelProgressionUI.fillAmount = data.levelProgression;
-
+                fileSearchStart = true;
             } else
             {
                 loadButton.interactable = false;
+                fileSearchStart = true;
             }
         } catch
         {
@@ -92,17 +94,15 @@ public class MainMenu : MonoBehaviour
         manager.currentMana = manager.maxMana;
         manager.manaUI.fillAmount = manager.currentMana / manager.maxMana;
 
-        audioManager.Stop("JuntohaizenOST");
-
         //Resetting All Values
         manager.ResetAllValues();
         player_spawn.gameObject.SetActive(true);
         manager.GUI_ACTIVE = true;
-
-  
  
         manager.playerPrefab.SetActive(true);
         manager.playerPrefab.transform.position = position;
+
+        AudioManager.audioManager.Stop("JuntohaizenOST");
 
         manager.Goto_Scene("Level1-1");
     }
@@ -116,7 +116,7 @@ public class MainMenu : MonoBehaviour
         data = SaveLoadSystem.LoadPlayer();
 
         manager.playerPrefab.SetActive(true);
-
+        AudioManager.audioManager.Stop("JuntohaizenOST");
         manager.Goto_Scene(sceneBeforeSave.ToString());
     }
 

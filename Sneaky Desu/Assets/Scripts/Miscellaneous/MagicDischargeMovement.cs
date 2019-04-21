@@ -30,7 +30,9 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
     }
     public void OnObjectSpawn()
     {
-
+        float speedInFront = Magic_Discharge.buffSpeed + 5;
+        float speedBehind = Magic_Discharge.buffSpeed - 2;
+        StartCoroutine(delayCoroutine);
         //Whenever we are shooting, our point of fire will be rotating around the player
         //As we move forward, there are times when the bullets are closer to each other
         //whenever there'a max or min of our point of fire's movement (below the player, or above the player)
@@ -40,34 +42,27 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
             case 1:
                 if (Mathf.Sign(Mathf.Cos(Magic_Movement.angle)) == -1)
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed + 5;
+                    baseSpeed = speedInFront;
                 }
                 else
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed - 5;
+                    baseSpeed = speedBehind;
                 }
                 break;
             case -1:
                 if (Mathf.Sign(Mathf.Cos(Magic_Movement.angle)) == 1)
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed + 5;
+                    baseSpeed = speedInFront;
                 }
                 else
                 {
-                    baseSpeed = Magic_Discharge.buffSpeed - 5;
+                    baseSpeed = speedBehind;
                 }
                 break;
         }
 
         //The projectory of our "bullet"
         rb.velocity = transform.right * baseSpeed * Player.transform.localScale.x;
-
-        StartCoroutine(delayCoroutine);
-    }
-
-    void Update()
-    {
-        Debug.Log("Buff Speed is currently " + baseSpeed);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

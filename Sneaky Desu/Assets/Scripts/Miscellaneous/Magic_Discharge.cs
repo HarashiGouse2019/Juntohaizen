@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using static MasterSounds.AudioManager;
 
 public class Magic_Discharge : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class Magic_Discharge : MonoBehaviour
 
     [Range(1, 20)] public int recoilSpeed;
 
-    bool isKeyReleased, ready = true;
+    bool isKeyReleased = true, ready = true;
 
     enum DISCHARGE_AMOUNT
     {
@@ -47,7 +46,6 @@ public class Magic_Discharge : MonoBehaviour
         speed = speedValue;
         buffSpeed = speed * dischargeAmount;
         type = (int) dischargeAmount - 1;
-
     }
 
     // Update is called once per frame
@@ -55,6 +53,8 @@ public class Magic_Discharge : MonoBehaviour
     {
         if (manager.currentMana != 0) canUseMana = true;
         else canUseMana = false;
+
+        type = (int) manager.level - 1;
 
         //When the player shots lazers
         if (Input.GetKey(Player_Controller.player_controller.shoot))
@@ -92,15 +92,15 @@ public class Magic_Discharge : MonoBehaviour
             switch (type)
             {
                 case 0:
-                    audioManager.Play("Shoot000");
+                    AudioManager.audioManager.Play("Shoot000");
                     objectPooler.SpawnFromPool("LowMana", magicSource.position, magicSource.localRotation);
                     break;
                 case 1:
-                    audioManager.Play("Shoot001");
+                    AudioManager.audioManager.Play("Shoot001");
                     objectPooler.SpawnFromPool("MediumMana", magicSource.position, magicSource.localRotation);
                     break;
                 case 2:
-                    audioManager.Play("Shoot002");
+                    AudioManager.audioManager.Play("Shoot002");
                     objectPooler.SpawnFromPool("HighMana", magicSource.position, magicSource.localRotation);
                     break;
             }

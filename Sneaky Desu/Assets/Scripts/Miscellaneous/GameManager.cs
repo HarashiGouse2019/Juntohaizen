@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using static MasterSounds.AudioManager;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -70,14 +69,14 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            //    DontDestroyOnLoad(this);
-
+            DontDestroyOnLoad(this);
+            Instantiate(playerPrefab);
         }
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-        Instantiate(playerPrefab);
+        else
+        {
+            Destroy(gameObject);
+        }
+       
     }
 
     void Start()
@@ -108,8 +107,6 @@ public class GameManager : MonoBehaviour
         InitiateKeyInput(); //All input from the keyboard will be called in this method
 
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
-        Debug.Log("magicSourceMade? : " + magicSourceMade);
-
         if (level > 0 && magicSourceMade == false)
         {
 
@@ -149,7 +146,7 @@ public class GameManager : MonoBehaviour
             float pastLevel = level;
             level += 1;
             levelProgressionUI.fillAmount = 0f;
-            audioManager.Play("LevelUp");
+            AudioManager.audioManager.Play("LevelUp");
         }
         return value;
 
