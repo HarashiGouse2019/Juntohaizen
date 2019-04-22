@@ -204,4 +204,9 @@ public abstract class Pawn : MonoBehaviour
 
     }
 
+    public virtual void Aggro()
+    {
+
+    }
+
 }

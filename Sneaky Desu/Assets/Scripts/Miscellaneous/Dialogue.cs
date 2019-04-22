@@ -4,27 +4,15 @@ using UnityEngine;
 
 public class Dialogue : MonoBehaviour
 {
-    public static Dialogue dialogueList;
-
     public string[] dialogue;
 
-    [HideInInspector] public float delay = 0;
-
-    private void Awake()
+    public void Run(int index, float speed)
     {
-        if (dialogueList == null)
+        bool running = false;
+        if (running == false)
         {
-            dialogueList = this;
+            running = true;
+            StartCoroutine(GameManager.instance.DisplayText(dialogue[index], speed));
         }
-    }
-
-    private void Update()
-    {
-        delay -= Time.timeScale;
-    }
-
-    public void Run(int index, float speed, float delay)
-    {
-        StartCoroutine(GameManager.instance.DisplayText(dialogue[index], speed));   
     }
 }

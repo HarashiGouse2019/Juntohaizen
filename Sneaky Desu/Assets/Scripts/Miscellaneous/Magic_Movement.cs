@@ -5,7 +5,7 @@ using UnityEngine;
 public class Magic_Movement : MonoBehaviour
 {
 
-    public GameObject Player; //The player game object
+    public GameObject Wielder; //The player game object
 
     public Pawn pawn;
 
@@ -23,20 +23,20 @@ public class Magic_Movement : MonoBehaviour
     {
         angle = _angleValue;
         radius = _radius;
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Wielder = GameObject.FindGameObjectWithTag("Player");
         pawn = FindObjectOfType<Player_Pawn>();
     }
 
     private void Update()
     {
         
-        if (Player == null)
+        if (Wielder == null)
         {
-            Player = FindObjectOfType<Player_Pawn>().gameObject;
+            Wielder = FindObjectOfType<Player_Pawn>().gameObject;
         }
 
         //All this will cause our game object to circle around the player once activated
-        centre = Player.transform.position;
+        centre = Wielder.transform.position;
 
         angle += rotateSpeed * Time.deltaTime;
 

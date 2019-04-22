@@ -9,13 +9,15 @@ public class Swordsman_Guard_Pawn : Pawn
     public Loot_Chances lootChances;
     public static GameObject HitBox; //The hitbox prefab that we'll instantiate
 
-   
+    private float manaReserve;
+
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start(); //Our parent start method;
         instance = this;
         enemyHealth = 3f;
+        manaReserve = enemyHealth * 2f;
     }
 
     // Update is called once per frame
@@ -24,11 +26,12 @@ public class Swordsman_Guard_Pawn : Pawn
         base.Update(); //OUr parent update method
 
         //If the enemy's health reaches to 0
-        if (this.enemyHealth == 0)
+        if (this.enemyHealth < 1)
         {
             Player_Controller.player_controller.toggleLock = false;
             GameObject loot = Instantiate(lootChances.gameObject);
             loot.transform.position = transform.position;
+            GameManager.instance.IncreaseMana(manaReserve);
             Destroy(gameObject);
         }
     }

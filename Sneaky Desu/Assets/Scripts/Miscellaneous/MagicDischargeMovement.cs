@@ -19,17 +19,19 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        Player = GameObject.FindGameObjectWithTag("Player");
+        
         xscale = gameObject.transform.localScale;
         xscale.x = Player.transform.localScale.x;
         gameObject.transform.localScale = xscale;
 
         baseSpeed = Magic_Discharge.buffSpeed; //The basespeed will be modified depend on the level
 
-        delayCoroutine = Delay(0.60f); //delay by 1 second
+        
     }
     public void OnObjectSpawn()
     {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        delayCoroutine = Delay(0.60f); //delay by 1 second
         float speedInFront = Magic_Discharge.buffSpeed + 5;
         float speedBehind = Magic_Discharge.buffSpeed - 2;
         StartCoroutine(delayCoroutine);

@@ -16,7 +16,7 @@ public class Magic_Discharge : MonoBehaviour
 
     [Range(1, 20)] public int recoilSpeed;
 
-    bool isKeyReleased = true, ready = true;
+    bool ready = true;
 
     enum DISCHARGE_AMOUNT
     {
@@ -59,7 +59,6 @@ public class Magic_Discharge : MonoBehaviour
         //When the player shots lazers
         if (Input.GetKey(Player_Controller.player_controller.shoot))
         {
-            isKeyReleased = false;
             coroutine = Recoil();
             if (manager.currentMana != 0)
             {
@@ -79,7 +78,6 @@ public class Magic_Discharge : MonoBehaviour
         }
         else if (Input.GetKeyUp(Player_Controller.player_controller.shoot))
         {
-            isKeyReleased = true;
             ready = true;
             StopCoroutine(coroutine);
         }

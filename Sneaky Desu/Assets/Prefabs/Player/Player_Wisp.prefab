@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0377ee1e0a0339d4794f1a0c33b639c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
+  Wielder: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   pawn: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
   rotateSpeed: 5
   _radius: -1

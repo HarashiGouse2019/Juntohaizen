@@ -105,6 +105,9 @@ public class MainMenu : MonoBehaviour
         AudioManager.audioManager.Stop("JuntohaizenOST");
 
         manager.Goto_Scene("Level1-1");
+
+        Dialogue dialogue = GameManager.instance.GetComponent<Dialogue>();
+        dialogue.Run(1, 0.01f);
     }
 
     public void Load()

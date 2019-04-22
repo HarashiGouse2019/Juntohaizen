@@ -70,7 +70,7 @@ MonoBehaviour:
       type: 3}
     size: 100
   - tag: enemyPlasma
-    prefab: {fileID: 2966800488066394359, guid: d9b2b89852d3cf842b0ae2f631cca3c7,
+    prefab: {fileID: 1442424399216355634, guid: 957cf6136379cb840a76d61e0079a0e0,
       type: 3}
     size: 100
-  player: {fileID: 0}
+  player: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}

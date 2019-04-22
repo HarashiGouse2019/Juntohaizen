@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public float currentHealth, currentMana; //The current health and the current mana that the player has
 
-    [HideInInspector] public float levelProgression = 0, level = 0; //How far we are to our next level, and our current level
+    [HideInInspector] public float levelProgression = 0, level = 1; //How far we are to our next level, and our current level
 
     [Header("Player Status UI Reference")]
     public RawImage GUIParent; // This is just the background interface
@@ -123,13 +123,6 @@ public class GameManager : MonoBehaviour
         //Simply quits the game when on standalone
         if (Input.GetKey(KeyCode.Escape))
             Application.Quit();
-
-        //These inputs are here in order to test the UI 
-        if (Input.GetKey(KeyCode.Return)) IncreaseLevel(1f);
-        if (Input.GetKey(KeyCode.Backspace)) DecreaseLevel(1f);
-        if (Input.GetKey(KeyCode.Equals)) IncreaseMana(1f);
-        if (Input.GetKey(KeyCode.Minus)) DecreaseMana(1f);
-        if (Input.GetKey(KeyCode.M)) totalGems++;
 
         levelUI.text = level.ToString();
         gemAmount.text = totalGems.ToString("D4");//Text only takes a string, however level is an integer.
@@ -249,17 +242,27 @@ public class GameManager : MonoBehaviour
     public IEnumerator DisplayText(string text, float textspeed)
     {
         typeIn = false;
-        if (textBoxUI.gameObject.activeInHierarchy == false) textBoxUI.gameObject.SetActive(true);
-        char[] textArray = text.ToCharArray();
-
-        foreach (char singleLetter in textArray)
+        textBoxUI.gameObject.SetActive(true);
+        if (dialogue.text.Length > 0)
         {
-            dialogue.text = dialogue.text + singleLetter;
-            yield return new WaitForSeconds(textspeed);
-            typeIn = true;
+            dialogue.text = "";
         }
 
-     
+        //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
+        for (int i = 0; i < text.Length; i++)
+        { 
+            StartCoroutine(DisableDelay());
+            dialogue.text = text.Substring(0, i);
+            yield return new WaitForSeconds(textspeed);
+            typeIn = true;
+        }   
+    }
+
+    public IEnumerator DisableDelay()
+    {
+        yield return new WaitForSeconds(5f);
+        textBoxUI.gameObject.SetActive(false);
+        StopCoroutine(DisableDelay());
     }
 
     public void ResetAllValues()
@@ -267,7 +270,7 @@ public class GameManager : MonoBehaviour
         enemyInstances = new List<GameObject>();
         healthUI.fillAmount = maxHealth; //Current health is set to a defined max health
         manaUI.fillAmount = maxMana; //Current mana is set to a defined max mana
-        level = 0;
+        level = 1;
         levelProgressionUI.fillAmount = 0f;
         magicSourceMade = false;
     }

@@ -15,6 +15,7 @@ TagManager:
   - TextBox
   - Dialogue
   - SaveLogo
+  - Plasma
   layers:
   - Default
   - TransparentFX

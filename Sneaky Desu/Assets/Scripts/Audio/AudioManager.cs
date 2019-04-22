@@ -10,9 +10,6 @@ public class AudioManager : MonoBehaviour
     public Audio[] getAudio;
     public Slider volumeAdjust; //Reference to our volume slider in the options menu
 
-    bool collectAudio = true;
-
-
     // Start is called before the first frame update
     void Awake()
     {

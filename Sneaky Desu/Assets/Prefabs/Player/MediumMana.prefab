@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 5850316786824358948}
-  Player: {fileID: 0}
+  Player: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
 --- !u!58 &3821398989238430652
 CircleCollider2D:
   m_ObjectHideFlags: 0

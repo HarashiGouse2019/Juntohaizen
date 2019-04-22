@@ -5,11 +5,18 @@ using UnityEngine;
 public class Sorcerer_Controller : Controller
 {
     public Sorcerer_Pawn sorcerer;
+    Player_Pawn player;
+
+    public float aggroDistance = 5f; //The distance in which the socerer 
+    public float stoppingDistance = 3f;
+    public float retreatDistance = 2f;
+
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
         sorcerer = GetComponent<Sorcerer_Pawn>();
+        player = FindObjectOfType<Player_Pawn>();
     }
 
     public void Update()
@@ -18,11 +25,21 @@ public class Sorcerer_Controller : Controller
 
         pawn.rb.velocity = sorcerer.direction; sorcerer.isMoving = true;
 
-        pawn.MoveAbout();
+        sorcerer.MoveAbout();
 
         //Flipping over the X-Axis if necessary
         Vector3 xscale = transform.localScale;
         xscale.x = Mathf.Sign(sorcerer.rb.velocity.x);
         transform.localScale = xscale;
+
+        //Calculating the distance between this object and the player
+        if (Vector2.Distance(transform.position, player.transform.position) < aggroDistance)
+        {
+            sorcerer.aggroState = true;
+        }
+        else
+        {
+            sorcerer.aggroState = false;
+        }
     }
 }

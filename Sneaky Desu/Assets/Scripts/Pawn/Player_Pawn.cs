@@ -296,7 +296,6 @@ public class Player_Pawn : Pawn
                 break;
             case false:
                 AudioManager.audioManager.Play("LockOff");
-                
                 break;
         }
 
@@ -385,40 +384,51 @@ public class Player_Pawn : Pawn
 
         //If we come across some gems, we'll increase our level, our mana, decrease the existing amount of 
         //active gems in the scene and destory the gem game object that we collide with.
-        if (collectibles.gameObject.tag == "Gem")
+        switch (collectibles.gameObject.tag)
         {
-            manager.IncreaseLevel(2f);
-            manager.IncreaseMana(1f);
-            manager.totalGems++;
-            collectibles.gameObject.SetActive(false);
-        } else if (collectibles.gameObject.tag == "Lives")
-        {
-            manager.IncreaseHealth(5f);
-            collectibles.gameObject.SetActive(false);
-        } else if (collectibles.gameObject.tag == "xLives")
-        {
-            manager.IncreaseHealth(20f);
-            collectibles.gameObject.SetActive(false);
-        } 
+            case "Gem":
+                manager.IncreaseLevel(2f);
+                manager.IncreaseMana(1f);
+                manager.totalGems++;
+                collectibles.gameObject.SetActive(false);
+                break;
+            case "Lives":
+                manager.IncreaseHealth(5f);
+                collectibles.gameObject.SetActive(false);
+                break;
+            case "xLives":
+                manager.IncreaseHealth(20f);
+                collectibles.gameObject.SetActive(false);
+                break;
+
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)
     {
         Collider2D savePoint = col;
 
-        //This is for taking damage from the hit box
-        if (col.gameObject.tag == "hitbox")
+        switch(col.gameObject.tag)
         {
-            GameManager.instance.DecreaseHealth(3f);
-        }
-        else if (savePoint.gameObject.tag == "SavePoint")
-        {
-            SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
-            StartCoroutine(obj.Show(0.005f));
-            if (Input.GetKeyDown(controller.interact))
-            {
-                SavePlayer(); Debug.Log("You Just Saved!!!!");
-            }
+            case "hitbox":
+                GameManager.instance.DecreaseHealth(3f);
+                break;
+            case "SavePoint":
+                SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
+                StartCoroutine(obj.Show(0.005f));
+                bool save = false;
+                if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1 && save == false)
+                {
+                    save = true;
+                    Dialogue dialogueList = GameManager.instance.GetComponent<Dialogue>();
+                    dialogueList.Run(0, 0.01f);
+                    SavePlayer(); Debug.Log("You Just Saved!!!!");
+                }
+                break;
+            case "Plasma":
+                GameManager.instance.DecreaseHealth(10f);
+                col.gameObject.SetActive(false);
+                break;
         }
     }
 
@@ -426,31 +436,31 @@ public class Player_Pawn : Pawn
     {
         Collider2D savePoint = col;
 
-        //We'll destory the hitbox so that it doesn't mysterious linger in the game invisble
-        if (col.gameObject.tag == "hitbox")
+        switch(col.gameObject.tag)
         {
-            Destroy(col.gameObject);
-        }
-
-        if (col.gameObject.tag == "Enemy")
-        {
-            player_collider.isTrigger = false;
-        }
-
-        if (savePoint.gameObject.tag == "SavePoint")
-        {
-            SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
-            obj.toggle = true;
-            StartCoroutine(obj.Hide());
+            //We'll destory the hitbox so that it doesn't mysterious linger in the game invisble
+            case "hitbox":
+                Destroy(col.gameObject);
+                break;
+            case "Enemy":
+                player_collider.isTrigger = false;
+                break;
+            case "SavePoint":
+                SavePoint obj = savePoint.gameObject.GetComponent<SavePoint>();
+                obj.toggle = true;
+                StartCoroutine(obj.Hide());
+                break;
         }
            
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        switch (collision.gameObject.tag)
         {
-            player_collider.isTrigger = true;
+            case "Enemy":
+                player_collider.isTrigger = true;
+                break;
         }
     }
 }
