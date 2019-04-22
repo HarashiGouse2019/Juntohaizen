@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
         {
             float pastLevel = level;
             level += 1;
+            IncreaseHealth(maxHealth);
             levelProgressionUI.fillAmount = 0f;
             AudioManager.audioManager.Play("LevelUp");
         }
@@ -241,27 +242,32 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator DisplayText(string text, float textspeed)
     {
-        typeIn = false;
-        textBoxUI.gameObject.SetActive(true);
-        if (dialogue.text.Length > 0)
+        if (typeIn == false)
         {
-            dialogue.text = "";
-        }
+            textBoxUI.gameObject.SetActive(true);
+            if (dialogue.text.Length > 0)
+            {
+                dialogue.text = "";
+            }
 
-        //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
-        for (int i = 0; i < text.Length; i++)
-        { 
-            StartCoroutine(DisableDelay());
-            dialogue.text = text.Substring(0, i);
-            yield return new WaitForSeconds(textspeed);
+            //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
+            for (int i = 0; i < text.Length; i++)
+            {
+                StartCoroutine(DisableDelay());
+                dialogue.text = text.Substring(0, i);
+                AudioManager.audioManager.Play("Type000");
+                yield return new WaitForSeconds(textspeed);
+
+            }
             typeIn = true;
-        }   
+        }
     }
 
     public IEnumerator DisableDelay()
     {
         yield return new WaitForSeconds(5f);
         textBoxUI.gameObject.SetActive(false);
+        typeIn = false;
         StopCoroutine(DisableDelay());
     }
 

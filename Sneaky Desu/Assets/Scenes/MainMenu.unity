@@ -3443,11 +3443,11 @@ MonoBehaviour:
     pitch: 1
     enableLoop: 0
     source: {fileID: 0}
-  - name: Onward
-    clip: {fileID: 8300000, guid: 45664ba7df7f5a041abdf4ea53117bce, type: 3}
-    volume: 1
+  - name: Type000
+    clip: {fileID: 8300000, guid: 100cb9e48a3d0484cbe5c24e18a8a654, type: 3}
+    volume: 0.5
     pitch: 1
-    enableLoop: 1
+    enableLoop: 0
     source: {fileID: 0}
   volumeAdjust: {fileID: 1167734309}
 --- !u!4 &1099938031

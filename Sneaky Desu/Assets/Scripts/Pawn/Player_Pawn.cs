@@ -40,6 +40,8 @@ public class Player_Pawn : Pawn
 
         if (GameManager.instance.currentHealth == 0 )
         {
+            step = false;
+            isWaiting = false;
             GameManager.instance.ResetAllValues();
             closestObject = null;
             controller.toggleLock = false;
