@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 47764353}
   - component: {fileID: 47764352}
   - component: {fileID: 47764354}
+  - component: {fileID: 47764355}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -277,6 +278,19 @@ MonoBehaviour:
   dialogue:
   - Your progress has been saved!!!
   - This game is only the demo! You'll start at Level 1 as a gift.
+--- !u!114 &47764355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47764351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffe719222d2aa342aca391923b249c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  COMMENTS: 
 --- !u!1 &60347648
 GameObject:
   m_ObjectHideFlags: 0

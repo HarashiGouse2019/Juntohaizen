@@ -31,9 +31,10 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
     public void OnObjectSpawn()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        delayCoroutine = Delay(0.60f); //delay by 1 second
+        
         float speedInFront = Magic_Discharge.buffSpeed + 5;
         float speedBehind = Magic_Discharge.buffSpeed - 2;
+        delayCoroutine = Delay(0.60f); //delay by 1 second
         StartCoroutine(delayCoroutine);
         //Whenever we are shooting, our point of fire will be rotating around the player
         //As we move forward, there are times when the bullets are closer to each other

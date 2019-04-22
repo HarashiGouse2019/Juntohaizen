@@ -69,7 +69,7 @@ public class ObjectPooler : MonoBehaviour
         if (player == null)
         {
             player = FindObjectOfType<Player_Pawn>();
-            poolDictionary = new Dictionary<string, Queue<GameObject>>();
+            
         }
     }
 

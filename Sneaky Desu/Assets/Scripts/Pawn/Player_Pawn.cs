@@ -422,7 +422,7 @@ public class Player_Pawn : Pawn
                     save = true;
                     Dialogue dialogueList = GameManager.instance.GetComponent<Dialogue>();
                     dialogueList.Run(0, 0.01f);
-                    SavePlayer(); Debug.Log("You Just Saved!!!!");
+                    SavePlayer();
                 }
                 break;
             case "Plasma":
