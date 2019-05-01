@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     public bool typeIn = false;
 
+    public bool paused = false; //Check if the game has paused!!!
+
     bool magicSourceMade = false; //Rather or not we have an instance of our defined prefab
 
     public Transform Target; //The target that the prefab will be using; It's the origin of our player
@@ -42,6 +44,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelUI; //Reference our Level UI text
     public SpriteRenderer PlayerImage; //The image that the player takes on.
     public bool GUI_ACTIVE;
+
+    [Header("Pause Menu UI")]
+    public Canvas pauseMenuUI; //Get a reference of the Pause Menu UI
 
     [Header("Spawn Destination")]
     public string Scene_Name;
@@ -114,8 +119,35 @@ public class GameManager : MonoBehaviour
             magicSourceMade = true;
         }
 
-        if (player.MagicSource.activeInHierarchy == false) magicSourceMade = false;
-        ScanAllEnemies();
+        if (player.MagicSource.activeInHierarchy == false) magicSourceMade = false; //If the player dies, and is ability is still in scene, we disable it.
+
+        ScanAllEnemies(); //Iterate through all enemy instances in the current scene. This will then create a list.
+
+        //Player Pausing the game
+        //If the pause button has been pressed
+        if (Input.GetKeyDown(Player_Controller.player_controller.pause))
+        {
+            if (Player_Controller.player_controller.p == 0) //If the game doesn't know that the pause button is being pressed
+            {
+                switch (paused)
+                {
+                    case false:
+                        PauseGame(true); //Pause the game
+                        Time.timeScale = 0f; //It will stop time like DIO!!!!
+                        break;
+                    case true:
+                        PauseGame(false); //Unpause the game
+                        Time.timeScale = 1f;
+                        break;
+                }
+
+                Player_Controller.player_controller.p = 1; //Pause Button is pressed down
+            }
+        }
+        else
+        {
+            Player_Controller.player_controller.p = 0; //The pause button is released
+        }
     }
 
     void InitiateKeyInput()
@@ -238,6 +270,14 @@ public class GameManager : MonoBehaviour
             }
         }
         return enemyInstances.Count; //We then return the value of all instances through our List<GameObject>
+    }
+
+    //Pauses the game
+    public bool PauseGame(bool active)
+    {
+        pauseMenuUI.gameObject.SetActive(active);
+        paused = active;
+        return active;
     }
 
     public IEnumerator DisplayText(string text, float textspeed)

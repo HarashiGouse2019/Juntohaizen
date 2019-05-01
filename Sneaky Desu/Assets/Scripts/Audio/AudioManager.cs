@@ -35,8 +35,10 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-            
-
+        if (volumeAdjust == null)
+        {
+            volumeAdjust = FindObjectOfType<Slider>();
+        }
         try
         {
             MusicVolume(volumeAdjust.value);

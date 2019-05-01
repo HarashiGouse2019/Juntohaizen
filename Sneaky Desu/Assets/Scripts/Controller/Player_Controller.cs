@@ -20,7 +20,8 @@ public class Player_Controller : Controller
 
     [Header("Key Mapping")]
     //Map movement to a selected key
-    int d = 0; //For toggling
+    int d = 0; //For toggling action buttons
+    public int p = 0; //For toggling pause button; Unique.
     public KeyCode right = KeyCode.RightArrow; //Default for moving right
     public KeyCode left = KeyCode.LeftArrow; //Default for moving left
     public KeyCode up = KeyCode.UpArrow; //Default for moving up
@@ -30,6 +31,7 @@ public class Player_Controller : Controller
     public KeyCode shoot = KeyCode.Z; //Default for shooting
     public KeyCode lockOnKey = KeyCode.LeftShift; //Default for locking on/off
     public KeyCode interact = KeyCode.C; //interacting with save points
+    public KeyCode pause = KeyCode.Q; //Pausing the game
     
     public void Awake()
     {
@@ -78,13 +80,16 @@ public class Player_Controller : Controller
                     isWalking = false;
                 }
 
+                //Descending into the ground
                 if (Input.GetKeyDown(descendKey))
                     if (GameManager.instance.currentMana != 0)
                         pawn.Descend(); //Hides 
 
+                //Ascending from the ground
                 else if (Input.GetKeyUp(ascendKey))
                     pawn.Ascend();
 
+                //Locking onto targets
                 if (Input.GetKeyDown(lockOnKey))
                 {
                     if (d == 0)
@@ -120,6 +125,7 @@ public class Player_Controller : Controller
                 }
             }
 
+            //If the player is walking, play some audio
             if (isWalking == true)
             {
                 StartCoroutine(pawn.coroutine); //Start our coroutine walking steps
