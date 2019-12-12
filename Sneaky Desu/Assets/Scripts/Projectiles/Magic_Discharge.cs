@@ -57,13 +57,16 @@ public class Magic_Discharge : MonoBehaviour
         type = (int) manager.level - 1;
 
         //When the player shots lazers
+        //TODO: Reintegrate this to Player_Controller
         if (Input.GetKey(Player_Controller.player_controller.shoot))
         {
             coroutine = Recoil();
             if (manager.currentMana != 0)
             {
+                CameraShakeEffect.camse.Shake(0.05f, 0.1f);
                 if (ready == true)
                 {
+                    
                     manager.DecreaseMana(1f);
                     UseMagic();
                     StartCoroutine(coroutine);

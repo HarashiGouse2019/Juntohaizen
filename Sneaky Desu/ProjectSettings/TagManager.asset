@@ -16,6 +16,7 @@ TagManager:
   - Dialogue
   - SaveLogo
   - Plasma
+  - Trigger
   layers:
   - Default
   - TransparentFX
@@ -25,8 +26,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Ignore Player
+  - Gems
   - 
   - 
   - 

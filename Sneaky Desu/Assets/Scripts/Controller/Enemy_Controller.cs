@@ -13,6 +13,7 @@ public class Enemy_Controller : Controller
     [Range(1, 10)] public int fieldOfSightValue; //How far our enemy can see or sense the player
     public static int fieldOfSight; //This is used for other scripts to reference our field of view value
 
+    public float atDistance = 1;
     public override void Start()
     {
         base.Start(); //The start of the parent class
@@ -27,37 +28,35 @@ public class Enemy_Controller : Controller
     {
         pawn.animator.SetBool("isChasing", isChasing); //Makes a transition from idle to chase or from chase to idle depending on our boolean
         pawn.animator.SetBool("isAtPlayer", isAtPlayer);
+
         if (Player_Controller.player_controller.isInGround != true)
         {
             //Game Controls Updated Every Frame
             //The enemy faces the direction of the player depending on rather the x value is positive or negative from target's position
             if (pawn.playerPosition.position.x < pawn.transform.position.x)
-            {
-                Vector2 xscale = pawn.transform.localScale; //Grab our local scale
-                xscale.x = -1; //Have it reflect over the y-axis
-                pawn.transform.localScale = xscale; //Give the modified value to our scale, resulting in the enemy looking the left
-            }
+                pawn.Flip(-1);
             else if (pawn.playerPosition.position.x > pawn.transform.position.x)
-            {
-                Vector2 xscale = pawn.transform.localScale; //Grab our local scale
-                xscale.x = 1;  //Have it reflect over the y-axis
-                pawn.transform.localScale = xscale;  //Give the modified value to our scale, resulting in the enemy looking the right
-            }
+                pawn.Flip(1);
 
-            if (pawn.distance > fieldOfSight) //If enemy is out of reach
+            //If enemy is out of reach
+            if (pawn.distance > fieldOfSight) 
             {
                 pawn.StandIdle();
                 isAtPlayer = false;
-
+                pawn.HitBoxEnablement(0);
             }
-            if (pawn.distance < fieldOfSight && pawn.distance > 1) //If enemy sees player
+
+            //If enemy sees player
+            if (pawn.distance < fieldOfSight && pawn.distance > atDistance) 
             {
                 pawn.ChaseAfter();
                 isAtPlayer = false;
                 isChasing = true;
 
             }
-            if (pawn.distance < 1) //If enemy makes contact with the player
+
+            //If enemy makes contact with the player
+            if (pawn.distance < atDistance) 
             {
                 isAtPlayer = true;
 
@@ -68,6 +67,7 @@ public class Enemy_Controller : Controller
             pawn.StandIdle();
             isAtPlayer = false;
             isChasing = false;
+            pawn.HitBoxEnablement(0);
         }
     }
 }

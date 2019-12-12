@@ -31,7 +31,7 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
     public void OnObjectSpawn()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        
+
         float speedInFront = Magic_Discharge.buffSpeed + 5;
         float speedBehind = Magic_Discharge.buffSpeed - 2;
         delayCoroutine = Delay(0.60f); //delay by 1 second
@@ -65,9 +65,8 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
         }
 
         //The projectory of our "bullet"
-        rb.velocity = transform.right * baseSpeed * Player.transform.localScale.x;
+        rb.velocity = (transform.right * baseSpeed * Player.transform.localScale.x) * Time.fixedDeltaTime;
     }
-
     private void OnTriggerEnter2D(Collider2D col)
     {
 

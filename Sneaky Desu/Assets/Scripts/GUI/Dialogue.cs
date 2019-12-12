@@ -6,13 +6,10 @@ public class Dialogue : MonoBehaviour
 {
     public string[] dialogue;
 
-    public void Run(int index, float speed)
+    GameManager manager;
+    public void Run(int _index, float _speed)
     {
-        bool running = false;
-        if (running == false)
-        {
-            running = true;
-            StartCoroutine(GameManager.instance.DisplayText(dialogue[index], speed));
-        }
+        manager = GameManager.instance;
+        StartCoroutine(manager.DisplayText(dialogue[_index], _speed));
     }
 }

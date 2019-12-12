@@ -29,8 +29,7 @@ public class SavePoint : MonoBehaviour
         saveAlpha.color = alpha;
         if (toggle == true)
         {
-            if (alpha.a != minOpacity)
-                StartCoroutine(Hide());
+            if (alpha.a != minOpacity) StartCoroutine(Hide());
         }
         if (alpha.a <= minOpacity)
         {

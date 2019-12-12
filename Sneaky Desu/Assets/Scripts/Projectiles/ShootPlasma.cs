@@ -31,7 +31,7 @@ public class ShootPlasma : MonoBehaviour
             {
                 pooler.SpawnFromPool("enemyPlasma", transform.position, Quaternion.identity);
                 time = resetTime;
-
+                
             }
         }
     }

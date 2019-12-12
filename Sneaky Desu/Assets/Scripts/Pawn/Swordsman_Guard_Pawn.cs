@@ -7,9 +7,10 @@ public class Swordsman_Guard_Pawn : Pawn
     public static Swordsman_Guard_Pawn instance;
 
     public Loot_Chances lootChances;
-    public static GameObject HitBox; //The hitbox prefab that we'll instantiate
 
     private float manaReserve;
+
+    public GameObject hitbox; public float offset;
 
     // Start is called before the first frame update
     public override void Start()
@@ -18,6 +19,12 @@ public class Swordsman_Guard_Pawn : Pawn
         instance = this;
         enemyHealth = 3f;
         manaReserve = enemyHealth * 2f;
+
+        if (hitbox != null)
+        {
+            hitbox = Instantiate(hitbox, gameObject.transform);
+            hitbox.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -52,6 +59,16 @@ public class Swordsman_Guard_Pawn : Pawn
     public override void Attack()
     {
         animator.SetBool("isAtPlayer", true);
+    }
+
+    public override void HitBoxEnablement(int _enabled)
+    {
+        if (hitbox != null)
+        {
+            hitbox.SetActive(_enabled == 1 ? true : false);
+            if (_enabled == 1)
+                hitbox.transform.position = target.transform.position;
+        }
     }
 
     //The animations are controlled by the animator, so by setting a boolean, we can get a certain animation

@@ -10,6 +10,7 @@ public class Disperse : MonoBehaviour , IPooledObject
     {
         float speed = 10f;
         rb = GetComponent<Rigidbody2D>();
+        Physics2D.IgnoreLayerCollision(9, 9);
         randomDirection = new Vector3(Random.Range(-speed, speed), Random.Range(-speed, speed), 0);
         rb.AddForce(randomDirection);
     }

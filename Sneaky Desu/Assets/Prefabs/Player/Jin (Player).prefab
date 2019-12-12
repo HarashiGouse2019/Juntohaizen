@@ -123,7 +123,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 5
-  m_LinearDrag: 5
+  m_LinearDrag: 12
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -166,6 +166,8 @@ MonoBehaviour:
   isDescending: 0
   isInGround: 0
   isAscending: 0
+  isDashing: 0
+  p: 0
   right: 275
   left: 276
   up: 273
@@ -175,6 +177,16 @@ MonoBehaviour:
   shoot: 122
   lockOnKey: 32
   interact: 99
+  pause: 113
+  gp_horizontal: 0
+  gp_vertical: 0
+  gp_descend: 0
+  gp_shoot: 0
+  gp_lockOn: 0
+  gp_interact: 0
+  gp_pause: 0
+  keyTapped1: 0
+  keyTapped2: 0
 --- !u!114 &4787750246169100352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,25 +203,27 @@ MonoBehaviour:
   controller: {fileID: 0}
   animator: {fileID: 4787750246169100359}
   layerIndex: 0
+  rateOfSpeed: 50
+  maxSpeed: 55
+  speed: 0
+  transitionDuration: 0.35
+  distance: 0
+  fowardDown: 0
+  backwardsDown: 0
+  rightDown: 0
+  leftDown: 0
+  heading: {x: 0, y: 0}
+  playerPosition: {fileID: 0}
+  target: {fileID: 0}
+  rb: {fileID: 4787750246169100354}
+  enemyHealth: 0
   transitionOn: 0
   col: 0
   step: 0
   isWaiting: 0
   manaDrop: 0
-  rateOfSpeed: 20
-  maxSpeed: 100
-  speed: 0
-  transitionDuration: 0.35
-  heading: {x: 0, y: 0}
-  distance: 0
-  enemyHealth: 0
-  playerPosition: {fileID: 0}
-  target: {fileID: 0}
-  fowardDown: 0
-  backwardsDown: 0
-  rightDown: 0
-  leftDown: 0
-  rb: {fileID: 4787750246169100354}
+  gameplayCameraPrefab: {fileID: 3591861643465086506, guid: 03f4aef7a22c140458f4eca220c6b382,
+    type: 3}
   crossHair: {fileID: 89679608673880405, guid: d748cfbc5adcd094e8d964691633ff46, type: 3}
   closestObject: {fileID: 0}
   enemyTarget: {fileID: 0}
@@ -218,8 +232,13 @@ MonoBehaviour:
   targetNear: 0
   dist: 0
   targetDist: 0
-  closest: 4
+  closest: 5
   player_collider: {fileID: 0}
+  isRendererEnabled: 1
+  gotHit: 0
+  dashDuration: 0.5
+  dAxisX: 0
+  dAxisY: 0
 --- !u!114 &5315211758305872410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,43 +270,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 530629263632409363, guid: 436ce60cda9934347b8f9e5459cd7d15,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Layer
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.603
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.019
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
         type: 3}

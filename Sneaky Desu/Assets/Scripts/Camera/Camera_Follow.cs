@@ -17,6 +17,7 @@ public class Camera_Follow : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(this);
         target = FindObjectOfType<Player_Pawn>().gameObject;
     }
 

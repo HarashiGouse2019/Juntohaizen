@@ -16,27 +16,25 @@ public class DoorEntry : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player_Pawn>();
+        instance = this;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (collision.gameObject.tag == "Player")
         {
-            if (collision.gameObject.name == "Player(Clone)")
-            {
-                GameManager.instance.posx = value_x;
-                GameManager.instance.posy = value_y;
-                Player_Spawn.instance.coordinates = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
-                collision.gameObject.transform.position = Player_Spawn.instance.coordinates;
+            GameManager.instance.posx = value_x;
+            GameManager.instance.posy = value_y;
+            Player_Spawn.instance.coordinates = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
+            collision.gameObject.transform.position = Player_Spawn.instance.coordinates;
 
-                if (scene_name != null)
-                {
-                    GameManager.instance.Scene_Name = scene_name;
-                    GameManager.instance.Goto_Scene(scene_name);
-                }
-                else
-                    Debug.LogWarning("scene_name is currently null. Scene transition will be ignored.");
+            if (scene_name != null)
+            {
+                GameManager.instance.Scene_Name = scene_name;
+                GameManager.instance.Goto_Scene(scene_name);
             }
+            else
+                Debug.LogWarning("scene_name is currently null. Scene transition will be ignored.");
         }
     }
 }

@@ -73,4 +73,8 @@ MonoBehaviour:
     prefab: {fileID: 1442424399216355634, guid: 957cf6136379cb840a76d61e0079a0e0,
       type: 3}
     size: 100
+  - tag: playerGhostTrail
+    prefab: {fileID: 6328756581676621232, guid: 3082c228deda932439af8162f5ff0e67,
+      type: 3}
+    size: 100
   player: {fileID: 4787750246169100352, guid: c956c63443ccd414d87c8310474b02ff, type: 3}

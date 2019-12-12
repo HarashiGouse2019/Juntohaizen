@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StayOnEnemy : MonoBehaviour
 {
-    static StayOnEnemy aim;
+    public static StayOnEnemy aim;
     GameObject target;
     private void Awake()
     {
@@ -24,11 +24,11 @@ public class StayOnEnemy : MonoBehaviour
         //Try to find a player pawn. If it can't
         //it will destroy itself;
         try {
-            target = FindObjectOfType<Player_Pawn>().closestObject;
+            target = Player_Pawn.playerpawn.closestObject;
         }
         catch
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
             
         if (target != null)

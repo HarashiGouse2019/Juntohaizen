@@ -63,8 +63,6 @@ public class GameManager : MonoBehaviour
     public RawImage textBoxUI;
     public TextMeshProUGUI dialogue;
 
-
-
     void Awake()
     {
         ////If our Game Manager does not exists, create one, and do not destroy it.
@@ -81,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-       
+        Application.targetFrameRate = 144;
     }
 
     void Start()
@@ -109,8 +107,6 @@ public class GameManager : MonoBehaviour
         //Set our GUI value to our GUI_ACTIVE boolean
         GUIParent.gameObject.SetActive(GUI_ACTIVE);
 
-        InitiateKeyInput(); //All input from the keyboard will be called in this method
-
         //If we hit level one, we want to create our Magic prefab so that we can shoot some enemies.
         if (level > 0 && magicSourceMade == false)
         {
@@ -121,33 +117,13 @@ public class GameManager : MonoBehaviour
 
         if (player.MagicSource.activeInHierarchy == false) magicSourceMade = false; //If the player dies, and is ability is still in scene, we disable it.
 
+        InitiateKeyInput(); //All input from the keyboard will be called in this method
+
         ScanAllEnemies(); //Iterate through all enemy instances in the current scene. This will then create a list.
 
-        //Player Pausing the game
-        //If the pause button has been pressed
-        if (Input.GetKeyDown(Player_Controller.player_controller.pause))
-        {
-            if (Player_Controller.player_controller.p == 0) //If the game doesn't know that the pause button is being pressed
-            {
-                switch (paused)
-                {
-                    case false:
-                        PauseGame(true); //Pause the game
-                        Time.timeScale = 0f; //It will stop time like DIO!!!!
-                        break;
-                    case true:
-                        PauseGame(false); //Unpause the game
-                        Time.timeScale = 1f;
-                        break;
-                }
+        CheckIfMaxOutLevel(3);
 
-                Player_Controller.player_controller.p = 1; //Pause Button is pressed down
-            }
-        }
-        else
-        {
-            Player_Controller.player_controller.p = 0; //The pause button is released
-        }
+        InitiatePauseControls();
     }
 
     void InitiateKeyInput()
@@ -166,9 +142,8 @@ public class GameManager : MonoBehaviour
     {
         levelProgressionUI.fillAmount += value / 100f; //Level will always go to 100. If it didn't, we would have "value / maxLevel"
         levelProgression = levelProgressionUI.fillAmount;// Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
-        if (levelProgressionUI.fillAmount == 1f)
+        if (levelProgressionUI.fillAmount == 1f && level < 3)
         {
-            float pastLevel = level;
             level += 1;
             IncreaseHealth(maxHealth);
             levelProgressionUI.fillAmount = 0f;
@@ -293,22 +268,24 @@ public class GameManager : MonoBehaviour
             //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
             for (int i = 0; i < text.Length; i++)
             {
-                StartCoroutine(DisableDelay());
+
                 dialogue.text = text.Substring(0, i);
                 AudioManager.audioManager.Play("Type000");
                 yield return new WaitForSeconds(textspeed);
 
             }
+            StartCoroutine(DisableDelay(5f));
             typeIn = true;
         }
     }
 
-    public IEnumerator DisableDelay()
+    public IEnumerator DisableDelay(float _delay)
     {
-        yield return new WaitForSeconds(5f);
+        Time.timeScale = 1f;
+        yield return new WaitForSeconds(_delay);
         textBoxUI.gameObject.SetActive(false);
         typeIn = false;
-        StopCoroutine(DisableDelay());
+        StopCoroutine(DisableDelay(_delay));
     }
 
     public void ResetAllValues()
@@ -319,5 +296,42 @@ public class GameManager : MonoBehaviour
         level = 1;
         levelProgressionUI.fillAmount = 0f;
         magicSourceMade = false;
+    }
+
+    bool CheckIfMaxOutLevel(int _maxOutValue)
+    {
+        if (level == _maxOutValue && levelProgression > 0.99f)
+        {
+            levelUI.text = "MAX";
+            return true;
+        }
+        return false;
+    }
+
+    void InitiatePauseControls()
+    {
+        //Player Pausing the game
+        //If the pause button has been pressed
+        if (Input.GetKeyDown(Player_Controller.player_controller.pause) && (Player_Controller.player_controller.p == 0))
+        {
+            //If the game doesn't know that the pause button is being pressed
+            switch (paused)
+            {
+                case false:
+                    PauseGame(true); //Pause the game
+                    Time.timeScale = 0f; //It will stop time like DIO!!!!
+                    break;
+                case true:
+                    PauseGame(false); //Unpause the game
+                    Time.timeScale = 1f;
+                    break;
+            }
+            Player_Controller.player_controller.p = 1; //Pause Button is pressed down
+
+        }
+        else
+        {
+            Player_Controller.player_controller.p = 0; //The pause button is released
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alarm;
 
 
 public abstract class Pawn : MonoBehaviour
@@ -16,42 +17,39 @@ public abstract class Pawn : MonoBehaviour
     public AnimatorStateInfo stateInfo;
     public int layerIndex;
 
-    [HideInInspector] public bool transitionOn = false; //The transition between hiding in the ground and ascending from the ground
-
-    [HideInInspector] public bool col = false, step = false; //One is used if we collide with something, the other is for making our stepping noises
-
-    [HideInInspector] public bool isWaiting = false; //If the player is idle
-
-    [HideInInspector] public bool manaDrop = false;
-
     //Initializing speed and the speed of rotation
     public float rateOfSpeed, maxSpeed;
-
     public float speed; //Speed (this will be set for our Enemy pawn)
-
     public float transitionDuration = 0.35f;
-
-    public Vector2 heading; //This will be used for our Enemey pawn to track down the player
-
     public float distance; //This is for the enemy to know the distance between it and the player
 
-    [HideInInspector] public float enemyHealth;
-
-    public Transform playerPosition; //Player position
-
-    public GameObject target; //Our target (which will be the player position)
-
     public bool fowardDown, backwardsDown, rightDown, leftDown; //Boolean used for player movement
+    
 
+    public Vector2 heading; //This will be used for our Enemey pawn to track down the player
+    public Transform playerPosition; //Player position
+    public GameObject target; //Our target (which will be the player position)
     public Rigidbody2D rb; //Giving an identifier (or name) that'll reference our RigidBody!!
-
     public IEnumerator coroutine; //our corountine identifier
     public IEnumerator transitionCoroutine; //Specifically for transitions from hiding in ground to ascending
     public IEnumerator manaUsageCoroutine;
 
+    public float enemyHealth;
+
+    public bool transitionOn = false; //The transition between hiding in the ground and ascending from the ground
+    public bool col = false, step = false; //One is used if we collide with something, the other is for making our stepping noises
+    public bool isWaiting = false; //If the player is idle
+    public bool manaDrop = false;
+
+    readonly public Timer timer = new Timer(9);
+
+    private GameManager manager;
+
+    protected bool returnVal;
+
     public virtual void Awake()
     {
-
+ 
     }
 
     // Start is called before the first frame update
@@ -61,6 +59,8 @@ public abstract class Pawn : MonoBehaviour
         controller = GetComponent<Player_Controller>();
         originPosition = gameObject.transform.position; //The start position of this gameObject
         playerPosition = FindObjectOfType<Player_Pawn>().transform; //The player's position
+
+
     }
 
     // Update is called once per frame
@@ -75,7 +75,14 @@ public abstract class Pawn : MonoBehaviour
         distance = heading.magnitude;
     }
 
-    //Player Behaviour Functions
+    public virtual void Flip(int _sign)
+    {
+        Vector2 xscale = transform.localScale; //Grab our local scale
+        xscale.x = _sign; //Have it reflect over the y-axis
+        transform.localScale = xscale; //Give the modified value to our scale, resulting in the enemy looking the left
+    }
+
+    #region Player Behaviour Functions
 
     public virtual void MoveFoward()
     {
@@ -108,9 +115,14 @@ public abstract class Pawn : MonoBehaviour
 
     } //The player transforms as he surfaces from the ground
 
+    public virtual void Dash()
+    {
+
+    } //Player dashes as a means of avoiding enemies faster
+
     public virtual void LockTarget(bool enable)
     {
-     
+
     }
 
     public virtual GameObject GetClosestEnemy()
@@ -124,15 +136,13 @@ public abstract class Pawn : MonoBehaviour
 
     }
 
-    public IEnumerator Walk()
+    public virtual void Walk()
     {
-        //This will produce footstep noises as we move
-        if (step == false)
+        timer.StartTimer(0);
+        if (timer.SetFor(0.2f, 0))
         {
+            //This will produce footstep noises as we move
             AudioManager.audioManager.Play("Walk");
-            step = true;
-            yield return new WaitForSeconds((float)0.15);
-            step = false;
         }
     }
 
@@ -155,32 +165,35 @@ public abstract class Pawn : MonoBehaviour
         transitionOn = false;
     }
 
-    public IEnumerator RecoveryWhileIdle(float value)
+    public virtual void RecoveryWhileIdle(float value)
     {
-        //If we take any amount of damage and we happen to not be moving, we have our health increase by 1 by a defined value of seconds
-        if (GameManager.instance.healthUI.fillAmount != GameManager.instance.maxHealth)
+        manager = GameManager.instance;
+        if (manager.healthUI.fillAmount != manager.maxHealth && isWaiting)
         {
-            GameManager.instance.IncreaseHealth(1f);
-            isWaiting = true;
+            timer.StartTimer(4);
+            if (timer.SetFor(value, 4, true))
+            {
+                //If we take any amount of damage and we happen to not be moving, we have our health increase by 1 by a defined value of seconds
+                manager.IncreaseHealth(1f);
+            }
         }
-        yield return new WaitForSeconds(value);
-        isWaiting = false;
     }
 
     //This is for example, when you are hiding in the ground, you are using a little bit of your mana.
     public IEnumerator PassiveManaUsage(float duration, float decreaseBy)
     {
-        if (GameManager.instance.manaUI.fillAmount != 0)
+        if (manager.manaUI.fillAmount != 0)
         {
 
-            GameManager.instance.DecreaseMana(decreaseBy);
+            manager.DecreaseMana(decreaseBy);
             manaDrop = true;
             yield return new WaitForSeconds(duration);
             manaDrop = false;
         }
     }
+    #endregion
 
-    //Enemy Behaviour Functions
+    #region Enemy Behaviour Functions
 
     //State for staying still
     public virtual void StandIdle()
@@ -209,4 +222,10 @@ public abstract class Pawn : MonoBehaviour
 
     }
 
+    public virtual void HitBoxEnablement(int _enabled)
+    {
+
+    }
+
+    #endregion
 }

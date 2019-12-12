@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class PlayerData
 {
     public float health, mana, level, levelProgression, maxHealth, maxMana; //All values
     public float healthFill, manaFill, levelProFill; //All GUI bars
-    public float[] position;
+    public string location; //Floor Level
+    public float[] position = new float[3];
 
     public PlayerData (Player_Pawn player)
     {
@@ -23,7 +20,8 @@ public class PlayerData
         levelProgression = GameManager.instance.levelProgression;
         levelProFill = levelProgression / 100f;
 
-        position = new float[3];
+        location = GameManager.instance.Scene_Name;
+
         position[0] = player.transform.position.x;
         position[1] = player.transform.position.y;
         position[2] = player.transform.position.z;

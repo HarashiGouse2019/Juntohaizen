@@ -48,21 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPosition: {fileID: 0}
   fieldOfSightValue: 3
---- !u!114 &114078572030953158
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e5c5dbbdabb9824bb0a0b337aca02b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HitBoxPrefab: {fileID: 2526487989510727041, guid: 79738d8ad889fc44a97ca813456e71b3,
-    type: 3}
-  target: {fileID: 0}
 --- !u!114 &114100114523369676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,7 +147,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.5
   m_TransitionOffset: 0
   m_ExitTime: 0.375
   m_HasExitTime: 0
@@ -235,8 +220,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101574497952739310}
-  m_StateMachineBehaviours:
-  - {fileID: 114078572030953158}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
