@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
@@ -11,6 +12,10 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance; //For singleton implementation
+
+    public AudioMixerGroup masterMixer;
+
+    public Slider masterVolumeAdjust;
 
     public List<GameObject> enemyInstances;
 
@@ -101,6 +106,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        UpdateVolume();
+
         //Get the current active scene
         currentScene = SceneManager.GetActiveScene();
 
@@ -332,6 +339,28 @@ public class GameManager : MonoBehaviour
         else
         {
             Player_Controller.player_controller.p = 0; //The pause button is released
+        }
+    }
+
+    public void MasterVolume(float value)
+    {
+        masterMixer.audioMixer.SetFloat("MasterVolume", value);
+    }
+
+    void UpdateVolume()
+    {
+        //Changing Volume
+        if (masterVolumeAdjust == null)
+        {
+            masterVolumeAdjust = FindObjectOfType<Slider>();
+        }
+        try
+        {
+            MasterVolume(masterVolumeAdjust.value);
+        }
+        catch
+        {
+            return;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alarm;
 
 public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 {
@@ -13,7 +14,9 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 
     private bool start = true; //Start delay boolean
 
-    IEnumerator delayCoroutine; //Delay coroutine 
+    IEnumerator delayCoroutine; //Delay coroutine
+
+    readonly Timer delayTimer = new Timer(1);
 
     // Start is called before the first frame update
     void Awake()
@@ -28,14 +31,21 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
 
         
     }
+
+    void Update()
+    {
+        if (start == true)
+            Delay(0.60f); //delay by 1 second
+    }
     public void OnObjectSpawn()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
 
         float speedInFront = Magic_Discharge.buffSpeed + 5;
         float speedBehind = Magic_Discharge.buffSpeed - 2;
-        delayCoroutine = Delay(0.60f); //delay by 1 second
-        StartCoroutine(delayCoroutine);
+
+        start = true;
+
         //Whenever we are shooting, our point of fire will be rotating around the player
         //As we move forward, there are times when the bullets are closer to each other
         //whenever there'a max or min of our point of fire's movement (below the player, or above the player)
@@ -92,13 +102,12 @@ public class MagicDischargeMovement : MonoBehaviour, IPooledObject
         
     }
 
-    IEnumerator Delay(float time)
+    void Delay(float time)
     {
-        if (start == false)
-        {
-            start = true;
-            yield return new WaitForSeconds(time);
+        delayTimer.StartTimer(0);
+        if(delayTimer.currentTime[0] > time) {
             gameObject.SetActive(false); //Destroys self after the yield time
+            delayTimer.SetToZero(0, true);
             start = false;
         }
     }

@@ -1,14 +1,17 @@
 ﻿using UnityEngine.Audio;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager audioManager;
 
+    public AudioMixerGroup audioMixer;
+
     public Audio[] getAudio;
-    public Slider volumeAdjust; //Reference to our volume slider in the options menu
+    public Slider soundVolumeAdjust;  //Reference to our volume slider in the options menu
 
     // Start is called before the first frame update
     void Awake()
@@ -22,31 +25,22 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        foreach (Audio a in getAudio)
+        foreach (Audio audio in getAudio)
         {
-            a.source = gameObject.AddComponent<AudioSource>();
-            a.source.clip = a.clip;
+            audio.source = gameObject.AddComponent<AudioSource>();
+            audio.source.clip = audio.clip;
 
-            a.source.volume = a.volume;
-            a.source.pitch = a.pitch;
-            a.source.loop = a.enableLoop;
+            audio.source.volume = audio.volume;
+            audio.source.pitch = audio.pitch;
+            audio.source.loop = audio.enableLoop;
+
+            audio.source.outputAudioMixerGroup = audioMixer;
         }
     }
 
     private void Update()
     {
-        if (volumeAdjust == null)
-        {
-            volumeAdjust = FindObjectOfType<Slider>();
-        }
-        try
-        {
-            MusicVolume(volumeAdjust.value);
-        }
-        catch
-        {
-            return;
-        }
+        UpdateVolume();
     }
 
     // Update is called once per frame
@@ -66,14 +60,26 @@ public class AudioManager : MonoBehaviour
             a.source.Stop();
     }
 
-    public void MusicVolume(float value)
+    public void AudioVolume(float value)
     {
-        AudioSource[] sources = FindObjectsOfType<AudioSource>();
-        for (int i = 0; i < sources.Length; i++)
-        {
-            sources[i].volume = value;
-        }
+        audioMixer.audioMixer.SetFloat("SoundVolume", value);
+    }
 
+    void UpdateVolume()
+    {
+        //Changing Volume
+        if (soundVolumeAdjust == null)
+        {
+            soundVolumeAdjust = FindObjectOfType<Slider>();
+        }
+        try
+        {
+            AudioVolume(soundVolumeAdjust.value);
+        }
+        catch
+        {
+            return;
+        }
     }
 }
 

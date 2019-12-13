@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -34,7 +32,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        AudioManager.audioManager.Play("JuntohaizenOST");
+        MusicManager.manager.Play("ChikaraOST", 100);
     }
 
     void Update()
@@ -72,7 +70,7 @@ public class MainMenu : MonoBehaviour
         manager.playerPrefab.SetActive(true);
         manager.playerPrefab.transform.position = position;
 
-        AudioManager.audioManager.Stop("JuntohaizenOST");
+        MusicManager.manager.Stop("ChikaraOST");
 
         manager.Goto_Scene("S_FLOOR_1");
 
@@ -86,7 +84,7 @@ public class MainMenu : MonoBehaviour
         manager.GUI_ACTIVE = true;
 
         manager.playerPrefab.SetActive(true);
-        AudioManager.audioManager.Stop("JuntohaizenOST");
+        MusicManager.manager.Stop("ChikaraOST");
         manager.Goto_Scene(sceneBeforeSave.ToString());
     }
 

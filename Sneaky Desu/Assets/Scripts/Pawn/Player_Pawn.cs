@@ -312,6 +312,7 @@ public class Player_Pawn : Pawn
                 break;
             case false:
                 AudioManager.audioManager.Play("LockOff");
+                enemyTarget = closestObject;
                 break;
         }
 
@@ -321,12 +322,12 @@ public class Player_Pawn : Pawn
         //We'll iterate through a list of enemy GameObjects, and see which one is closest to us.
         //Once we get the closest one, we assign that object into the closestObject gameObject
         //We then create our crossHair on our new target.
-        if (GameManager.instance.enemyInstances != null)
+        if (GameManager.instance.enemyInstances != null && enemyTarget == null)
         {
             for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
             {
 
-                dist = Vector3.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+                dist = Vector2.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
                 if (dist <= closest)
                 {
                     closestObject = GameManager.instance.enemyInstances[i];
@@ -341,7 +342,7 @@ public class Player_Pawn : Pawn
         //The function will still try to look for the closest enemy in the scene. If the current target is far, closestObject is set to null;
         if (enemyTarget != null)
         {
-            if (Vector3.Distance(enemyTarget.transform.position, transform.position) > closest)
+            if (Vector3.Distance(enemyTarget.transform.position, transform.position) > closest * 2)
             {
                 targetNear = false;
                 closestObject = null;
