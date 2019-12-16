@@ -40,8 +40,8 @@ public class Magic_Discharge : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        objectPooler = ObjectPooler.instance;
-        manager = GameManager.instance;
+        objectPooler = ObjectPooler.Instance;
+        manager = GameManager.Instance;
 
         speed = speedValue;
         buffSpeed = speed * dischargeAmount;
@@ -93,15 +93,15 @@ public class Magic_Discharge : MonoBehaviour
             switch (type)
             {
                 case 0:
-                    AudioManager.audioManager.Play("Shoot000");
+                    AudioManager.Instance.Play("Shoot000");
                     objectPooler.SpawnFromPool("LowMana", magicSource.position, magicSource.localRotation);
                     break;
                 case 1:
-                    AudioManager.audioManager.Play("Shoot001");
+                    AudioManager.Instance.Play("Shoot001");
                     objectPooler.SpawnFromPool("MediumMana", magicSource.position, magicSource.localRotation);
                     break;
                 case 2:
-                    AudioManager.audioManager.Play("Shoot002");
+                    AudioManager.Instance.Play("Shoot002");
                     objectPooler.SpawnFromPool("HighMana", magicSource.position, magicSource.localRotation);
                     break;
             }

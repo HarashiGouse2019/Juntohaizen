@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoorEntry : MonoBehaviour
 {
-    public static DoorEntry instance;
+    public static DoorEntry Instance;
 
     public float value_x;
     public float value_y;
@@ -16,22 +16,22 @@ public class DoorEntry : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player_Pawn>();
-        instance = this;
+        Instance = this;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            GameManager.instance.posx = value_x;
-            GameManager.instance.posy = value_y;
-            Player_Spawn.instance.coordinates = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
-            collision.gameObject.transform.position = Player_Spawn.instance.coordinates;
+            GameManager.Instance.posx = value_x;
+            GameManager.Instance.posy = value_y;
+            Player_Spawn.Instance.coordinates = new Vector3(GameManager.Instance.posx, GameManager.Instance.posy, 0);
+            collision.gameObject.transform.position = Player_Spawn.Instance.coordinates;
 
             if (scene_name != null)
             {
-                GameManager.instance.Scene_Name = scene_name;
-                GameManager.instance.Goto_Scene(scene_name);
+                GameManager.Instance.Scene_Name = scene_name;
+                GameManager.Instance.Goto_Scene(scene_name);
             }
             else
                 Debug.LogWarning("scene_name is currently null. Scene transition will be ignored.");

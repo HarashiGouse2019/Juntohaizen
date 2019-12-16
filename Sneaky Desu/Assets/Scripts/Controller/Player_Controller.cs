@@ -108,7 +108,7 @@ public class Player_Controller : Controller
 
                 //Descending into the ground
                 if (Input.GetKeyDown(descendKey))
-                    if (GameManager.instance.currentMana != 0)
+                    if (GameManager.Instance.currentMana != 0)
                         pawn.Descend(); //Hides 
 
                     //Ascending from the ground

@@ -291,6 +291,7 @@ MonoBehaviour:
   dialogue:
   - Your progress has been saved!!!
   - Hello! Hello! Hello! What is going on?!?!?!
+  - You got 20 mana!!!
 --- !u!114 &47764355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +363,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23.005, y: 33.1}
+  m_AnchoredPosition: {x: -22.3, y: 49.1}
   m_SizeDelta: {x: 46.01, y: 10.349998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &60347650
@@ -1502,11 +1503,11 @@ RectTransform:
   - {fileID: 2070923654}
   - {fileID: 328822180}
   m_Father: {fileID: 1853807594}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23.005, y: -12.6}
+  m_AnchoredPosition: {x: -23.005, y: -19.5}
   m_SizeDelta: {x: 46.01, y: 10.349998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348757616
@@ -1960,6 +1961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorImage: {fileID: 2800000, guid: 7ba9416d35f641645a9d7adf3b795523, type: 3}
+  pa: {fileID: 0}
 --- !u!1 &457463567
 GameObject:
   m_ObjectHideFlags: 0
@@ -3012,7 +3014,7 @@ RectTransform:
   m_Children:
   - {fileID: 457463568}
   m_Father: {fileID: 1853807594}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3240,7 +3242,7 @@ RectTransform:
   m_Children:
   - {fileID: 462902146}
   m_Father: {fileID: 1853807594}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3321,6 +3323,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Select000
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1055154187}
+        m_MethodName: ApplySettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -6357,7 +6370,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23.005, y: 10.7}
+  m_AnchoredPosition: {x: -22.3, y: 13.8}
   m_SizeDelta: {x: 46.01, y: 10.349998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1792914592
@@ -6697,9 +6710,9 @@ RectTransform:
   - {fileID: 2036662317}
   - {fileID: 60347649}
   - {fileID: 1792914591}
+  - {fileID: 348757615}
   - {fileID: 657859934}
   - {fileID: 682837452}
-  - {fileID: 348757615}
   m_Father: {fileID: 426891008}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7206,6 +7219,17 @@ MonoBehaviour:
           m_StringArgument: Select000
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1055154187}
+        m_MethodName: LoadGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1952236907
@@ -7555,7 +7579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 62.1}
+  m_AnchoredPosition: {x: 0, y: 84.4}
   m_SizeDelta: {x: -36, y: -76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2036662318

@@ -142,7 +142,7 @@ public abstract class Pawn : MonoBehaviour
         if (timer.SetFor(0.2f, 0))
         {
             //This will produce footstep noises as we move
-            AudioManager.audioManager.Play("Walk");
+            AudioManager.Instance.Play("Walk");
         }
     }
 
@@ -167,7 +167,7 @@ public abstract class Pawn : MonoBehaviour
 
     public virtual void RecoveryWhileIdle(float value)
     {
-        manager = GameManager.instance;
+        manager = GameManager.Instance;
         if (manager.healthUI.fillAmount != manager.maxHealth && isWaiting)
         {
             timer.StartTimer(4);

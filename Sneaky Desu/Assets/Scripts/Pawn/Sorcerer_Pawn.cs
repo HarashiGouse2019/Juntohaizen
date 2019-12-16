@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sorcerer_Pawn : Pawn
 {
-    public static Sorcerer_Pawn instance;
+    public static Sorcerer_Pawn Instance;
     public Sorcerer_Controller sController;
 
     public GameObject player;
@@ -33,7 +33,7 @@ public class Sorcerer_Pawn : Pawn
     public override void Start()
     {
         base.Start(); //Our parent start method;
-        instance = this;
+        Instance = this;
         enemyHealth = 20f;
         manaReserve = enemyHealth * 2f;
         walkSpeed = 1f;
@@ -53,7 +53,7 @@ public class Sorcerer_Pawn : Pawn
             Player_Controller.player_controller.toggleLock = false;
             GameObject loot = Instantiate(lootChances.gameObject);
             loot.transform.position = transform.position;
-            GameManager.instance.IncreaseMana(manaReserve);
+            GameManager.Instance.IncreaseMana(manaReserve);
             Destroy(gameObject);
         }
 
@@ -148,7 +148,7 @@ public class Sorcerer_Pawn : Pawn
 
     public void OnDestroy()
     {
-        GameManager.instance.enemyInstances.Remove(this.gameObject);
+        GameManager.Instance.enemyInstances.Remove(this.gameObject);
     }
 
     IEnumerator ChangeDirection()

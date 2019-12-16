@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public static MainMenu Instance;
+
     #region Public Members
     public GameManager manager;
     public Player_Pawn player;
@@ -27,12 +29,15 @@ public class MainMenu : MonoBehaviour
 
     void Awake()
     {
-        manager = GameManager.instance;
+        manager = GameManager.Instance;
+        if (Instance == null)
+            Instance = this;
     }
 
     void Start()
     {
-        MusicManager.manager.Play("ChikaraOST", 100);
+        //Play OST
+        MusicManager.Instance.Play("ChikaraOST", 100);
     }
 
     void Update()
@@ -51,18 +56,20 @@ public class MainMenu : MonoBehaviour
         manager.posx = 0f;
         manager.posy = -2.5f;
 
+        //Give initial position to Game Manager
         position.x = manager.posx;
         position.y = manager.posy;
 
         if (Player_Pawn.playerpawn != null)
             Player_Pawn.playerpawn.player_collider.isTrigger = false;
 
+        //Set up all Player Stats
         manager.currentHealth = manager.maxHealth;
         manager.healthUI.fillAmount = manager.currentHealth / manager.maxHealth;
         manager.currentMana = manager.maxMana;
         manager.manaUI.fillAmount = manager.currentMana / manager.maxMana;
 
-        //Resetting All Values
+        //Resetting All Values and activate player and game ui
         manager.ResetAllValues();
         player_spawn.gameObject.SetActive(true);
         manager.GUI_ACTIVE = true;
@@ -70,21 +77,24 @@ public class MainMenu : MonoBehaviour
         manager.playerPrefab.SetActive(true);
         manager.playerPrefab.transform.position = position;
 
-        MusicManager.manager.Stop("ChikaraOST");
+        //Stop music
+        MusicManager.Instance.Stop("ChikaraOST");
 
+        //Transition to the first room
         manager.Goto_Scene("S_FLOOR_1");
 
-        Dialogue dialogue = GameManager.instance.GetComponent<Dialogue>();
+        //Run Dialogue
+        Dialogue dialogue = GameManager.Instance.GetComponent<Dialogue>();
         dialogue.Run(1, 0.05f);
     }
 
-    public void Load()
+    public void LoadGame()
     {
         player_spawn.gameObject.SetActive(true);
         manager.GUI_ACTIVE = true;
 
         manager.playerPrefab.SetActive(true);
-        MusicManager.manager.Stop("ChikaraOST");
+        MusicManager.Instance.Stop("ChikaraOST");
         manager.Goto_Scene(sceneBeforeSave.ToString());
     }
 
@@ -141,6 +151,20 @@ public class MainMenu : MonoBehaviour
             //And next level progression
             manager.levelProgression = data.levelProgression;
             manager.levelProgressionUI.fillAmount = data.levelProgression;
+
+            //Load all Player Prefs from start
+            bool volumeAdjust = (
+                GameManager.Instance.masterVolumeAdjust != null &&
+                MusicManager.Instance.musicVolumeAdjust != null &&
+                AudioManager.Instance.soundVolumeAdjust != null);
+
+            if (volumeAdjust)
+            {
+                GameManager.Instance.masterVolumeAdjust.value = LoadSettings("Master Volume");
+                MusicManager.Instance.musicVolumeAdjust.value = LoadSettings("Music Volume");
+                AudioManager.Instance.soundVolumeAdjust.value = LoadSettings("Sound Volume");
+            }
+
             fileSearchStart = true;
         }
         else
@@ -149,5 +173,27 @@ public class MainMenu : MonoBehaviour
             fileSearchStart = true;
             return;
         }
+    }
+
+    public void SaveSettings(string _key, float _value)
+    {
+        //Setting all values from settings
+        PlayerPrefs.SetFloat(_key, _value);
+    }
+
+    public float LoadSettings(string _key)
+    {
+        //Loading all values to settings
+        if (PlayerPrefs.HasKey(_key))
+            return PlayerPrefs.GetFloat(_key);
+        Debug.Log("This might be your problem.");
+        return 0;
+    }
+
+    public void ApplySettings()
+    {
+        SaveSettings("Master Volume", GameManager.Instance.masterVolumeAdjust.value);
+        SaveSettings("Music Volume", MusicManager.Instance.musicVolumeAdjust.value);
+        SaveSettings("Sound Volume", AudioManager.Instance.soundVolumeAdjust.value);
     }
 }

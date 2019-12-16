@@ -12,6 +12,8 @@ public class Cursor_Image : MonoBehaviour
 
     public Texture2D cursorImage; //The cursor image will be referenced
 
+    public Image pa;
+
     // Start is called before the first frame update
     void Start()
     {

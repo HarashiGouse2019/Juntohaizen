@@ -73,16 +73,16 @@ public class TriggerEvent : MonoBehaviour
 
     void TransitionTo(string _location, float _x, float _y)
     {
-        GameManager.instance.Scene_Name = _location;
-        entry.scene_name = GameManager.instance.Scene_Name;
-        GameManager.instance.posx = _x;
-        GameManager.instance.posy = _y;
+        GameManager.Instance.Scene_Name = _location;
+        entry.scene_name = GameManager.Instance.Scene_Name;
+        GameManager.Instance.posx = _x;
+        GameManager.Instance.posy = _y;
 
-        Player_Spawn.instance.coordinates = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
+        Player_Spawn.Instance.coordinates = new Vector3(GameManager.Instance.posx, GameManager.Instance.posy, 0);
 
-        entry.player.gameObject.transform.position = Player_Spawn.instance.coordinates;
+        entry.player.gameObject.transform.position = Player_Spawn.Instance.coordinates;
 
-        GameManager.instance.Goto_Scene(_location);
+        GameManager.Instance.Goto_Scene(_location);
     }
 
     void ActivateCutScene()

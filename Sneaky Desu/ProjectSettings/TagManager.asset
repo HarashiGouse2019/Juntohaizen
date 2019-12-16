@@ -17,6 +17,7 @@ TagManager:
   - SaveLogo
   - Plasma
   - Trigger
+  - Treasure
   layers:
   - Default
   - TransparentFX

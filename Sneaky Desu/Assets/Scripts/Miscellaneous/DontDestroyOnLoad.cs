@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DontDestroyOnLoad : MonoBehaviour
 {
-    public static DontDestroyOnLoad instance;
+    public static DontDestroyOnLoad Instance;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         } else
         {

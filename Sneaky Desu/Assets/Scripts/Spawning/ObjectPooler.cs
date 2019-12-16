@@ -22,13 +22,13 @@ public class ObjectPooler : MonoBehaviour
 
     #region Singleton
 
-    public static ObjectPooler instance;
+    public static ObjectPooler Instance;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
 
         } else
         {

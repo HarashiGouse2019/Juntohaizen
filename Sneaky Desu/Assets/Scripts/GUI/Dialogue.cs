@@ -9,7 +9,7 @@ public class Dialogue : MonoBehaviour
     GameManager manager;
     public void Run(int _index, float _speed)
     {
-        manager = GameManager.instance;
+        manager = GameManager.Instance;
         StartCoroutine(manager.DisplayText(dialogue[_index], _speed));
     }
 }

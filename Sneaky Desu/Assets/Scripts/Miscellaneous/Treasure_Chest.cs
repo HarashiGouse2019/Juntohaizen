@@ -1,18 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class Treasure_Chest : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Treasure content;
+    
+    //Chest open or closed
+    public Sprite[] sprites = new Sprite[2];
+
+    public static uint opened = 0;
+
+    public ChestActionClass chestAction;
+
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        ChestStatus();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        spriteRenderer.sprite = sprites[opened];
     }
+
+    public void OpenChest()
+    {
+        opened = 1;
+        chestAction.InvokeAction();
+    }
+
+    uint ChestStatus()
+    {
+        return opened;
+    }
+
 }

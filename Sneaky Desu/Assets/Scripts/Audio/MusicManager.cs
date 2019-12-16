@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class MusicManager : MonoBehaviour
 {
-    public static MusicManager manager;
+    public static MusicManager Instance;
 
     public AudioMixerGroup musicMixer;
 
@@ -38,9 +38,9 @@ public class MusicManager : MonoBehaviour
 
     public void Awake()
     {
-        if (manager == null)
+        if (Instance == null)
         {
-            manager = this;
+            Instance = this;
 
             foreach (Music music in getMusic)
             {

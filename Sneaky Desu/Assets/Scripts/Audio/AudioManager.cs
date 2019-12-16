@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager audioManager;
+    public static AudioManager Instance;
 
     public AudioMixerGroup audioMixer;
 
@@ -16,9 +16,9 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (audioManager == null)
+        if (Instance == null)
         {
-            audioManager = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         } else
         {

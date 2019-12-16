@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance; //For singleton implementation
+    public static GameManager Instance; //For singleton implementation
 
     public AudioMixerGroup masterMixer;
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     public bool paused = false; //Check if the game has paused!!!
 
-    bool magicSourceMade = false; //Rather or not we have an instance of our defined prefab
+    bool magicSourceMade = false; //Rather or not we have an Instance of our defined prefab
 
     public Transform Target; //The target that the prefab will be using; It's the origin of our player
 
@@ -74,9 +74,9 @@ public class GameManager : MonoBehaviour
         ////If there's an extra one, we'll destroy the extra one.
         ////This is our singleton design pattern in use.
 
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
             Instantiate(playerPrefab);
         }
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
 
         InitiateKeyInput(); //All input from the keyboard will be called in this method
 
-        ScanAllEnemies(); //Iterate through all enemy instances in the current scene. This will then create a list.
+        ScanAllEnemies(); //Iterate through all enemy Instances in the current scene. This will then create a list.
 
         CheckIfMaxOutLevel(3);
 
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
             level += 1;
             IncreaseHealth(maxHealth);
             levelProgressionUI.fillAmount = 0f;
-            AudioManager.audioManager.Play("LevelUp");
+            AudioManager.Instance.Play("LevelUp");
         }
         return value;
 
@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour
     //Scan all possible enemies in the current scene. This will be needed for our lock-on system.
     public int ScanAllEnemies()
     {
-        //We create an array of all instances of GameObjects with the tag "Enemy"
+        //We create an array of all Instances of GameObjects with the tag "Enemy"
         //We iterate through the array's length, and add each one into our list.
         //This continues until our list is equal to our GameObject array.
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -251,7 +251,7 @@ public class GameManager : MonoBehaviour
                 enemyInstances.Add(enemies[i]);
             }
         }
-        return enemyInstances.Count; //We then return the value of all instances through our List<GameObject>
+        return enemyInstances.Count; //We then return the value of all Instances through our List<GameObject>
     }
 
     //Pauses the game
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
             {
 
                 dialogue.text = text.Substring(0, i);
-                AudioManager.audioManager.Play("Type000");
+                AudioManager.Instance.Play("Type000");
                 yield return new WaitForSeconds(textspeed);
 
             }
@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
 
     bool CheckIfMaxOutLevel(int _maxOutValue)
     {
-        if (level == _maxOutValue && levelProgression > 0.99f)
+        if (level == _maxOutValue && levelProgression > 0.99f && level == 3)
         {
             levelUI.text = "MAX";
             return true;

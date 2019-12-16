@@ -32,7 +32,7 @@ public class Player_Pawn : Pawn
         playerpawn = this;
         player_collider = GetComponent<CircleCollider2D>();
         renderer = GetComponent<SpriteRenderer>();
-        manager = GameManager.instance;
+        manager = GameManager.Instance;
         DontDestroyOnLoad(this);
     }
     public override void Start()
@@ -57,19 +57,22 @@ public class Player_Pawn : Pawn
         animator.SetBool("isAscending", controller.isAscending);
         animator.SetBool("isDashing", controller.isDashing);
 
-        if (GameManager.instance.currentHealth == 0)
+        if (GameManager.Instance.currentHealth == 0)
         {
-            step = false;
-            isWaiting = false;
-            GameManager.instance.ResetAllValues();
-            closestObject = null;
-            controller.toggleLock = false;
-            player_collider.isTrigger = true;
-            MagicSource.SetActive(false);
-            gameObject.SetActive(false);
+            //step = false;
+            //isWaiting = false;
+            //GameManager.Instance.ResetAllValues();
+            //closestObject = null;
+            //controller.toggleLock = false;
+            //player_collider.isTrigger = true;
+            //MagicSource.SetActive(false);
+            //gameObject.SetActive(false);
+
+            SaveLoadSystem.LoadPlayer();
+
         }
 
-        if (GameManager.instance.currentMana == 0)
+        if (GameManager.Instance.currentMana == 0)
             Ascend();
 
         GetClosestEnemy();
@@ -306,12 +309,12 @@ public class Player_Pawn : Pawn
                     //closest = dist;
                     Instantiate(crossHair);
                     crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
-                    AudioManager.audioManager.Play("LockOn");
+                    AudioManager.Instance.Play("LockOn");
                     Magic_Movement.radius = 0.5f;
                 }
                 break;
             case false:
-                AudioManager.audioManager.Play("LockOff");
+                AudioManager.Instance.Play("LockOff");
                 enemyTarget = closestObject;
                 break;
         }
@@ -322,15 +325,15 @@ public class Player_Pawn : Pawn
         //We'll iterate through a list of enemy GameObjects, and see which one is closest to us.
         //Once we get the closest one, we assign that object into the closestObject gameObject
         //We then create our crossHair on our new target.
-        if (GameManager.instance.enemyInstances != null && enemyTarget == null)
+        if (GameManager.Instance.enemyInstances != null && enemyTarget == null)
         {
-            for (int i = 0; i < GameManager.instance.enemyInstances.Count; i++)
+            for (int i = 0; i < GameManager.Instance.enemyInstances.Count; i++)
             {
 
-                dist = Vector2.Distance(GameManager.instance.enemyInstances[i].transform.position, transform.position);
+                dist = Vector2.Distance(GameManager.Instance.enemyInstances[i].transform.position, transform.position);
                 if (dist <= closest)
                 {
-                    closestObject = GameManager.instance.enemyInstances[i];
+                    closestObject = GameManager.Instance.enemyInstances[i];
                     enemyTarget = closestObject;
                     crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
                     targetNear = true;
@@ -385,7 +388,7 @@ public class Player_Pawn : Pawn
     {
         if (controller.isDashing)
         {
-            GameObject ghostTrail = ObjectPooler.instance.SpawnFromPool("playerGhostTrail", transform.position, Quaternion.identity);
+            GameObject ghostTrail = ObjectPooler.Instance.SpawnFromPool("playerGhostTrail", transform.position, Quaternion.identity);
             if (!ghostTrail.activeInHierarchy)
                 ghostTrail.SetActive(true);
 
@@ -406,6 +409,35 @@ public class Player_Pawn : Pawn
     public override void SavePlayer()
     {
         SaveLoadSystem.SavePlayer(this);
+        manager.IncreaseHealth(100f);
+        manager.IncreaseMana(100f);
+    }
+    
+    private void GetHurt(float _blinkRate, float _duration)
+    {
+        if (gotHit == true)
+        {
+            timer.StartTimer(6);
+            timer.StartTimer(8);
+            //I want it so that the player is blinking on and off for a certain duration of time.
+            //That would mean getting to the Sprite Renderer, and enabling it and disabling it after
+            //certain intervals.
+
+            //Since there's a timer in Pawn, and I've initialized 12, I'm going to use alarm 6
+            //We'll pass the blink rate to our SetFor method.
+            returnVal = timer.SetFor(_duration, 8, true);
+            if (timer.SetFor(_blinkRate, 6))
+            {
+                if (isRendererEnabled) isRendererEnabled = false;
+                else if (isRendererEnabled == false) isRendererEnabled = true;
+            }
+
+            if (returnVal)
+            {
+                gotHit = false;
+                timer.SetToZero(6, true);
+            }
+        }
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -444,32 +476,6 @@ public class Player_Pawn : Pawn
                 break;
         }
     }
-    private void GetHurt(float _blinkRate, float _duration)
-    {
-        if (gotHit == true)
-        {
-            timer.StartTimer(6);
-            timer.StartTimer(8);
-            //I want it so that the player is blinking on and off for a certain duration of time.
-            //That would mean getting to the Sprite Renderer, and enabling it and disabling it after
-            //certain intervals.
-
-            //Since there's a timer in Pawn, and I've initialized 12, I'm going to use alarm 6
-            //We'll pass the blink rate to our SetFor method.
-            returnVal = timer.SetFor(_duration, 8, true);
-            if (timer.SetFor(_blinkRate, 6))
-            {
-                if (isRendererEnabled) isRendererEnabled = false;
-                else if (isRendererEnabled == false) isRendererEnabled = true;
-            }
-
-            if (returnVal)
-            {
-                gotHit = false;
-                timer.SetToZero(6, true);
-            }
-        }
-    }
     private void OnTriggerStay2D(Collider2D col)
     {
         Collider2D savePoint = col;
@@ -485,6 +491,14 @@ public class Player_Pawn : Pawn
                     SavePlayer();
                     Dialogue dialogueList = manager.GetComponent<Dialogue>();
                     dialogueList.Run(0, 0.05f);
+                }
+                break;
+            case "Treasure":
+                if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1)
+                {
+                    col.gameObject.GetComponent<Treasure_Chest>().OpenChest();
+                    Dialogue dialogueList = manager.GetComponent<Dialogue>();
+                    dialogueList.Run(2, 0.05f);
                 }
                 break;
         }

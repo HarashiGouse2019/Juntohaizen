@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Swordsman_Guard_Pawn : Pawn
 {
-    public static Swordsman_Guard_Pawn instance;
+    public static Swordsman_Guard_Pawn Instance;
 
     public Loot_Chances lootChances;
 
@@ -16,7 +16,7 @@ public class Swordsman_Guard_Pawn : Pawn
     public override void Start()
     {
         base.Start(); //Our parent start method;
-        instance = this;
+        Instance = this;
         enemyHealth = 3f;
         manaReserve = enemyHealth * 2f;
 
@@ -38,7 +38,7 @@ public class Swordsman_Guard_Pawn : Pawn
             Player_Controller.player_controller.toggleLock = false;
             GameObject loot = Instantiate(lootChances.gameObject);
             loot.transform.position = transform.position;
-            GameManager.instance.IncreaseMana(manaReserve);
+            GameManager.Instance.IncreaseMana(manaReserve);
             Destroy(gameObject);
         }
     }
@@ -76,7 +76,7 @@ public class Swordsman_Guard_Pawn : Pawn
 
     public void OnDestroy()
     {
-        GameManager.instance.enemyInstances.Remove(this.gameObject);
+        GameManager.Instance.enemyInstances.Remove(this.gameObject);
     }
 
 }

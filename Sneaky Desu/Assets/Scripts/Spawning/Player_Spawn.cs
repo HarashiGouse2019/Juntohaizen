@@ -5,21 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class Player_Spawn : MonoBehaviour
 {
-    public static Player_Spawn instance;
+    public static Player_Spawn Instance;
 
     public Vector3 coordinates;
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
         }
-        GameManager.instance.playerPrefab.transform.position = new Vector3(GameManager.instance.posx, GameManager.instance.posy, 0);
+        GameManager.Instance.playerPrefab.transform.position = new Vector3(GameManager.Instance.posx, GameManager.Instance.posy, 0);
     }
 }

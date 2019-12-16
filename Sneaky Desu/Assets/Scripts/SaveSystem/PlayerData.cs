@@ -8,19 +8,19 @@ public class PlayerData
 
     public PlayerData (Player_Pawn player)
     {
-        health = GameManager.instance.currentHealth;
-        maxHealth = GameManager.instance.maxHealth;
+        health = GameManager.Instance.currentHealth;
+        maxHealth = GameManager.Instance.maxHealth;
         healthFill = health / maxHealth;
 
-        mana = GameManager.instance.currentMana;
-        maxMana = GameManager.instance.maxMana;
+        mana = GameManager.Instance.currentMana;
+        maxMana = GameManager.Instance.maxMana;
         manaFill = mana / maxMana;
 
-        level = GameManager.instance.level;
-        levelProgression = GameManager.instance.levelProgression;
+        level = GameManager.Instance.level;
+        levelProgression = GameManager.Instance.levelProgression;
         levelProFill = levelProgression / 100f;
 
-        location = GameManager.instance.Scene_Name;
+        location = GameManager.Instance.Scene_Name;
 
         position[0] = player.transform.position.x;
         position[1] = player.transform.position.y;
