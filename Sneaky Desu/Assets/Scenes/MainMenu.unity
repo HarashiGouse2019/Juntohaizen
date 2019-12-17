@@ -288,10 +288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8683eb87a644ce47b24ddbdeefaaa45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-  - Your progress has been saved!!!
-  - Hello! Hello! Hello! What is going on?!?!?!
-  - You got 20 mana!!!
+  visibleDialogue: []
+  textSpeed: 0
 --- !u!114 &47764355
 MonoBehaviour:
   m_ObjectHideFlags: 0

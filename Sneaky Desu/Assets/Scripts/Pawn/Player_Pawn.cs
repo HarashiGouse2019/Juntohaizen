@@ -76,9 +76,11 @@ public class Player_Pawn : Pawn
             Ascend();
 
         GetClosestEnemy();
+
         if (closestObject == null)
         {
             targetNear = false;
+            Magic_Movement.radius = Magic_Movement.defaultRadius;
         }
 
 
@@ -315,7 +317,9 @@ public class Player_Pawn : Pawn
                 break;
             case false:
                 AudioManager.Instance.Play("LockOff");
-                enemyTarget = closestObject;
+                enemyTarget = null;
+                closestObject = null;
+                Magic_Movement.radius = Magic_Movement.defaultRadius;
                 break;
         }
 
@@ -337,6 +341,7 @@ public class Player_Pawn : Pawn
                     enemyTarget = closestObject;
                     crossHair.transform.position = new Vector2(enemyTarget.transform.position.x, enemyTarget.transform.position.y);
                     targetNear = true;
+                    Magic_Movement.radius = 1f;
                     return closestObject;
                 }
             }
@@ -355,7 +360,6 @@ public class Player_Pawn : Pawn
                 Magic_Movement.radius = 1f;
             }
         }
-        Magic_Movement.radius = 1f;
         return null;
     }
     public override void Descend()
@@ -489,16 +493,14 @@ public class Player_Pawn : Pawn
                 if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1 && save == false)
                 {
                     SavePlayer();
-                    Dialogue dialogueList = manager.GetComponent<Dialogue>();
-                    dialogueList.Run(0, 0.05f);
+                    DialogueManagement.Dialogue.READ_DIALOGUE_SET(2);
                 }
                 break;
             case "Treasure":
                 if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1)
                 {
                     col.gameObject.GetComponent<Treasure_Chest>().OpenChest();
-                    Dialogue dialogueList = manager.GetComponent<Dialogue>();
-                    dialogueList.Run(2, 0.05f);
+                    DialogueManagement.Dialogue.READ_DIALOGUE_SET(3);
                 }
                 break;
         }

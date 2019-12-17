@@ -267,6 +267,7 @@ public class GameManager : MonoBehaviour
         if (typeIn == false)
         {
             textBoxUI.gameObject.SetActive(true);
+
             if (dialogue.text.Length > 0)
             {
                 dialogue.text = "";
@@ -290,8 +291,18 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         yield return new WaitForSeconds(_delay);
-        textBoxUI.gameObject.SetActive(false);
-        typeIn = false;
+        if (DialogueManagement.Dialogue.lineIndex < DialogueManagement.Dialogue.dialogue.Count)
+        {
+            DialogueManagement.Dialogue.Progress();
+            typeIn = false;
+        }
+        else
+        {
+            textBoxUI.gameObject.SetActive(false);
+            typeIn = false;
+            DialogueManagement.Dialogue.dialogue.Clear();
+            DialogueManagement.Dialogue.runningDialogue = false;
+        }
         StopCoroutine(DisableDelay(_delay));
     }
 

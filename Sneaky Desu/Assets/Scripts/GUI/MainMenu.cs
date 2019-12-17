@@ -84,8 +84,7 @@ public class MainMenu : MonoBehaviour
         manager.Goto_Scene("S_FLOOR_1");
 
         //Run Dialogue
-        Dialogue dialogue = GameManager.Instance.GetComponent<Dialogue>();
-        dialogue.Run(1, 0.05f);
+        //DialogueManagement.Dialogue.READ_DIALOGUE_SET(1);
     }
 
     public void LoadGame()
