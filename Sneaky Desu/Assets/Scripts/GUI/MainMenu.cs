@@ -162,6 +162,8 @@ public class MainMenu : MonoBehaviour
                 GameManager.Instance.masterVolumeAdjust.value = LoadSettings("Master Volume");
                 MusicManager.Instance.musicVolumeAdjust.value = LoadSettings("Music Volume");
                 AudioManager.Instance.soundVolumeAdjust.value = LoadSettings("Sound Volume");
+
+                
             }
 
             fileSearchStart = true;
@@ -185,12 +187,12 @@ public class MainMenu : MonoBehaviour
         //Loading all values to settings
         if (PlayerPrefs.HasKey(_key))
             return PlayerPrefs.GetFloat(_key);
-        Debug.Log("This might be your problem.");
         return 0;
     }
 
     public void ApplySettings()
     {
+        Debug.Log("Doing things...");
         SaveSettings("Master Volume", GameManager.Instance.masterVolumeAdjust.value);
         SaveSettings("Music Volume", MusicManager.Instance.musicVolumeAdjust.value);
         SaveSettings("Sound Volume", AudioManager.Instance.soundVolumeAdjust.value);

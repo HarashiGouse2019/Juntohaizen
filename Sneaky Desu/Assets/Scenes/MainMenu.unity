@@ -4549,7 +4549,7 @@ MonoBehaviour:
     pitch: 1
     enableLoop: 0
     source: {fileID: 0}
-  soundVolumeAdjust: {fileID: 0}
+  soundVolumeAdjust: {fileID: 328822181}
 --- !u!4 &1099938031
 Transform:
   m_ObjectHideFlags: 0
