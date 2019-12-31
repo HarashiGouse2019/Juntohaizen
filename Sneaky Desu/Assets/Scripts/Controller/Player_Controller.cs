@@ -153,7 +153,6 @@ public class Player_Controller : Controller
 
             }
 
-
             //If the player is walking, play some audio
             if (isWalking == true)
             {

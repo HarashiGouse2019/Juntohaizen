@@ -112,7 +112,7 @@ public class Sorcerer_Pawn : Pawn
                 }
                 isMoving = true;
             }
-        } else
+        } else 
         {
             Aggro();
         }

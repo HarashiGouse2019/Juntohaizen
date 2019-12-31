@@ -32,14 +32,13 @@ public class Sorcerer_Controller : Controller
         xscale.x = Mathf.Sign(sorcerer.rb.velocity.x);
         transform.localScale = xscale;
 
+        bool playerIsVisible = !player.GetComponent<Player_Controller>().isInGround;
+        bool atAggroDistance = Vector2.Distance(transform.position, player.transform.position) < aggroDistance;
+
         //Calculating the distance between this object and the player
-        if (Vector2.Distance(transform.position, player.transform.position) < aggroDistance)
-        {
+        if (atAggroDistance && playerIsVisible)
             sorcerer.aggroState = true;
-        }
         else
-        {
             sorcerer.aggroState = false;
-        }
     }
 }

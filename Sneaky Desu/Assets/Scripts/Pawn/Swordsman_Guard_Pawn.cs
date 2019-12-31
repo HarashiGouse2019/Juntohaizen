@@ -51,9 +51,12 @@ public class Swordsman_Guard_Pawn : Pawn
 
     public override void ChaseAfter()
     {
-        animator.SetBool("isChasing", true);
-        //A nice way for our enemy to chase after the player!!!
-        transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+        if (!target.GetComponent<Player_Controller>().isInGround)
+        {
+            animator.SetBool("isChasing", true);
+            //A nice way for our enemy to chase after the player!!!
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+        }
     }
 
     public override void Attack()

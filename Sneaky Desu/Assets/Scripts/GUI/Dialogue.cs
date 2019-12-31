@@ -21,33 +21,35 @@ namespace DialogueManagement
 
         static char[] delimiters = { '<', '>' };
 
+        const int resetIndex = 0;
+
+
+
         private void Update()
         {
             visibleDialogue = dialogue;
 
-            if (dialogue.Count > 0)
-            {
-                Run(textSpeed);
-                runningDialogue = true;
-            }
+            Run(textSpeed);
         }
 
         void Run(float _speed)
         {
-            if (dialogue.Count > 0)
+            if (dialogue.Count != 0 && InBounds((int)lineIndex, dialogue) && GameManager.Instance.typeIn == false)
             {
                 manager = GameManager.Instance;
                 StartCoroutine(manager.DisplayText(dialogue[(int)lineIndex], _speed));
-
-                //Go to next line
-                if (Input.GetKeyDown(KeyCode.Space))
-                    Progress();
             }
+        }
+
+        bool InBounds(int index, List<string> array)
+        {
+            return (index >= 0) && (index < array.Count);
         }
 
         public static void READ_DIALOGUE_SET(int _dialogueSet)
         {
             string dsPath = Application.streamingAssetsPath + @"/Chikara.dsf";
+
             string line = null;
 
             int position = 0;
@@ -103,6 +105,7 @@ namespace DialogueManagement
 
                         if (line == "<END>" && atTargetLine)
                         {
+                            runningDialogue = true;
                             return;
                         }
 
@@ -120,10 +123,12 @@ namespace DialogueManagement
 
         public static void Progress()
         {
-            if (lineIndex != dialogue.Count)
+            if (lineIndex != dialogue.Count && GameManager.Instance.typeIn == true)
             {
                 lineIndex++;
+               
                 GameManager.Instance.dialogue.text = "";
+                GameManager.Instance.typeIn = false;
             }
         }
     }

@@ -59,14 +59,6 @@ public class Player_Pawn : Pawn
 
         if (GameManager.Instance.currentHealth == 0)
         {
-            //step = false;
-            //isWaiting = false;
-            //GameManager.Instance.ResetAllValues();
-            //closestObject = null;
-            //controller.toggleLock = false;
-            //player_collider.isTrigger = true;
-            //MagicSource.SetActive(false);
-            //gameObject.SetActive(false);
 
             SaveLoadSystem.LoadPlayer();
 

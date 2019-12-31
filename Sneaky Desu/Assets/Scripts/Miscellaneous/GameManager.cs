@@ -164,10 +164,9 @@ public class GameManager : MonoBehaviour
     public float DecreaseLevel(float value)
     {
         levelProgressionUI.fillAmount -= value / 100f;//Level will always go to 100. If it didn't, we would have "value / maxLevel"
-        levelProgression = levelProgressionUI.fillAmount;                                     // Debug.Log(levelProgressionUI.fillAmount); //Displays a log that gives use the level fill amount
-        Debug.Log(levelProgressionUI.fillAmount);
+        levelProgression = levelProgressionUI.fillAmount;
 
-        if (levelProgressionUI.fillAmount < 1f / maxHealth && level != 0f)
+        if (levelProgressionUI.fillAmount < 1f / maxHealth && level != 1f)
         {
             level -= 1;
             levelProgressionUI.fillAmount = maxHealth - 1f;
@@ -192,6 +191,10 @@ public class GameManager : MonoBehaviour
     {
         //If the fillAmount is not 0, continue to decrease our health
         if (healthUI.fillAmount != 0) healthUI.fillAmount -= value / maxHealth;
+
+        //Decrease level by 500% of damage
+        DecreaseLevel(value * 5f);
+
         currentHealth = healthUI.fillAmount;
         if (currentHealth == 0)
         {
@@ -267,11 +270,8 @@ public class GameManager : MonoBehaviour
         if (typeIn == false)
         {
             textBoxUI.gameObject.SetActive(true);
-
-            if (dialogue.text.Length > 0)
-            {
-                dialogue.text = "";
-            }
+            dialogue.text = "";
+         
 
             //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
             for (int i = 0; i < text.Length; i++)
@@ -289,21 +289,23 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator DisableDelay(float _delay)
     {
-        Time.timeScale = 1f;
+
         yield return new WaitForSeconds(_delay);
-        if (DialogueManagement.Dialogue.lineIndex < DialogueManagement.Dialogue.dialogue.Count)
+        if (DialogueManagement.Dialogue.lineIndex != DialogueManagement.Dialogue.dialogue.Count)
         {
             DialogueManagement.Dialogue.Progress();
-            typeIn = false;
+            StopCoroutine(DisableDelay(_delay));
         }
         else
         {
+            DialogueManagement.Dialogue.runningDialogue = false;
+            DialogueManagement.Dialogue.lineIndex = 0;
             textBoxUI.gameObject.SetActive(false);
             typeIn = false;
             DialogueManagement.Dialogue.dialogue.Clear();
-            DialogueManagement.Dialogue.runningDialogue = false;
+            StopCoroutine(DisableDelay(_delay));
         }
-        StopCoroutine(DisableDelay(_delay));
+
     }
 
     public void ResetAllValues()
@@ -318,7 +320,7 @@ public class GameManager : MonoBehaviour
 
     bool CheckIfMaxOutLevel(int _maxOutValue)
     {
-        if (level == _maxOutValue && levelProgression > 0.99f && level == 3)
+        if (level == _maxOutValue && levelProgression == 1f)
         {
             levelUI.text = "MAX";
             return true;

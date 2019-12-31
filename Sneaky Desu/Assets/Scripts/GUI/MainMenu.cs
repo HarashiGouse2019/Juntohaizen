@@ -84,7 +84,7 @@ public class MainMenu : MonoBehaviour
         manager.Goto_Scene("S_FLOOR_1");
 
         //Run Dialogue
-        //DialogueManagement.Dialogue.READ_DIALOGUE_SET(1);
+        DialogueManagement.Dialogue.READ_DIALOGUE_SET(1);
     }
 
     public void LoadGame()
@@ -162,8 +162,6 @@ public class MainMenu : MonoBehaviour
                 GameManager.Instance.masterVolumeAdjust.value = LoadSettings("Master Volume");
                 MusicManager.Instance.musicVolumeAdjust.value = LoadSettings("Music Volume");
                 AudioManager.Instance.soundVolumeAdjust.value = LoadSettings("Sound Volume");
-
-                
             }
 
             fileSearchStart = true;
