@@ -259,6 +259,7 @@ MonoBehaviour:
     type: 3}
   textBoxUI: {fileID: 20988629}
   dialogue: {fileID: 347274063}
+  dsfName: Chikara
 --- !u!4 &47764353
 Transform:
   m_ObjectHideFlags: 0

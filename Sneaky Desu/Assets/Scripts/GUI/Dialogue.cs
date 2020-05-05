@@ -48,7 +48,7 @@ namespace DialogueManagement
 
         public static void READ_DIALOGUE_SET(int _dialogueSet)
         {
-            string dsPath = Application.streamingAssetsPath + @"/Chikara.dsf";
+            string dsPath = Application.streamingAssetsPath + @"/" + GameManager.Instance.dsfName + ".dsf";
 
             string line = null;
 
