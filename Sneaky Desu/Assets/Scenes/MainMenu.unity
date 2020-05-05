@@ -167,7 +167,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 20988627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -178,13 +178,15 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: c29599dd8a599ac48955794acfb53f29, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 21300000, guid: c29599dd8a599ac48955794acfb53f29, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!222 &20988630
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -203,7 +205,6 @@ GameObject:
   m_Component:
   - component: {fileID: 47764353}
   - component: {fileID: 47764352}
-  - component: {fileID: 47764354}
   - component: {fileID: 47764356}
   - component: {fileID: 47764355}
   m_Layer: 0
@@ -257,7 +258,7 @@ MonoBehaviour:
   posy: -2.5
   ObjectPooler: {fileID: 2340308038348384281, guid: cd16836e33261ea4e8137a94145d0332,
     type: 3}
-  textBoxUI: {fileID: 20988629}
+  textBoxUI: {fileID: 0}
   dialogue: {fileID: 347274063}
   dsfName: Chikara
 --- !u!4 &47764353
@@ -277,20 +278,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &47764354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47764351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8683eb87a644ce47b24ddbdeefaaa45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visibleDialogue: []
-  textSpeed: 0
 --- !u!114 &47764355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4322,6 +4309,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931217346}
   m_CullTransparentMesh: 0
+--- !u!1 &1005706240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1005706242}
+  - component: {fileID: 1005706241}
+  m_Layer: 0
+  m_Name: DialogueSystemObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1005706241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005706240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7988fcda255ae44383df5a782df57a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setToSingleton: 1
+  dslFileName: 
+  TMP_DIALOGUETEXT: {fileID: 347274063}
+  textBoxUI: {fileID: 20988629}
+  nodes: []
+--- !u!4 &1005706242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005706240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.91878825, y: -2.6251273, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1007349896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2340308038348384282, guid: cd16836e33261ea4e8137a94145d0332,

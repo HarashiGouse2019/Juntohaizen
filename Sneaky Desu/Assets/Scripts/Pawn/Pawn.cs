@@ -43,7 +43,7 @@ public abstract class Pawn : MonoBehaviour
 
     readonly public Timer timer = new Timer(9);
 
-    private GameManager manager;
+    protected GameManager manager;
 
     protected bool returnVal;
 

@@ -24,15 +24,12 @@ public class Player_Pawn : Pawn
     //The duration of dashing
     public float dashDuration = 0.5f;
 
-    private GameManager manager;
-
     public float dAxisX, dAxisY;
     public override void Awake()
     {
         playerpawn = this;
         player_collider = GetComponent<CircleCollider2D>();
         renderer = GetComponent<SpriteRenderer>();
-        manager = GameManager.Instance;
         DontDestroyOnLoad(this);
     }
     public override void Start()
