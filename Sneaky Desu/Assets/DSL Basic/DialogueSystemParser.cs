@@ -74,7 +74,8 @@ namespace DSL
                 "is",
                 "from",
                 "insert",
-                "to" };
+                "to",
+                "and"};
 
             public static string[] Keywords { get; } = {
                 "SPEED",
@@ -376,7 +377,7 @@ namespace DSL
                                 if (Has(line, "KEYCODES"))
                                 {
                                     string[] expressions = null;
-                                    try { expressions = line.Replace(" ", "").Split(Delimiters); } catch { }
+                                    try { expressions = line.Replace(WHITESPACE, STRINGNULL).Split(Delimiters); } catch { }
 
                                     //Check for addition inforamtion
                                     foreach (string expression in expressions)
@@ -579,62 +580,171 @@ namespace DSL
                                     //We split KEYCODE.I (is or =) PROCEED (just an example)
                                     string[] declaration = null;
 
-                                    string keyCodeValue = null;
+                                    string keyCodeValue = STRINGNULL;
 
-                                    string functionalityValue = null;
+                                    string functionalityValue = STRINGNULL;
+
+                                    string inputName = STRINGNULL;
+
+                                    string inputDescriptiveName = STRINGNULL;
 
                                     KeyCode newKeyCode = KeyCode.None;
 
-                                    #region Retrieve KeyCodeValue and FunctionalityValue as strings
-                                    try
-                                    {
-                                        //Split off operators first
-                                        declaration = line.Replace(" ", "").Split(Delimiters);
+                                    bool multiWord = false;
 
-                                        //Replace any tokens with
-                                        foreach (string token in Tokens)
-                                        {
-                                            declaration[1] = declaration[1].Replace(token, " ");
-                                        }
+                                    // Retrieve KeyCodeValue and FunctionalityValue as strings
+                                    RetrieveKeyCodeAndFunctionality(line, ref declaration, ref keyCodeValue, ref functionalityValue, ref multiWord);
 
-                                        //Then this time, split with a space character
-                                        string[] value = declaration[1].Split(' ');
+                                    // Parse string keyCodeValue to actual KeyCode enumerator value
+                                    newKeyCode = ParseStringToKeyCode(keyCodeValue, newKeyCode, multiWord);
 
+                                    // Retrieve name of input
+                                    inputName = GetInputNameFromDSL(line, inputName);
 
-
-                                        keyCodeValue = value[0];
-                                        functionalityValue = value[1];
-                                    }
-                                    catch { } // We should just get "KEYCODE" "I" "is" or "=" and "PROCEED" 
-                                    #endregion
-
-
-                                    #region Parse string keyCodeValue to actual KeyCode enumerator value
-                                    try
-                                    {
-
-                                        newKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), Capitalize(keyCodeValue));
-                                    }
-                                    catch { }
-                                    #endregion
-
-                                    #region Register new input
-                                    try
-                                    {
-                                        //Decide rather we're explicitly setting KeyCodes in .dsl or in the actual InputManager
-                                        //If the Input Manager is not being used, all Input will be registed from .dsl
-                                        //Otherwise, those values may already had been set by the user.
-                                        if (Is_Using_Input_Manager == false)
-                                            InputManager.Register(keyCodeValue, "", newKeyCode, (Functionality)Enum.Parse(typeof(Functionality), functionalityValue));
-                                    }
-                                    catch { }
-                                    #endregion
+                                    // Retrieve descriptive name of input
+                                    inputDescriptiveName = GetDescriptiveNameFromDSL(line, inputDescriptiveName);
+                                    
+                                    // Register new input
+                                    InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
                                 }
                             }
                             position++;
                         }
                     }
                 }
+            }
+
+            /// <summary>
+            /// Calls InputManager Register Method
+            /// </summary>
+            /// <param name="keyCodeValue"></param>
+            /// <param name="functionalityValue"></param>
+            /// <param name="inputName"></param>
+            /// <param name="inputDescriptiveName"></param>
+            /// <param name="newKeyCode"></param>
+            private static void InvokeRegistrationToInputManager(string keyCodeValue, string functionalityValue, string inputName, string inputDescriptiveName, KeyCode newKeyCode)
+            {
+                try
+                {
+
+
+                    //Decide rather we're explicitly setting KeyCodes in .dsl or in the actual InputManager
+                    //If the Input Manager is not being used, all Input will be registed from .dsl
+                    //Otherwise, those values may already had been set by the user.
+                    if (Is_Using_Input_Manager == false)
+                    {
+                        //Parse string into Functionality
+                        Functionality func = (Functionality)Enum.Parse(typeof(Functionality), functionalityValue);
+
+                        //Register our keys for them to be finalized
+                        InputManager.Register((inputName == STRINGNULL) ? keyCodeValue : inputName, inputDescriptiveName, newKeyCode, func);
+                    };
+                }
+                catch { }
+            }
+
+            /// <summary>
+            /// Return the descriptive name of the input
+            /// </summary>
+            /// <param name="line"></param>
+            /// <param name="inputDescriptiveName"></param>
+            /// <returns></returns>
+            private static string GetDescriptiveNameFromDSL(string line, string inputDescriptiveName)
+            {
+                //And I'll also try to get the descriptiveName
+                try
+                {
+                    //Remove quotes
+                    inputDescriptiveName = line.Split(Delimiters)[3].Replace("\"", STRINGNULL);
+                    inputDescriptiveName = inputDescriptiveName.Trim(WHITESPACE.ToCharArray());
+
+                }
+                catch { }
+
+                return inputDescriptiveName;
+            }
+
+            /// <summary>
+            /// Return the name of the input
+            /// </summary>
+            /// <param name="line"></param>
+            /// <param name="inputName"></param>
+            /// <returns></returns>
+            private static string GetInputNameFromDSL(string line, string inputName)
+            {
+                //I'm going to try grabbing the name
+                //That will be after the declaration
+                try
+                {
+                    //Remove quotes
+                    inputName = line.Split(Delimiters)[2].Replace("\"", STRINGNULL);
+                    inputName = inputName.Trim(WHITESPACE.ToCharArray());
+                }
+                catch { }
+
+                return inputName;
+            }
+
+            /// <summary>
+            /// Try to convert a string into a valid KeyCode
+            /// </summary>
+            /// <param name="keyCodeValue"></param>
+            /// <param name="newKeyCode"></param>
+            /// <param name="multiWord"></param>
+            /// <returns></returns>
+            private static KeyCode ParseStringToKeyCode(string keyCodeValue, KeyCode newKeyCode, bool multiWord)
+            {
+                try
+                {
+                    //Parse string into KeyCode
+                    //If it's something like LeftArrow, it has already
+                    //set to the right format, so don't Capticalize
+                    newKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), multiWord ? keyCodeValue : Capitalize(keyCodeValue));
+                }
+                catch { }
+
+                return newKeyCode;
+            }
+
+            /// <summary>
+            /// Read the declaration, and pair KeyCode and its functionality
+            /// </summary>
+            /// <param name="line"></param>
+            /// <param name="declaration"></param>
+            /// <param name="keyCodeValue"></param>
+            /// <param name="functionalityValue"></param>
+            /// <param name="multiWord"></param>
+            private static void RetrieveKeyCodeAndFunctionality(string line, ref string[] declaration, ref string keyCodeValue, ref string functionalityValue, ref bool multiWord)
+            {
+                
+                try
+                {
+                    //Then, we continue with the declaration itself
+                    //Split off operators first
+                    declaration = line.Replace(WHITESPACE, STRINGNULL).Split(Delimiters);
+
+                    //Replace any tokens with
+                    foreach (string token in Tokens)
+                    {
+                        declaration[1] = declaration[1].Replace(token, WHITESPACE);
+                    }
+
+                    //Then this time, split with a space character
+                    string[] value = declaration[1].Split(WHITESPACE.ToCharArray());
+
+                    keyCodeValue = value[0];
+
+                    //Check if there's a keycode with underscore
+                    if (Has(keyCodeValue, "_"))
+                    {
+                        multiWord = true;
+                        keyCodeValue = PascalCase(keyCodeValue);
+                    }
+
+                    functionalityValue = value[1];
+                }
+                catch { } // We should just get "KEYCODE" "I" "is" or "=" and "PROCEED" 
+                
             }
 
             /// <summary>
@@ -928,13 +1038,13 @@ namespace DSL
             {
                 if (_styleCommand == Delimiters[2] + Keywords[2] + Delimiters[3])
                 {
-                    _line = _line.Replace(_styleCommand + " ", "<i>");
+                    _line = _line.Replace(_styleCommand + WHITESPACE, "<i>");
                     return SUCCESSFUL;
                 }
 
                 else if (_styleCommand == Delimiters[2] + Keywords[2] + Tokens[1] + Tokens[2] + Delimiters[3])
                 {
-                    _line = _line.Replace(_styleCommand + " ", "</i>");
+                    _line = _line.Replace(_styleCommand + WHITESPACE, "</i>");
                     return SUCCESSFUL;
                 }
 
@@ -951,21 +1061,53 @@ namespace DSL
             {
                 if (_styleCommand == Delimiters[2] + Keywords[3] + Delimiters[3])
                 {
-                    _line = _line.Replace(_styleCommand + " ", "<u>");
+                    _line = _line.Replace(_styleCommand + WHITESPACE, "<u>");
                     return SUCCESSFUL;
                 }
 
                 else if (_styleCommand == Delimiters[2] + Keywords[3] + Tokens[1] + Tokens[2] + Delimiters[3])
                 {
-                    _line = _line.Replace(_styleCommand + " ", "</u>");
+                    _line = _line.Replace(_styleCommand + WHITESPACE, "</u>");
                     return SUCCESSFUL;
                 }
 
                 return FAILURE;
             }
 
+            /// <summary>
+            /// Captitalize the first letter of a word
+            /// </summary>
+            /// <param name="_word"></param>
+            /// <returns></returns>
             static string Capitalize(string _word) => _word[0].ToString().ToUpper() + _word.Substring(1, _word.Length - 1).ToLower();
 
+            /// <summary>
+            /// Do PascalCase for any underscore values
+            /// </summary>
+            /// <param name="_word"></param>
+            /// <returns></returns>
+            static string PascalCase(string _word)
+            {
+                //Split with "_"
+                string[] words = _word.Split('_');
+                string pascalWord = null;
+
+                //Capitalize each word, and add it to pascalWord
+                foreach (string word in words)
+                {
+                    pascalWord += Capitalize(word);
+                }
+
+                //And return
+                return pascalWord;
+            }
+
+            /// <summary>
+            /// Checks if string contains another string
+            /// </summary>
+            /// <param name="line"></param>
+            /// <param name="token"></param>
+            /// <returns></returns>
             public static bool Has(string line, string token) => line.Contains(token);
 
         }

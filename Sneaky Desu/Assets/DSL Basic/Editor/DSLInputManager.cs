@@ -7,7 +7,7 @@ using UnityEditor;
 using DSL;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(InputManager))]
+
 public class DSLInputManager : EditorWindow
 {
     //This is how all the words, numbers, tokens, delimiter, and editor background have their color

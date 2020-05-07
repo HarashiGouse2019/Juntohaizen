@@ -4,7 +4,7 @@ using System.IO;
 namespace DSL
 {
     //NotInCorrectLayer Exception
-    public class InvalidLayerException : IOException
+    public class InvalidLayerException : Exception
     {
         public InvalidLayerException() { }
         public InvalidLayerException(string message) : base(message) { }

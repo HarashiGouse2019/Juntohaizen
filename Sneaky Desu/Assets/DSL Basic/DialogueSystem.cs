@@ -978,7 +978,7 @@ namespace DSL
         /// <param name="search"></param>
         /// <param name="replace"></param>
         /// <returns></returns>
-        static string ReplaceFirst(string text, string search, string replace)
+        public static string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);
             if (pos < 0)
@@ -1221,7 +1221,7 @@ namespace DSL
         /// Changes the typeIn value to either true or false
         /// </summary>
         /// <param name="value"></param>
-        public static void SET_TYPE_IN_VALUE(bool value) { typeIn = value; }
+        public static void SET_TYPE_IN_VALUE(bool value) => typeIn = value;
 
         /// <summary>
         /// Get the TextMeshPro that's being used for the Dialgoue System
@@ -1240,12 +1240,13 @@ namespace DSL
         public static void DISABLE_DIALOGUE_BOX() => Instance.textBoxUI.gameObject.SetActive(false);
 
         /// <summary>
-        /// On Scene Loaded Evenet
+        /// On Scene Loaded Event
         /// </summary>
         /// <param name="scene"></param>
         /// <param name="mode"></param>
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            //Find all objects after a new scene has been loaded
             dedicatedObjects = FindAllObjectsInDSLLayer();
         }
 

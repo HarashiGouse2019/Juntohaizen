@@ -17,7 +17,19 @@ God
 
 ###Keycodes are all set in DSL Input Manager found in the Unity Editor###
 <KEYCODES>
-KEYCODE.X is PROCEED
+KEYCODE.X is PROCEED | "Proceed" | "Proceed to the next dialogue."
+######
+KEYCODE.LEFT_ARROW is PRESET_16 | "Left" | "Left Arrow Key"
+KEYCODE.A is PRESET_16 | "Left" | "A Key"
+######
+KEYCODE.RIGHT_ARROW is PRESET_17 | "Right" | "Right Arrow Key"
+KEYCODE.D is PRESET_17 | "Right" | "D Key"
+######
+KEYCODE.UP_ARROW is PRESET_18 | "Up" | "Up Arrow Key"
+KEYCODE.W is PRESET_18 |"Up" | "W Key"
+######
+KEYCODE.DOWN_ARROW is PRESET_19 |"Down" | "Down Arrow Key"
+KEYCODE.S is PRESET_19 |"Down" | "S Key"
 
 ###--------------------------------------------------------------------------------------------------------------------###
 
