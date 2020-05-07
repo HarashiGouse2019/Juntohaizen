@@ -11,15 +11,16 @@ namespace DSL
     {
         protected bool behaviourRunning = true;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             Initialize();
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             Begin();
-            StartCoroutine(BehaviourCycle());
+            StartCoroutine(BehaviourUpdateCycle());
+            StartCoroutine(BehaviourFixedUpdateCycle());
         }
 
         protected virtual void Initialize() { }
@@ -31,14 +32,16 @@ namespace DSL
             
         }
 
-        protected IEnumerator BehaviourCycle()
+        protected virtual void PhysicsMain() { }
+
+        protected IEnumerator BehaviourUpdateCycle()
         {
             ValidateLayer();
-            while (behaviourRunning)
+            while (true)
             {
                 try
                 {
-                    Main();
+                    if(behaviourRunning) Main();
                 }
                 catch (IOException ioException)
                 {
@@ -48,6 +51,26 @@ namespace DSL
                 }
 
                 yield return new WaitForEndOfFrame();
+            }
+        }
+
+        protected IEnumerator BehaviourFixedUpdateCycle()
+        {
+            ValidateLayer();
+            while (true)
+            {
+                try
+                {
+                    if (behaviourRunning) PhysicsMain();
+                }
+                catch (IOException ioException)
+                {
+                    behaviourRunning = false;
+                    Debug.Log("Behaviour is turned off...");
+                    throw ioException;
+                }
+
+                yield return new WaitForFixedUpdate();
             }
         }
 
@@ -63,6 +86,16 @@ namespace DSL
                 }
             }
 
+        }
+
+        public virtual void StopBehaviour()
+        {
+            behaviourRunning = false;
+        }
+
+        public virtual void ResumeBehaviour()
+        {
+            behaviourRunning = true;
         }
     }
 }

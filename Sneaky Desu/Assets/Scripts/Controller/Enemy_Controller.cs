@@ -14,17 +14,15 @@ public class Enemy_Controller : Controller
     public static int fieldOfSight; //This is used for other scripts to reference our field of view value
 
     public float atDistance = 1;
-    public override void Start()
+    protected override void Begin()
     {
-        base.Start(); //The start of the parent class
-
         pawn.animator.Play("Idle"); //Plays the idle animation
         pawn.target = GameObject.FindGameObjectWithTag("Player"); //References the player gameObject
         pawn.playerPosition = pawn.target.transform; //Grabs the player's position
         fieldOfSight = fieldOfSightValue; //Assign our non-static variable to the static one, so that other scripts can use it.
     }
 
-    void Update()
+    protected override void Main()
     {
         pawn.animator.SetBool("isChasing", isChasing); //Makes a transition from idle to chase or from chase to idle depending on our boolean
         pawn.animator.SetBool("isAtPlayer", isAtPlayer);

@@ -12,14 +12,13 @@ public class Sorcerer_Controller : Controller
     public float retreatDistance = 2f;
 
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Initialize()
     {
-        base.Start();
         sorcerer = GetComponent<Sorcerer_Pawn>();
         player = FindObjectOfType<Player_Pawn>();
     }
 
-    public void Update()
+    protected override void Main()
     {
         pawn.animator.SetBool("isMoving", sorcerer.isMoving);
 

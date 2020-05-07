@@ -91,8 +91,6 @@ namespace DSL
                 "DONT_DISTURB",
                 "CAPACITY",
                 "CONTROLED_BY_INPUT_MANAGER",
-                "DSL",
-                "UNITY",
                 "JUMP",
                 "MAX",
                 "MIN",

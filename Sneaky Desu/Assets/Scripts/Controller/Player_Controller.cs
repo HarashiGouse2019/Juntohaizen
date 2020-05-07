@@ -57,27 +57,27 @@ public class Player_Controller : Controller
     public KeyCode keyTapped1 = KeyCode.None;
     public KeyCode keyTapped2 = KeyCode.None;
 
-    public void Awake()
+    protected override void Initialize()
     {
         if (player_controller == null)
             player_controller = this;
         player = FindObjectOfType<Player_Pawn>();
+        
 
     }
 
-    public override void Start()
+    protected override void Begin()
     {
-        base.Start(); //Calls our parent start function
         pawn.transitionCoroutine = pawn.DescendTransition(1f);
     }
 
-    void Update()
+    protected override void Main()
     {
         ascendKey = descendKey;
         ReadArrowKeyInput();
     }
 
-    void FixedUpdate()
+    protected override void PhysicsMain()
     {
         RunPlayerControls();
     }

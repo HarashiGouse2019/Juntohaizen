@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Input = DSL.Input;
 
@@ -107,6 +108,9 @@ namespace DSL
         //List of all controls for the dialogue
         public static List<Input> DialogueKeyCodes { get; private set; }
 
+        //Fully dedicated objects
+        public static DSLBehaviour[] dedicatedObjects { get; private set; }
+
         //Reset value
         const int reset = 0;
 
@@ -190,6 +194,7 @@ namespace DSL
         /// <returns></returns>
         static IEnumerator PrintCycle()
         {
+            
             while (true)
             {
                 if (OnDelay)
@@ -849,6 +854,50 @@ namespace DSL
         }
 
         /// <summary>
+        /// Finds all objects under the "DSL" layer
+        /// </summary>
+        /// <returns></returns>
+        static DSLBehaviour[] FindAllObjectsInDSLLayer()
+        {
+            //First, we get all the game objects currently in the hierarchy
+            DSLBehaviour[] objects = FindObjectsOfType<DSLBehaviour>();
+
+            //We'll have a list of objects that is in the DSL layer
+            List<DSLBehaviour> objectsInDSLLayer = new List<DSLBehaviour>();
+
+            //We'll iterate through our objects array, and add them to the list
+            //if their layer is "DSL"
+            foreach(DSLBehaviour obj in objects)
+            {
+                try
+                {
+                    //If the object layer matches the "DSL" layer
+                    if (obj.gameObject.layer == LayerMask.NameToLayer(DSL_LAYER))
+                    {
+                        //Add that object to our list
+                        objectsInDSLLayer.Add(obj);
+                    }
+                }
+                catch { }
+            }
+
+            //Now, we'll return our list as an array
+            return objectsInDSLLayer.ToArray();
+        }
+
+        /// <summary>
+        /// Try to go to the next dialogue
+        /// </summary>
+        static void TryNext()
+        {
+            if (LineIndex < Dialogue.Count)
+            {
+                Proceed();
+                CursorPosition = reset;
+            }
+        }
+
+        /// <summary>
         /// Collect all the dialogue written out based on the Dialgoue set specified
         /// </summary>
         /// <param name="_dialogueSet"></param>
@@ -979,21 +1028,19 @@ namespace DSL
         {
             while (IS_TYPE_IN())
             {
+                //Check if the dialogue set being read is automatic
+                //The .dsl designer must use the [HALT] command to
+                //control the timing of automatic progression
+                if (IsAutomatic)
+                    TryNext();
+
                 //We have to check how we are pressing buttons
                 //If we explicitly typed the KeyCodes in the .dsl,
                 //We'll using Unity's GetButtonDown.
                 //However, if we're using DSL's InputManager for dialogue...
                 //We'll use its GetButtonDown instead
-
-                if (InputManager.GetButtonDown(Functionality.PROCEED))
-                {
-                    if (LineIndex < Dialogue.Count)
-                    {
-                        Proceed();
-                        CursorPosition = reset;
-                    }
-
-                }
+                if (InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic)
+                    TryNext();
 
                 yield return null;
             }
@@ -1005,12 +1052,28 @@ namespace DSL
         public static void End()
         {
             RunningDialogue = false;
+
             LineIndex = 0;
+
             SET_TYPE_IN_VALUE(false);
+
             DISABLE_DIALOGUE_BOX();
+
             Dialogue.Clear();
+
             Instance.StopAllCoroutines();
+
             CursorPosition = reset;
+
+            //Rerun all behaviours
+            foreach (DSLBehaviour objectToResume in FindAllObjectsInDSLLayer())
+            {
+                try
+                {
+                    objectToResume.ResumeBehaviour();
+                }
+                catch { }
+            }
         }
 
         /// <summary>
@@ -1117,6 +1180,16 @@ namespace DSL
             //Check if we are not passed a index value
             if (InBounds((int)LineIndex, Dialogue) && IS_TYPE_IN() == false)
             {
+                //When the cycle starts, we need to know if we should stop all the activity of any objects
+                //deriving from DSLBehaviour
+                if (!IsDontDisturb)
+                {
+                    
+                    foreach (DSLBehaviour objectToStop in dedicatedObjects)
+                        objectToStop.StopBehaviour();
+                }
+
+
                 //If there is no character or "???" operator, we suspect it to just have "@ ", thus we'll remove it.
                 //We will also remove the marker for the end of sentence
                 Dialogue[(int)LineIndex] = Dialogue[(int)LineIndex].Replace("@ ", "").Replace("<< ", "");
@@ -1166,11 +1239,23 @@ namespace DSL
         /// </summary>
         public static void DISABLE_DIALOGUE_BOX() => Instance.textBoxUI.gameObject.SetActive(false);
 
+        // called second
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            dedicatedObjects = FindAllObjectsInDSLLayer();
+        }
+
+        public void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
         /// <summary>
         /// When disabled, stop all coroutines
         /// </summary>
         public void OnDisable()
         {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             StopAllCoroutines();
         }
     }
