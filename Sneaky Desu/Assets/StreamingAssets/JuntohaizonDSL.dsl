@@ -15,14 +15,6 @@ Globby
 Merchant
 God
 
-<EXPRESSIONS>
-
-<POSES>
-
-<SOUNDS>
-
-<STYLE>
-
 ###Keycodes are all set in DSL Input Manager found in the Unity Editor###
 <KEYCODES>
 KEYCODE.RETURN is PROCEED

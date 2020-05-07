@@ -159,7 +159,6 @@ namespace DSL
         /// </summary>
         public static void FinalizeKeyCodes()
         {
-            Debug.Log("Finalizing Keycodes...");
             int size = Keys.Count;
             Instance.keys = new Input[size];
             for(int index = 0; index < Keys.Count; index++)

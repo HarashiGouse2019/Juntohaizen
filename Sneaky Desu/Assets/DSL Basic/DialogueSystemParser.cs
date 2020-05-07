@@ -112,8 +112,6 @@ namespace DSL
             public static Dictionary<string, int> DefinedExpressions { get; private set; } = new Dictionary<string, int>();
             public static Dictionary<string, int> DefinedPoses { get; private set; } = new Dictionary<string, int>();
             public static List<string> DefinedCharacters { get; private set; } = new List<string>();
-            public static bool HAS(string line, string token) => line.Contains(token);
-
             public static int skipValue = 0;
             public static object returnedValue = null;
 
@@ -179,7 +177,7 @@ namespace DSL
                         {
                             //If the parser command is a value one, we can remove it.
                             //This will allow the person
-                            if (HAS(command, keyword))
+                            if (Has(command, keyword))
                             {
                                 foundCommands.Add(command);
 
@@ -221,41 +219,43 @@ namespace DSL
             /// </summary>
             public static void DefineExpressions()
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string line = null;
-
-                int position = 0;
-
-                bool foundExpression = false;
-
-                if (File.Exists(dsPath))
+                try
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                    string line = null;
+
+                    int position = 0;
+
+                    bool foundExpression = false;
+
+                    if (File.Exists(dsPath))
                     {
-                        while (true)
+                        using (StreamReader fileReader = new StreamReader(dsPath))
                         {
-                            line = fileReader.ReadLine();
-
-                            if (line == STRINGNULL)
+                            while (true)
                             {
-                                if (foundExpression)
-                                    return;
+                                line = fileReader.ReadLine();
+
+                                if (line == STRINGNULL)
+                                {
+                                    if (foundExpression)
+                                        return;
+                                }
+
+                                if (Has(line, "EXPRESSIONS"))
+                                {
+                                    foundExpression = true;
+                                    try { GetExpressions(position); } catch { }
+                                }
+
+                                position++;
                             }
-
-                            line.Split(Delimiters);
-
-                            if (HAS(line, "<EXPRESSIONS>"))
-                            {
-                                foundExpression = true;
-                                try { GetExpressions(position); } catch { }
-                            }
-
-                            position++;
                         }
                     }
+                    Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+                catch { }
             }
 
             /// <summary>
@@ -263,41 +263,43 @@ namespace DSL
             /// </summary>
             public static void DefinePoses()
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string line = null;
-
-                int position = 0;
-
-                bool foundPose = false;
-
-                if (File.Exists(dsPath))
+                try
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                    string line = null;
+
+                    int position = 0;
+
+                    bool foundPose = false;
+
+                    if (File.Exists(dsPath))
                     {
-                        while (true)
+                        using (StreamReader fileReader = new StreamReader(dsPath))
                         {
-                            line = fileReader.ReadLine();
-
-                            if (line == STRINGNULL)
+                            while (true)
                             {
-                                if (foundPose)
-                                    return;
+                                line = fileReader.ReadLine();
+
+                                if (line == STRINGNULL)
+                                {
+                                    if (foundPose)
+                                        return;
+                                }
+
+                                if (Has(line, "POSES"))
+                                {
+                                    foundPose = true;
+                                    try { GetPoses(position); } catch { }
+                                }
+
+                                position++;
                             }
-
-                            line.Split(Delimiters);
-
-                            if (HAS(line, "<POSES>"))
-                            {
-                                foundPose = true;
-                                try { GetPoses(position); } catch { }
-                            }
-
-                            position++;
                         }
                     }
+                    Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+                catch { }
             }
 
             /// <summary>
@@ -305,41 +307,43 @@ namespace DSL
             /// </summary>
             public static void DefineCharacters()
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string line = null;
-
-                int position = 0;
-
-                bool foundPose = false;
-
-                if (File.Exists(dsPath))
+                try
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                    string line = null;
+
+                    int position = 0;
+
+                    bool foundPose = false;
+
+                    if (File.Exists(dsPath))
                     {
-                        while (true)
+                        using (StreamReader fileReader = new StreamReader(dsPath))
                         {
-                            line = fileReader.ReadLine();
-
-                            if (line == STRINGNULL)
+                            while (true)
                             {
-                                if (foundPose)
-                                    return;
+                                line = fileReader.ReadLine();
+
+                                if (line == STRINGNULL)
+                                {
+                                    if (foundPose)
+                                        return;
+                                }
+
+                                if (Has(line, "CHARACTERS"))
+                                {
+                                    foundPose = true;
+                                    try { GetCharacterNames(position); } catch { }
+                                }
+
+                                position++;
                             }
-
-                            line.Split(Delimiters);
-
-                            if (HAS(line, "<CHARACTERS>"))
-                            {
-                                foundPose = true;
-                                try { GetCharacterNames(position); } catch { }
-                            }
-
-                            position++;
                         }
                     }
+                    Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+                catch { }
             }
 
             /// <summary>
@@ -347,53 +351,55 @@ namespace DSL
             /// </summary>
             public static void DefineKeyCodes()
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string line = null;
-
-                int position = 0;
-
-                bool foundKeyCode = false;
-
-                if (File.Exists(dsPath))
+                try
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                    string line = null;
+
+                    int position = 0;
+
+                    bool foundKeyCode = false;
+
+                    if (File.Exists(dsPath))
                     {
-                        while (true)
+                        using (StreamReader fileReader = new StreamReader(dsPath))
                         {
-                            line = fileReader.ReadLine();
-
-                            if (line == STRINGNULL)
+                            while (true)
                             {
-                                if (foundKeyCode)
-                                    return;
-                            }
+                                line = fileReader.ReadLine();
 
-                            line.Split(Delimiters);
-
-                            if (HAS(line, "KEYCODES"))
-                            {
-                                string[] expressions = null;
-                                try { expressions = line.Replace(" ", "").Split(Delimiters); } catch { }
-
-                                //Check for addition inforamtion
-                                foreach (string expression in expressions)
+                                if (line == STRINGNULL)
                                 {
-                                    //If KeyCodes will be controlled by the InputManager in DSLNative or Unity
-                                    //If controlled by input managers, all the input will be read through those
-                                    //instead of being read in the .dsl directly.
-                                    try { if (expression == Keywords[13]) Is_Using_Input_Manager = true; } catch { };
+                                    if (foundKeyCode)
+                                        return;
                                 }
 
-                                foundKeyCode = true;
-                                try { GetKeyCodes(position); } catch { }
-                            }
+                                if (Has(line, "KEYCODES"))
+                                {
+                                    string[] expressions = null;
+                                    try { expressions = line.Replace(" ", "").Split(Delimiters); } catch { }
 
-                            position++;
+                                    //Check for addition inforamtion
+                                    foreach (string expression in expressions)
+                                    {
+                                        //If KeyCodes will be controlled by the InputManager in DSLNative or Unity
+                                        //If controlled by input managers, all the input will be read through those
+                                        //instead of being read in the .dsl directly.
+                                        try { if (expression == Keywords[13]) Is_Using_Input_Manager = true; } catch { };
+                                    }
+
+                                    foundKeyCode = true;
+                                    try { GetKeyCodes(position); } catch { }
+                                }
+
+                                position++;
+                            }
                         }
                     }
+                    Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+                catch { }
             }
 
             /// <summary>
@@ -623,7 +629,7 @@ namespace DSL
                                         if (Is_Using_Input_Manager == false)
                                             InputManager.Register(keyCodeValue, "", newKeyCode, (Functionality)Enum.Parse(typeof(Functionality), functionalityValue));
                                     }
-                                    catch { } 
+                                    catch { }
                                     #endregion
                                 }
                             }
@@ -691,7 +697,7 @@ namespace DSL
                                             catch { }
 
                                             //If this character exist in the list of characters defined, we do some string manipulation
-                                            if (HAS(name, character))
+                                            if (Has(name, character))
                                             {
 
                                                 //For names with _ scores replacing as spaces
@@ -703,21 +709,21 @@ namespace DSL
                                             }
 
                                             //If it has ???, a predefined token that a character's name is not known, we insert it.
-                                            else if (HAS(name.Substring(0, Tokens[4].Length), Tokens[4]))
+                                            else if (Has(name.Substring(0, Tokens[4].Length), Tokens[4]))
                                             {
                                                 line = line.Replace(Tokens[0], STRINGNULL).Replace(Tokens[3] + Tokens[4], "[INSERT::\"" + Tokens[4] + ":" + "\"]");
                                                 break;
                                             }
 
                                             //If there's no character or no ??? token, this means the narrator is speaking.
-                                            else if (HAS(name.Substring(0, WHITESPACE.Length), WHITESPACE))
+                                            else if (Has(name.Substring(0, WHITESPACE.Length), WHITESPACE))
                                             {
                                                 line = line.Replace(Tokens[0], STRINGNULL).Replace(Tokens[3] + WHITESPACE, STRINGNULL);
                                                 break;
                                             }
 
                                             //Then we really check if our defined character exist. If we down, we throw an exception, and end the dialogue reading process.
-                                            else if (!DefinedCharacters.Exists(x => HAS(x, line.Substring(1, line.IndexOf(WHITESPACE) - 1))))
+                                            else if (!DefinedCharacters.Exists(x => Has(x, line.Substring(1, line.IndexOf(WHITESPACE) - 1))))
                                             {
                                                 string unidentifiedName = line.Substring(1, line.IndexOf(WHITESPACE) - 1);
                                                 throw new UnknownCharacterDefinedException("Unknown character definition at line " + (position + 1) + ". Did you define \"" + unidentifiedName + "\" under <CHARACTERS>?");
@@ -745,7 +751,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParseToSpeedTag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[0]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[0]))
                 {
                     var speedValue = _styleCommand.Split(Delimiters)[1].Split(':')[2];
 
@@ -771,7 +777,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParseToActionTag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[6]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[6]))
                 {
                     var actionString = _styleCommand.Split(Delimiters)[1].Split(':')[2].Split('"')[1];
 
@@ -797,7 +803,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParseToExpressionTag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[5]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[5]))
                 {
                     var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
 
@@ -823,7 +829,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParseToPoseTag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[8]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[8]))
                 {
                     var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
 
@@ -849,7 +855,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParserToInsertTag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[9]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[9]))
                 {
                     var word = _styleCommand.Split(Delimiters)[1].Replace(Tokens[1], STRINGNULL).Split('"')[1];
                     /*The action function is simply to add two asteriks between a word.
@@ -874,7 +880,7 @@ namespace DSL
             /// <returns></returns>
             static bool ParseToHaltag(string _styleCommand, ref string _line)
             {
-                if (HAS(_styleCommand, Delimiters[2] + Keywords[7]))
+                if (Has(_styleCommand, Delimiters[2] + Keywords[7]))
                 {
 
                     var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
@@ -961,6 +967,9 @@ namespace DSL
             }
 
             static string Capitalize(string _word) => _word[0].ToString().ToUpper() + _word.Substring(1, _word.Length - 1).ToLower();
+
+            public static bool Has(string line, string token) => line.Contains(token);
+
         }
     }
 }

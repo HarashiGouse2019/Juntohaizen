@@ -1093,21 +1093,17 @@ namespace DSL
         public static void DefineValues()
         {
             //Go into file, and check for all defined values
-            try
-            {
-                //Define the expressions used
-                PARSER.DefineExpressions();
+            //Define the expressions used
+            PARSER.DefineExpressions();
 
-                //Define the poses used
-                PARSER.DefinePoses();
+            //Define the poses used
+            PARSER.DefinePoses();
 
-                //Define the characters in the story
-                PARSER.DefineCharacters();
+            //Define the characters in the story
+            PARSER.DefineCharacters();
 
-                //DefineKeyCodes
-                PARSER.DefineKeyCodes();
-            }
-            catch { }
+            //DefineKeyCodes
+            PARSER.DefineKeyCodes();
         }
 
         /// <summary>
