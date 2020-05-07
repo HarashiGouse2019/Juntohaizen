@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+#define UNITY_EDITOR
+#endif
+
+using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 public class DSLEditor : EditorWindow
 {
     //This is how all the words, numbers, tokens, delimiter, and editor background have their color
@@ -26,10 +31,10 @@ public class DSLEditor : EditorWindow
     Vector2 scroll;
 
     //The source of our Text Asset
-    Object source;
+    Object source = null;
 
     public static DSLEditor Instance;
-    [MenuItem("Window/DSLEditor")]
+    [MenuItem("DSL/DSLEditor")]
     public static void Initiate()
     {
         if (Instance == null)
@@ -66,3 +71,4 @@ public class DSLEditor : EditorWindow
         textAsset = _text;
     }
 }
+#endif

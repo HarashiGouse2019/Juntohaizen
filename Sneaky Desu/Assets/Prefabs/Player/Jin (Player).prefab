@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4787750246169100356}
   - component: {fileID: 4787750246169100352}
   - component: {fileID: 5315211758305872410}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Jin (Player)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ PrefabInstance:
     - target: {fileID: 530629263632409363, guid: 436ce60cda9934347b8f9e5459cd7d15,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 530629263632409364, guid: 436ce60cda9934347b8f9e5459cd7d15,
         type: 3}

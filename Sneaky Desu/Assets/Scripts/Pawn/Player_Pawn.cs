@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using DSL;
+using Input = UnityEngine.Input;
 
 public class Player_Pawn : Pawn
 {
@@ -25,23 +26,27 @@ public class Player_Pawn : Pawn
     public float dashDuration = 0.5f;
 
     public float dAxisX, dAxisY;
-    public override void Awake()
+
+    protected override void Initialize()
     {
         playerpawn = this;
         player_collider = GetComponent<CircleCollider2D>();
         renderer = GetComponent<SpriteRenderer>();
         DontDestroyOnLoad(this);
+        base.Initialize();
     }
-    public override void Start()
+
+    protected override void Begin()
     {
         if (gameObject.activeInHierarchy)
             Instantiate(gameplayCameraPrefab);
 
-        base.Start(); //Our parent start method
+        base.Begin();
     }
-    public override void Update()
+
+    protected override void Main()
     {
-        base.Update(); //Our parent update method
+        
 
         ReadJoystickValues();
 
@@ -482,14 +487,18 @@ public class Player_Pawn : Pawn
                 if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1 && save == false)
                 {
                     SavePlayer();
-                    DialogueManagement.Dialogue.READ_DIALOGUE_SET(2);
+
+                    DialogueSystem.REQUEST_DIALOGUE_SET(0);
+                    DialogueSystem.Run();
                 }
                 break;
             case "Treasure":
                 if (Input.GetKeyDown(controller.interact) && rb.velocity.magnitude < 1)
                 {
                     col.gameObject.GetComponent<Treasure_Chest>().OpenChest();
-                    DialogueManagement.Dialogue.READ_DIALOGUE_SET(3);
+
+                    DialogueSystem.REQUEST_DIALOGUE_SET(1);
+                    DialogueSystem.Run();
                 }
                 break;
         }

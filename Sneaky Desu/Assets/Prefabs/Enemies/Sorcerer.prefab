@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2053315962810674516}
   - component: {fileID: 2053315962810674519}
   - component: {fileID: 2053315962810674506}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sorcerer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -120,26 +120,26 @@ MonoBehaviour:
   controller: {fileID: 0}
   animator: {fileID: 2053315962810674512}
   layerIndex: 0
+  rateOfSpeed: 0
+  maxSpeed: 0
+  speed: 0
+  transitionDuration: 0.35
+  distance: 0
+  fowardDown: 0
+  backwardsDown: 0
+  rightDown: 0
+  leftDown: 0
+  heading: {x: 0, y: 0}
+  playerPosition: {fileID: 4920462535734378938, guid: c956c63443ccd414d87c8310474b02ff,
+    type: 3}
+  target: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
+  rb: {fileID: 2053315962810674519}
+  enemyHealth: 0
   transitionOn: 0
   col: 0
   step: 0
   isWaiting: 0
   manaDrop: 0
-  rateOfSpeed: 0
-  maxSpeed: 0
-  speed: 0
-  transitionDuration: 0.35
-  heading: {x: 0, y: 0}
-  distance: 0
-  enemyHealth: 0
-  playerPosition: {fileID: 4920462535734378938, guid: c956c63443ccd414d87c8310474b02ff,
-    type: 3}
-  target: {fileID: 4787750246169100360, guid: c956c63443ccd414d87c8310474b02ff, type: 3}
-  fowardDown: 0
-  backwardsDown: 0
-  rightDown: 0
-  leftDown: 0
-  rb: {fileID: 2053315962810674519}
   sController: {fileID: 2053315962810674516}
   player: {fileID: 0}
   lootChances: {fileID: 7080915813307541139, guid: 0be821a860c353d4b8bd9d9aa3a1bbdb,
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 4032749351116274149}
   - component: {fileID: 1416302053338189870}
   - component: {fileID: 2393178755311519798}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

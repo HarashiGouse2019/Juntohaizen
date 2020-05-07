@@ -1,7 +1,6 @@
 ﻿using UnityEngine.Audio;
 using System;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour

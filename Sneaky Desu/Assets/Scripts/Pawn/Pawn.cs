@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DSL;
 using Alarm;
 
 
-public abstract class Pawn : MonoBehaviour
+public abstract class Pawn : DSLBehaviour
 {
     public static Vector3 originPosition, currentPosition; //the start position and our current position
     public Vector2 move; //this will be used for our player movement
@@ -24,7 +25,7 @@ public abstract class Pawn : MonoBehaviour
     public float distance; //This is for the enemy to know the distance between it and the player
 
     public bool fowardDown, backwardsDown, rightDown, leftDown; //Boolean used for player movement
-    
+
 
     public Vector2 heading; //This will be used for our Enemey pawn to track down the player
     public Transform playerPosition; //Player position
@@ -47,26 +48,18 @@ public abstract class Pawn : MonoBehaviour
 
     protected bool returnVal;
 
-    public virtual void Awake()
-    {
- 
-    }
-
     // Start is called before the first frame update
-    public virtual void Start()
+    protected override void Initialize()
     {
         rb = GetComponent<Rigidbody2D>(); //Grab the component of the local RigidBody
         controller = GetComponent<Player_Controller>();
         originPosition = gameObject.transform.position; //The start position of this gameObject
         playerPosition = FindObjectOfType<Player_Pawn>().transform; //The player's position
-
-
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    protected override void Main()
     {
-
         //All fo this is so the enemy can chase down the player
         currentPosition = gameObject.transform.position;
 

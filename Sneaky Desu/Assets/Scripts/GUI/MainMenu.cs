@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DSL;
 
 public class MainMenu : MonoBehaviour
 {
@@ -84,7 +85,8 @@ public class MainMenu : MonoBehaviour
         manager.Goto_Scene("S_FLOOR_1");
 
         //Run Dialogue
-        DialogueManagement.Dialogue.READ_DIALOGUE_SET(1);
+        DialogueSystem.REQUEST_DIALOGUE_SET(2);
+        DialogueSystem.Run();
     }
 
     public void LoadGame()

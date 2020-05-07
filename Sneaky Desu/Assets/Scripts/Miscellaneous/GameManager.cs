@@ -268,49 +268,6 @@ public class GameManager : MonoBehaviour
         return active;
     }
 
-    public IEnumerator DisplayText(string text, float textspeed)
-    {
-        if (typeIn == false)
-        {
-            textBoxUI.gameObject.SetActive(true);
-            dialogue.text = "";
-         
-
-            //This give a typewritter effect. With a ton of trial and error, this one works the best!!!
-            for (int i = 0; i < text.Length; i++)
-            {
-
-                dialogue.text = text.Substring(0, i);
-                AudioManager.Instance.Play("Type000");
-                yield return new WaitForSeconds(textspeed);
-
-            }
-            StartCoroutine(DisableDelay(5f));
-            typeIn = true;
-        }
-    }
-
-    public IEnumerator DisableDelay(float _delay)
-    {
-
-        yield return new WaitForSeconds(_delay);
-        if (DialogueManagement.Dialogue.lineIndex != DialogueManagement.Dialogue.dialogue.Count)
-        {
-            DialogueManagement.Dialogue.Progress();
-            StopCoroutine(DisableDelay(_delay));
-        }
-        else
-        {
-            DialogueManagement.Dialogue.runningDialogue = false;
-            DialogueManagement.Dialogue.lineIndex = 0;
-            textBoxUI.gameObject.SetActive(false);
-            typeIn = false;
-            DialogueManagement.Dialogue.dialogue.Clear();
-            StopCoroutine(DisableDelay(_delay));
-        }
-
-    }
-
     public void ResetAllValues()
     {
         enemyInstances = new List<GameObject>();

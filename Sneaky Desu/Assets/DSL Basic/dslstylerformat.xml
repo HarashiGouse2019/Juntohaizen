@@ -13,9 +13,9 @@
             <Keywords name="Numbers, suffix1"></Keywords>
             <Keywords name="Numbers, suffix2"></Keywords>
             <Keywords name="Numbers, range"></Keywords>
-            <Keywords name="Operators1">&lt;&lt; :: | ??? =</Keywords>
+            <Keywords name="Operators1">&lt;&lt; :: | ??? = .</Keywords>
             <Keywords name="Operators2"></Keywords>
-            <Keywords name="Folders in code1, open">&lt;POSES &lt;EXPRESSIONS  &lt;CHARACTERS &lt;SCENES &lt;VOICE &lt;SOUNDS &lt;MUSIC &lt;DIALOGUE_SET_ &lt;END</Keywords>
+            <Keywords name="Folders in code1, open">&lt;POSES &lt;EXPRESSIONS &lt;CHARACTERS &lt;SCENES &lt;VOICE &lt;SOUNDS &lt;MUSIC &lt;DIALOGUE_SET_ &lt;END &lt;STYLE &lt;KEYCODES</Keywords>
             <Keywords name="Folders in code1, middle"></Keywords>
             <Keywords name="Folders in code1, close">&gt;</Keywords>
             <Keywords name="Folders in code2, open"></Keywords>
@@ -24,41 +24,41 @@
             <Keywords name="Folders in comment, open"></Keywords>
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
-            <Keywords name="Keywords1">SPEED&#x000D;&#x000A;BOLD&#x000D;&#x000A;ITALIZE&#x000D;&#x000A;TRIGGER&#x000D;&#x000A;VOICE&#x000D;&#x000A;SOUND&#x000D;&#x000A;UNDERLINE&#x000D;&#x000A;ACTION&#x000D;&#x000A;EXPRESSION&#x000D;&#x000A;POSE&#x000D;&#x000A;HALT&#x000D;&#x000A;</Keywords>
-            <Keywords name="Keywords2"></Keywords>
-            <Keywords name="Keywords3">SLOWEST SLOWER SLOW NORMAL FAST FASTER FASTEST PRESET_1 PRESET_2 PRESET_3 PRESET_4 PRESET_5 PRESET_6 PRESET_7 PRESET_8 PRESET_9 PRESET_10 PRESET_11 PRESET_12 PRESET_13 PRESET_14 PRESET_15 PRESET_16 END</Keywords>
+            <Keywords name="Keywords1">SPEED&#x000D;&#x000A;BOLD&#x000D;&#x000A;ITALIZE&#x000D;&#x000A;TRIGGER&#x000D;&#x000A;VOICE&#x000D;&#x000A;SOUND&#x000D;&#x000A;UNDERLINE&#x000D;&#x000A;ACTION&#x000D;&#x000A;EXPRESSION&#x000D;&#x000A;POSE&#x000D;&#x000A;HALT&#x000D;&#x000A;KEYCODE</Keywords>
+            <Keywords name="Keywords2">CAPACITY MAX AUTO DONT_DISTURB SRC EXT JUMP GOTO TYPE</Keywords>
+            <Keywords name="Keywords3">SLOWEST&#x000D;&#x000A;SLOWER&#x000D;&#x000A;SLOW&#x000D;&#x000A;NORMAL&#x000D;&#x000A;FAST&#x000D;&#x000A;FASTER&#x000D;&#x000A;FASTEST&#x000D;&#x000A;CBS&#x000D;&#x000A;PRESET_1&#x000D;&#x000A;PRESET_2&#x000D;&#x000A;PRESET_3&#x000D;&#x000A;PRESET_4&#x000D;&#x000A;PRESET_5&#x000D;&#x000A;PRESET_6&#x000D;&#x000A;PRESET_7&#x000D;&#x000A;PRESET_8&#x000D;&#x000A;PRESET_9&#x000D;&#x000A;PRESET_10&#x000D;&#x000A;PRESET_11&#x000D;&#x000A;PRESET_12&#x000D;&#x000A;PRESET_13&#x000D;&#x000A;PRESET_14&#x000D;&#x000A;PRESET_15&#x000D;&#x000A;PRESET_16&#x000D;&#x000A;A&#x000D;&#x000A;B&#x000D;&#x000A;C&#x000D;&#x000A;D&#x000D;&#x000A;E&#x000D;&#x000A;F&#x000D;&#x000A;G&#x000D;&#x000A;H&#x000D;&#x000A;I&#x000D;&#x000A;J&#x000D;&#x000A;K&#x000D;&#x000A;L&#x000D;&#x000A;M&#x000D;&#x000A;N&#x000D;&#x000A;O&#x000D;&#x000A;P&#x000D;&#x000A;Q&#x000D;&#x000A;R&#x000D;&#x000A;S&#x000D;&#x000A;T&#x000D;&#x000A;U&#x000D;&#x000A;V&#x000D;&#x000A;W&#x000D;&#x000A;X&#x000D;&#x000A;Y&#x000D;&#x000A;Z&#x000D;&#x000A;ALPHA_0&#x000D;&#x000A;ALPHA_1&#x000D;&#x000A;ALPHA_2&#x000D;&#x000A;ALPHA_3&#x000D;&#x000A;ALPHA_4&#x000D;&#x000A;ALPHA_5&#x000D;&#x000A;ALPHA_6&#x000D;&#x000A;ALPHA_7&#x000D;&#x000A;ALPHA_8&#x000D;&#x000A;ALPHA_9&#x000D;&#x000A;NUMPAD_0&#x000D;&#x000A;NUMPAD_1&#x000D;&#x000A;NUMPAD_2&#x000D;&#x000A;NUMPAD_3&#x000D;&#x000A;NUMPAD_4&#x000D;&#x000A;NUMPAD_5&#x000D;&#x000A;NUMPAD_6&#x000D;&#x000A;NUMPAD_7&#x000D;&#x000A;NUMPAD_8&#x000D;&#x000A;NUMPAD_9&#x000D;&#x000A;NUMPAD_PLUS&#x000D;&#x000A;NUMPAD_MINUS&#x000D;&#x000A;NUMPAD_TIMES&#x000D;&#x000A;NUMPAD_DIVIDE&#x000D;&#x000A;NUMPAD_ENTER&#x000D;&#x000A;SHIFT&#x000D;&#x000A;LEFT_SHIFT&#x000D;&#x000A;RIGHT_SHIFT&#x000D;&#x000A;LEFT_CONTROL&#x000D;&#x000A;RIGHT_CONTROL&#x000D;&#x000A;SPACE&#x000D;&#x000A;LEFT_BRACKET&#x000D;&#x000A;RIGHT_BRACKET&#x000D;&#x000A;SEMICOLON&#x000D;&#x000A;COMMA&#x000D;&#x000A;PERIOD&#x000D;&#x000A;FORWARD_SLASH&#x000D;&#x000A;BACKWARD_SLASH&#x000D;&#x000A;DASH&#x000D;&#x000A;EQUAL&#x000D;&#x000A;RETURN&#x000D;&#x000A;END</Keywords>
             <Keywords name="Keywords4">TITLE: AUTHOR: DATE: DESCRIPTION:</Keywords>
-            <Keywords name="Keywords5"></Keywords>
-            <Keywords name="Keywords6"></Keywords>
+            <Keywords name="Keywords5">is to from insert</Keywords>
+            <Keywords name="Keywords6">SAVE LOAD PROCEED PAUSE RESUME VIEW_LOG QUICK_SAVE QUICK_LOAD RETURN_TO_MAIN_MENU</Keywords>
             <Keywords name="Keywords7"></Keywords>
             <Keywords name="Keywords8"></Keywords>
             <Keywords name="Delimiters">00[ 01 02] 03&quot; 04 05&quot; 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
         </KeywordLists>
         <Styles>
-            <WordsStyle name="DEFAULT" fgColor="C0C0C0" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DEFAULT" fgColor="C0C0C0" bgColor="FFFFFF" colorStyle="1" fontName="CSS" fontStyle="0" nesting="0" />
             <WordsStyle name="COMMENTS" fgColor="408080" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="LINE COMMENTS" fgColor="FFFFCA" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="50366213" />
-            <WordsStyle name="NUMBERS" fgColor="80FFFF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS1" fgColor="00FF80" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="2" nesting="0" />
-            <WordsStyle name="KEYWORDS2" fgColor="8080FF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS3" fgColor="80FF80" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="2" nesting="0" />
-            <WordsStyle name="KEYWORDS4" fgColor="00FFFF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS5" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS6" fgColor="00FFFF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS7" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="KEYWORDS8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="OPERATORS" fgColor="FFFF80" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="1" nesting="0" />
-            <WordsStyle name="FOLDER IN CODE1" fgColor="8080FF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="DELIMITERS1" fgColor="80FF00" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="3" nesting="83891200" />
-            <WordsStyle name="DELIMITERS2" fgColor="59ACFF" bgColor="FFFFFF" colorStyle="1" fontName="" fontStyle="3" nesting="50332416" />
+            <WordsStyle name="LINE COMMENTS" fgColor="FFFFCA" bgColor="FFFFFF" colorStyle="1" fontName="-1" fontStyle="0" nesting="50366213" />
+            <WordsStyle name="NUMBERS" fgColor="80FFFF" bgColor="FFFFFF" colorStyle="1" fontName="&#xEC90;&#xE862;&#x0251;" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS1" fgColor="00FF80" bgColor="FFFFFF" colorStyle="1" fontName="-1" fontStyle="2" nesting="0" />
+            <WordsStyle name="KEYWORDS2" fgColor="8080FF" bgColor="FFFFFF" colorStyle="1" fontName="795" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS3" fgColor="80FF80" bgColor="FFFFFF" colorStyle="1" fontName="no" fontStyle="2" nesting="0" />
+            <WordsStyle name="KEYWORDS4" fgColor="00FFFF" bgColor="FFFFFF" colorStyle="1" fontName="0" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS5" fgColor="FFFF00" bgColor="FFFFFF" colorStyle="1" fontName="-1" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS6" fgColor="FFFF00" bgColor="FFFFFF" colorStyle="1" fontName="&#xEA50;&#xE862;&#x0251;" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS7" fgColor="000000" bgColor="FFFFFF" fontName="-1" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS8" fgColor="000000" bgColor="FFFFFF" fontName="-1" fontStyle="0" nesting="0" />
+            <WordsStyle name="OPERATORS" fgColor="FFFF80" bgColor="FFFFFF" colorStyle="1" fontName="0" fontStyle="1" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE1" fgColor="8080FF" bgColor="FFFFFF" colorStyle="1" fontName="-1" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontName="-1" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" colorStyle="1" fontName="no" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS1" fgColor="80FF00" bgColor="FFFFFF" colorStyle="1" fontName="44" fontStyle="3" nesting="83891200" />
+            <WordsStyle name="DELIMITERS2" fgColor="59ACFF" bgColor="FFFFFF" colorStyle="1" fontName="0" fontStyle="3" nesting="50332416" />
             <WordsStyle name="DELIMITERS3" fgColor="00B3B3" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="16777280" />
-            <WordsStyle name="DELIMITERS4" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="117474303" />
-            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS4" fgColor="000000" bgColor="FFFFFF" fontName="-1" fontStyle="0" nesting="117474303" />
+            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontName="2" fontStyle="0" nesting="0" />
             <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
-            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontName="1098" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontName="-1" fontStyle="0" nesting="0" />
         </Styles>
     </UserLang>
 </NotepadPlus>

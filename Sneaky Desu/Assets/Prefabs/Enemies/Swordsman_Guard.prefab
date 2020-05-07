@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6813052163762502356}
   - component: {fileID: 4551716248317498121}
   - component: {fileID: 747995408226139110}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Swordsman_Guard
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -30,25 +30,27 @@ public class Sorcerer_Pawn : Pawn
     public Vector2 direction;
 
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Initialize()
     {
-        base.Start(); //Our parent start method;
+        base.Begin(); //Our parent start method;
         Instance = this;
         enemyHealth = 20f;
         manaReserve = enemyHealth * 2f;
         walkSpeed = 1f;
         sController = GetComponent<Sorcerer_Controller>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        base.Initialize();
     }
 
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Main()
     {
-        base.Update(); //OUr parent update method
+        
 
         //If the enemy's health reaches to 0
-        if (this.enemyHealth < 1)
+        if (enemyHealth < 1)
         {
             Player_Controller.player_controller.toggleLock = false;
             GameObject loot = Instantiate(lootChances.gameObject);
@@ -75,6 +77,8 @@ public class Sorcerer_Pawn : Pawn
             }
         }
         shooPlasmaScript.active = aggroState;
+
+        base.Main(); //OUr parent update method
     }
 
     //These are all the states that the enemy will use
