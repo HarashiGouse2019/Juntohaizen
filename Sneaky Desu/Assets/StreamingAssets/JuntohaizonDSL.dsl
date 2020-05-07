@@ -43,8 +43,8 @@ KEYCODE.X is PROCEED
 ###--------------------------------------------------------------------------------------------------------------------###
 ###Actual Dialogue in the Game###
 <DIALOGUE_SET_002 | AUTO> ###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
-@Hazel [SPEED::NORMAL]Welcome to my game.[HALT::750]<<
-@Mori I see that you are doing well.[HALT::500]<<
+@ [SPEED::NORMAL]Welcome to my game.[HALT::750]<<
+@ I see that you are doing well.[HALT::500]<<
 <END>
 
 <DIALOGUE_SET_003>
