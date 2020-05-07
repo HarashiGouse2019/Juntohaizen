@@ -1239,7 +1239,11 @@ namespace DSL
         /// </summary>
         public static void DISABLE_DIALOGUE_BOX() => Instance.textBoxUI.gameObject.SetActive(false);
 
-        // called second
+        /// <summary>
+        /// On Scene Loaded Evenet
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             dedicatedObjects = FindAllObjectsInDSLLayer();
