@@ -562,12 +562,7 @@ namespace DSL
                             if (atTargetLine)
                             {
                                 if (line == STRINGNULL)
-                                {
-                                    //Finalize the keycodes for use
-                                    InputManager.FinalizeKeyCodes();
-
                                     return;
-                                }
                             }
 
                             if (position > _position)

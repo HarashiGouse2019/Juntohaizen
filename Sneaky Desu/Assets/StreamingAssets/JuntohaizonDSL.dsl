@@ -18,18 +18,8 @@ God
 ###Keycodes are all set in DSL Input Manager found in the Unity Editor###
 <KEYCODES>
 KEYCODE.X is PROCEED | "Proceed" | "Proceed to the next dialogue."
-######
-KEYCODE.LEFT_ARROW is PRESET_16 | "Left" | "Left Arrow Key"
-KEYCODE.A is PRESET_16 | "Left" | "A Key"
-######
-KEYCODE.RIGHT_ARROW is PRESET_17 | "Right" | "Right Arrow Key"
-KEYCODE.D is PRESET_17 | "Right" | "D Key"
-######
-KEYCODE.UP_ARROW is PRESET_18 | "Up" | "Up Arrow Key"
-KEYCODE.W is PRESET_18 |"Up" | "W Key"
-######
-KEYCODE.DOWN_ARROW is PRESET_19 |"Down" | "Down Arrow Key"
-KEYCODE.S is PRESET_19 |"Down" | "S Key"
+KEYCODE.Y is PRESET_0 | "Something" | "We don't know what this does."
+KEYCODE.Z is PRESET_1 | "FIRE" | "You fire shit with it."
 
 ###--------------------------------------------------------------------------------------------------------------------###
 
@@ -54,9 +44,23 @@ KEYCODE.S is PRESET_19 |"Down" | "S Key"
 
 ###--------------------------------------------------------------------------------------------------------------------###
 ###Actual Dialogue in the Game###
-<DIALOGUE_SET_002 | AUTO> ###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
+<DIALOGUE_SET_002> ###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 @ [SPEED::NORMAL]Welcome to my game.[HALT::750]<<
-@ I see that you are doing well.[HALT::500]<<
+
+@ I see that you are doing well.[HALT::750]<<
+
+@ Yeah! [HALT::1000]More or less.[HALT::750]<<
+@ Gotta go clear out this area. [HALT::750]It's absoulutely dreadful over here.[HALT::750]<<
+
+@ Oh...[HALT::2000]<<
+@ You should probably see how [BOLD]Mary[BOLD::END] is doing.[HALT::2000]<<
+
+@ I have no idea where she is...<<
+
+@ [SPEED::FASTEST]WELL, GO FIND HER, GOSH DARN IT!!![HALT::1000]<<
+
+@ [SPEED::NORMAL]Geez! Alright. Alright. I'll go find her.[HALT::1500]<<
+@ [ACTION::"Whispers"][HALT::1000]Jackass...[HALT::250]<<
 <END>
 
 <DIALOGUE_SET_003>

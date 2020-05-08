@@ -23,18 +23,47 @@ namespace DSL
             StartCoroutine(BehaviourFixedUpdateCycle());
         }
 
+        /// <summary>
+        /// The start of an objects life.
+        /// </summary>
         protected virtual void Initialize() { }
 
+        /// <summary>
+        /// What happens after the object's been created
+        /// </summary>
         protected virtual void Begin() { }
 
-        protected virtual void Main()
-        {
-            
-        }
+        /// <summary>
+        /// The main function of an object
+        /// </summary>
+        protected virtual void Main() { }
 
+        /// <summary>
+        /// The main function of an object based on physics
+        /// </summary>
         protected virtual void PhysicsMain() { }
 
-        protected IEnumerator BehaviourUpdateCycle()
+        /// <summary>
+        /// Stop the behaviour of an object
+        /// </summary>
+        public virtual void StopBehaviour()
+        {
+            behaviourRunning = false;
+        }
+
+        /// <summary>
+        /// Continue the behaviour of an object
+        /// </summary>
+        public virtual void ResumeBehaviour()
+        {
+            behaviourRunning = true;
+        }
+
+        /// <summary>
+        /// The cycle for main
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator BehaviourUpdateCycle()
         {
             ValidateLayer();
             while (true)
@@ -54,7 +83,11 @@ namespace DSL
             }
         }
 
-        protected IEnumerator BehaviourFixedUpdateCycle()
+        /// <summary>
+        /// The cycle of physics main
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator BehaviourFixedUpdateCycle()
         {
             ValidateLayer();
             while (true)
@@ -74,6 +107,9 @@ namespace DSL
             }
         }
 
+        /// <summary>
+        /// Validate the object's layer
+        /// </summary>
         private void ValidateLayer()
         {
             Component[] objDSLBehaviour = GetComponents(typeof(DSLBehaviour));
@@ -86,16 +122,6 @@ namespace DSL
                 }
             }
 
-        }
-
-        public virtual void StopBehaviour()
-        {
-            behaviourRunning = false;
-        }
-
-        public virtual void ResumeBehaviour()
-        {
-            behaviourRunning = true;
         }
     }
 }
