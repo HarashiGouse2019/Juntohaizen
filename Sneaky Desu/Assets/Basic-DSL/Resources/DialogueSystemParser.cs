@@ -856,7 +856,7 @@ namespace DSL
             {
                 if (Has(_styleCommand, Delimiters[2] + Keywords[0]))
                 {
-                    var speedValue = _styleCommand.Split(Delimiters)[1].Split(':')[2];
+                    var speedValue = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Split(':')[2];
 
                     /*The Dialogue System's ChangeSpeed function used enumerators,
                      so we need to use the array that we have in the parser, and get there indexes*/
@@ -882,7 +882,7 @@ namespace DSL
             {
                 if (Has(_styleCommand, Delimiters[2] + Keywords[6]))
                 {
-                    var actionString = _styleCommand.Split(Delimiters)[1].Split(':')[2].Split('"')[1];
+                    var actionString = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Split(':')[2].Trim('"');
 
                     /*The action function is simply to add two asteriks between a word.
                      For example: [ACTION::"Sighs"] will be replaced by *Sigh* in the text. 
@@ -908,7 +908,7 @@ namespace DSL
             {
                 if (Has(_styleCommand, Delimiters[2] + Keywords[5]))
                 {
-                    var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
+                    var value = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Split(':')[2];
 
                     /*The Expression Action is going to be a bit complicated.
                      We'll have to create a expression tag, and just have the expression we are looking for.
@@ -934,7 +934,7 @@ namespace DSL
             {
                 if (Has(_styleCommand, Delimiters[2] + Keywords[8]))
                 {
-                    var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
+                    var value = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Split(':')[2];
 
                     /*The Expression Action is going to be a bit complicated.
                      We'll have to create a expression tag, and just have the expression we are looking for.
@@ -960,7 +960,7 @@ namespace DSL
             {
                 if (Has(_styleCommand, Delimiters[2] + Keywords[9]))
                 {
-                    var word = _styleCommand.Split(Delimiters)[1].Replace(Tokens[1], STRINGNULL).Split('"')[1];
+                    var word = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Replace(Tokens[1], STRINGNULL).Split('"')[1];
                     /*The action function is simply to add two asteriks between a word.
                      For example: [ACTION::"Sighs"] will be replaced by *Sigh* in the text. 
 
@@ -986,7 +986,7 @@ namespace DSL
                 if (Has(_styleCommand, Delimiters[2] + Keywords[7]))
                 {
 
-                    var value = _styleCommand.Split(Delimiters)[1].Split(':')[2];
+                    var value = _styleCommand.Trim(Delimiters[2], Delimiters[3]).Split(':')[2];
 
                     /*The Wait should be easy enough. We'll be doing inserting a tag that
                       and then add in the number. At that point, the DialogueSystem will update
@@ -1105,6 +1105,33 @@ namespace DSL
             /// <returns></returns>
             public static bool Has(string line, string token) => line.Contains(token);
 
+            /// <summary>
+            /// You're able to retrieve all except a single character
+            /// </summary>
+            /// <param name="_character"></param>
+            /// <returns></returns>
+            public static char[] ExcludeDelimiters(params char[] _character)
+            {
+                //Have a list to hold the modded delimiters
+                List<char> returnedDelimiters = new List<char>();
+
+                //The first foreach is to iterate through our params char
+                foreach (char removeCharacter in _character)
+                {
+                    //This second foreach is the actual Delimiters
+                    foreach (char character in Delimiters)
+                    {
+                        //If we don't see the character we want to remove...
+                        //we add that character into our list.
+                        //That way, we have the character that we want seperated from the characters we don't want to return.
+                        if (removeCharacter != character)
+                            returnedDelimiters.Add(character);
+                    }
+                }
+
+                //Return the delimiters that we want to use.
+                return returnedDelimiters.ToArray();
+            }
         }
     }
 }

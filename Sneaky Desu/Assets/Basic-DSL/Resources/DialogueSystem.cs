@@ -121,7 +121,7 @@ namespace DSL
 
         //The formatting of custom-made tags
         static readonly Regex ACTION = new Regex(@"(<)+\w*action=\w*[a-zA-Z ]+(>$)");
-        static readonly Regex INSERT = new Regex(@"(<)+\w*ins=\w*[a-zA-Z!@#$%^&*()_\-=\\/<>?,./{}[\|: ]+(>$)");
+        static readonly Regex INSERT = new Regex(@"(<)+\w*ins=\w*[a-zA-Z !@#$%^&*()_\-=\\/<>?,./{}[\|:]+(>$)");
         static readonly Regex EXPRESSION = new Regex(@"(<)+\w*exp=\w*[A-Z0-9_-]+(>$)");
         static readonly Regex POSE = new Regex(@"(<)+\w*pose=\w*[A-Z0-9_-]+(>$)");
         static readonly Regex HALT = new Regex(@"(<)+\w*halt=\w*[0-9]+(>$)");
@@ -194,12 +194,9 @@ namespace DSL
         /// <returns></returns>
         static IEnumerator PrintCycle()
         {
-            
+
             while (true)
             {
-                if (OnDelay)
-                    continue;
-
                 //If we are not allowed to respone, have it run dialgoue until the full sentence is displayed onto the screen
                 if (IS_TYPE_IN() == false)
                 {
@@ -275,8 +272,7 @@ namespace DSL
         static void ExcludeAllFunctionTags(string _text)
         {
 
-            PARSER.ParseLine(Dialogue[(int)LineIndex]);
-
+            PARSER.ParseLine(_text);
             //Action tag!
             ExecuteActionFunctionTag(ACTION, ref _text);
 
@@ -340,7 +336,7 @@ namespace DSL
             {
                 string tag = _line.Substring((int)CursorPosition, "<sp=".Length);
 
-                if (tag.Contains("<sp="))
+                if (tag.Contains("sp="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
@@ -392,17 +388,18 @@ namespace DSL
             {
                 string tag = _line.Substring((int)CursorPosition, "<action=".Length);
 
-                if (tag.Contains("<action="))
+                if (tag.Contains("action="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
-                    string stringRange = _line.Substring((int)CursorPosition, _line.Length - (int)CursorPosition);
+                    string stringRange = _line.Substring((int)CursorPosition, _line.Length);
+                    string value = STRINGNULL;
                     foreach (char letter in stringRange)
                     {
                         if (letter == '>')
                         {
 
-                            endTagPos = (int)(Array.IndexOf(stringRange.ToCharArray(), letter));
+                            endTagPos = Array.IndexOf(stringRange.ToCharArray(), letter);
 
                             tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
@@ -410,7 +407,9 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string value = "*" + tag.Split(PARSER.Delimiters)[1].Split('=')[1] + "*";
+                                    string actionWord = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
+
+                                    value = "*" + actionWord + "*";
 
                                     _line = ReplaceFirst(_line, tag, value);
 
@@ -418,12 +417,10 @@ namespace DSL
 
                                     Dialogue[(int)LineIndex] = _line;
                                 }
-                                return SUCCESSFUL;
                             }
+                            return SUCCESSFUL;
                         }
                     }
-
-
                 }
             }
             catch { }
@@ -443,7 +440,7 @@ namespace DSL
             {
                 string tag = _line.Substring((int)CursorPosition, "<ins=".Length);
 
-                if (tag.Contains("<ins="))
+                if (tag.Contains("ins="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
@@ -453,7 +450,7 @@ namespace DSL
                         if (letter == '>')
                         {
 
-                            endTagPos = (int)(Array.IndexOf(stringRange.ToCharArray(), letter));
+                            endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
                             tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
@@ -461,13 +458,14 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string value = tag.Split(PARSER.Delimiters)[1].Split('=')[1];
+                                    string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
                                     _line = ReplaceFirst(_line, tag, value);
 
                                     ShiftCursorPosition(value.Length);
 
                                     Dialogue[(int)LineIndex] = _line;
+
                                 }
                                 return SUCCESSFUL;
                             }
@@ -497,7 +495,8 @@ namespace DSL
             try
             {
                 string tag = _line.Substring((int)CursorPosition, "<halt=".Length);
-                if (tag.Contains("<halt="))
+
+                if (tag.Contains("halt="))
                 {
 
                     int startTagPos = (int)CursorPosition;
@@ -508,7 +507,7 @@ namespace DSL
                     {
                         if (letter == '>')
                         {
-                            endTagPos = (int)(Array.IndexOf(stringRange.ToCharArray(), letter));
+                            endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
                             tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
@@ -518,7 +517,7 @@ namespace DSL
                                 {
                                     /*Now we do a substring from the current position to 4 digits.*/
 
-                                    int value = Convert.ToInt32(tag.Split(PARSER.Delimiters)[1].Split('=')[1]);
+                                    int value = Convert.ToInt32(tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1]);
 
                                     int millsecs = Convert.ToInt32(value);
 
@@ -555,7 +554,7 @@ namespace DSL
                 bool notFlaged = true;
 
                 string tag = _line.Substring((int)CursorPosition, "<exp=".Length);
-                if (tag.Contains("<exp="))
+                if (tag.Contains("exp="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
@@ -573,7 +572,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Split('<')[1].Split('=')[1].Split('>')[0];
+                                string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, "");
 
@@ -602,7 +601,7 @@ namespace DSL
                 bool notFlaged = true;
 
                 string tag = _line.Substring((int)CursorPosition, "<pose=".Length);
-                if (tag.Contains("<pose="))
+                if (tag.Contains("pose="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
@@ -620,7 +619,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Split('<')[1].Split('=')[1].Split('>')[0];
+                                string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, "");
 
@@ -867,7 +866,7 @@ namespace DSL
 
             //We'll iterate through our objects array, and add them to the list
             //if their layer is "DSL"
-            foreach(DSLBehaviour obj in objects)
+            foreach (DSLBehaviour obj in objects)
             {
                 try
                 {
@@ -892,8 +891,8 @@ namespace DSL
         {
             if (LineIndex < Dialogue.Count)
             {
-                Proceed();
                 CursorPosition = reset;
+                Proceed();
             }
         }
 
@@ -1028,18 +1027,9 @@ namespace DSL
         {
             while (IS_TYPE_IN())
             {
-                //Check if the dialogue set being read is automatic
-                //The .dsl designer must use the [HALT] command to
-                //control the timing of automatic progression
-                if (IsAutomatic)
-                    TryNext();
-
-                //We have to check how we are pressing buttons
-                //If we explicitly typed the KeyCodes in the .dsl,
-                //We'll using Unity's GetButtonDown.
-                //However, if we're using DSL's InputManager for dialogue...
-                //We'll use its GetButtonDown instead
-                if (InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic)
+                //Check if we pressed the PROCEED button
+                //We'll also check if it's running automatically or not
+                if ((InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic)
                     TryNext();
 
                 yield return null;
@@ -1083,20 +1073,18 @@ namespace DSL
         {
             if (LineIndex < Dialogue.Count - 1 && IS_TYPE_IN() == true)
             {
+                SET_TYPE_IN_VALUE(false);
+
                 LineIndex += 1;
 
                 GET_TMPGUI().text = STRINGNULL;
-                SET_TYPE_IN_VALUE(false);
 
                 CursorPosition = reset;
-
                 //We'll parse the next dialogue that is ready to be displayed
                 Dialogue[(int)LineIndex] = PARSER.ParseLine(Dialogue[(int)LineIndex]);
             }
             else
-            {
                 End();
-            }
         }
 
         /// <summary>
@@ -1177,19 +1165,18 @@ namespace DSL
         /// <param name="_dontInterrupt"></param>
         public static void Run()
         {
+            //When the cycle starts, we need to know if we should stop all the activity of any objects
+            //deriving from DSLBehaviour
+            if (!IsDontDisturb)
+            {
+
+                foreach (DSLBehaviour objectToStop in dedicatedObjects)
+                    objectToStop.StopBehaviour();
+            }
+
             //Check if we are not passed a index value
             if (InBounds((int)LineIndex, Dialogue) && IS_TYPE_IN() == false)
             {
-                //When the cycle starts, we need to know if we should stop all the activity of any objects
-                //deriving from DSLBehaviour
-                if (!IsDontDisturb)
-                {
-                    
-                    foreach (DSLBehaviour objectToStop in dedicatedObjects)
-                        objectToStop.StopBehaviour();
-                }
-
-
                 //If there is no character or "???" operator, we suspect it to just have "@ ", thus we'll remove it.
                 //We will also remove the marker for the end of sentence
                 Dialogue[(int)LineIndex] = Dialogue[(int)LineIndex].Replace("@ ", "").Replace("<< ", "");
