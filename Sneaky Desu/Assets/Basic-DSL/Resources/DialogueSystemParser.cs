@@ -612,6 +612,8 @@ namespace DSL
                         {
                             line = fileReader.ReadLine();
 
+                            line = line.Trim('\t', ' ');
+
                             if (atTargetLine)
                             {
                                 if (line == STRINGNULL)
@@ -901,12 +903,13 @@ namespace DSL
                                             //If this character exist in the list of characters defined, we do some string manipulation
                                             if (Has(name, character))
                                             {
-
                                                 //For names with _ scores replacing as spaces
                                                 name = name.Replace("_", WHITESPACE);
 
                                                 //Insert the name that's been defined using the Insert command
                                                 line = line.Replace(Tokens[0], STRINGNULL).Replace(Tokens[3] + character, "[INSERT::\"" + name + "\"]");
+
+
                                                 break;
                                             }
 

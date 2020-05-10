@@ -35,12 +35,12 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 <DIALOGUE_SET_000 | AUTO | DONT_DISTURB>  
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 	###Saving###
-	@> [SPEED::NORMAL]You're progress has been saved.[HALT::5000]<<
+	@ [SPEED::NORMAL]You're progress has been saved.[HALT::5000]<<
 <END>
 
 <DIALOGUE_SET_001 | AUTO | DONT_DISTURB>
 	###Treasure Received on Floor 1 - 200 Crystals###
-	@> [SPEED::NORMAL]You've obtained [BOLD]200 Crystals[BOLD::END][HALT::2000]<<
+	@ [SPEED::NORMAL]You've obtained [BOLD]200 Crystals[BOLD::END][HALT::2000]<<
 <END>
 
 ###--------------------------------------------------------------------------------------------------------------------###
