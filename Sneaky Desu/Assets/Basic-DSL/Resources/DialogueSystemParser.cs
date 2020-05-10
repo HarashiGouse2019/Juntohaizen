@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace DSL
@@ -75,7 +76,8 @@ namespace DSL
                 "from",
                 "insert",
                 "to",
-                "and"};
+                "and",
+                ">>"};
 
             public static string[] Keywords { get; } = {
                 "SPEED",
@@ -95,6 +97,12 @@ namespace DSL
                 "JUMP",
                 "MAX",
                 "MIN",
+                "PROMPT",
+                "OPTION",
+                "FORMAT",
+                "TYPE",
+                "LIST",
+                "GRID"
                 };
 
             public static string[] ValidTextSpeeds { get; } = {
@@ -111,6 +119,7 @@ namespace DSL
             public static Dictionary<string, int> DefinedExpressions { get; private set; } = new Dictionary<string, int>();
             public static Dictionary<string, int> DefinedPoses { get; private set; } = new Dictionary<string, int>();
             public static List<string> DefinedCharacters { get; private set; } = new List<string>();
+            public static List<Prompt> DefinedPrompts { get; private set; } = new List<Prompt>();
             public static int skipValue = 0;
             public static object returnedValue = null;
 
@@ -121,6 +130,7 @@ namespace DSL
             const bool FAILURE = false;
             const string STRINGNULL = "";
             const string WHITESPACE = " ";
+            const string END = "<END>";
 
             /// <summary>
             /// Parse an entire line into tags based on commands calls.
@@ -236,11 +246,10 @@ namespace DSL
                             {
                                 line = fileReader.ReadLine();
 
-                                if (line == STRINGNULL)
-                                {
-                                    if (foundExpression)
-                                        return;
-                                }
+                                line = line.Trim('\t', ' ');
+
+                                if (line == END && foundExpression)
+                                    return;
 
                                 if (Has(line, "EXPRESSIONS"))
                                 {
@@ -280,11 +289,10 @@ namespace DSL
                             {
                                 line = fileReader.ReadLine();
 
-                                if (line == STRINGNULL)
-                                {
-                                    if (foundPose)
-                                        return;
-                                }
+                                line = line.Trim('\t', ' ');
+
+                                if (line == END && foundPose)
+                                    return;
 
                                 if (Has(line, "POSES"))
                                 {
@@ -314,7 +322,7 @@ namespace DSL
 
                     int position = 0;
 
-                    bool foundPose = false;
+                    bool foundCharacter = false;
 
                     if (File.Exists(dsPath))
                     {
@@ -324,15 +332,14 @@ namespace DSL
                             {
                                 line = fileReader.ReadLine();
 
-                                if (line == STRINGNULL)
-                                {
-                                    if (foundPose)
-                                        return;
-                                }
+                                line = line.Trim('\t', ' ');
+
+                                if (line == END && foundCharacter)
+                                    return;
 
                                 if (Has(line, "CHARACTERS"))
                                 {
-                                    foundPose = true;
+                                    foundCharacter = true;
                                     try { GetCharacterNames(position); } catch { }
                                 }
 
@@ -368,11 +375,10 @@ namespace DSL
                             {
                                 line = fileReader.ReadLine();
 
-                                if (line == STRINGNULL)
-                                {
-                                    if (foundKeyCode)
-                                        return;
-                                }
+                                line = line.Trim('\t', ' ');
+
+                                if (line == END && foundKeyCode)
+                                    return;
 
                                 if (Has(line, "KEYCODES"))
                                 {
@@ -392,6 +398,97 @@ namespace DSL
                                     try { GetKeyCodes(position); } catch { }
                                 }
 
+                                position++;
+                            }
+                        }
+                    }
+                    Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+                }
+                catch { }
+            }
+
+            /// <summary>
+            /// This will read all Prompts
+            /// </summary>
+            public static void DefinePrompts()
+            {
+                try
+                {
+                    string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                    string line = null;
+
+                    int position = 0;
+
+                    bool foundPrompt = false;
+
+                    if (File.Exists(dsPath))
+                    {
+                        using (StreamReader fileReader = new StreamReader(dsPath))
+                        {
+                            while (true)
+                            {
+                                line = fileReader.ReadLine();
+
+                                line = line.Trim('\t', ' ');
+
+                                if (line == STRINGNULL && foundPrompt)
+                                    return;
+
+                                if (Has(line, "<PROMPT"))
+                                {
+
+                                    //First, we want to know what prompt number it is,
+                                    //as well as the capacity of the prompt
+                                    int promptNumber = 0;
+                                    int promptCapacity = Prompt.DEFAULT_CAPACITY;
+
+                                    //Now we split the numbers
+                                    string[] dataSet = null;
+                                    try
+                                    {
+                                        //Try to split the information
+                                        try { dataSet = line.Trim(Delimiters[0], Delimiters[1]).Split(Delimiters[5]); }
+                                        catch { };
+
+                                        promptNumber = Convert.ToInt32(dataSet[0].Split('_')[1], CultureInfo.InvariantCulture);
+
+                                        foreach (string keyword in Keywords)
+                                        {
+                                            try
+                                            {
+                                                //If CAPACITY is defined
+                                                if (keyword == GetKeyWord("CAPACITY"))
+                                                    foreach (string token in Tokens)
+                                                    {
+                                                        if (token == Tokens[5] || token == Tokens[6])
+                                                            promptCapacity = Convert.ToInt32(dataSet[1].Split(Tokens[6].ToCharArray())[2]);
+                                                    }
+
+                                                //IF FORMAT is defined
+                                                if (keyword == GetKeyWord("FORMAT"))
+                                                    foreach (string token in Tokens)
+                                                    {
+                                                        if (token == Tokens[5] || token == Tokens[6])
+                                                        {
+                                                            //TODO: retrieve the formating data of how the options will display.
+
+                                                        }
+                                                    }
+                                            }
+                                            catch { }
+                                        }
+
+                                        List<Option> options = null;
+
+                                        //Knowing that we got the information of our prompt, we can collect the options underneath it.
+                                        GetOptions(position, promptNumber, promptCapacity, ref options);
+
+                                        Prompt newPrompt = new Prompt(promptNumber, options, promptCapacity);
+                                        DefinedPrompts.Add(newPrompt);
+                                    }
+                                    catch { }
+                                }
                                 position++;
                             }
                         }
@@ -598,7 +695,7 @@ namespace DSL
 
                                     // Retrieve descriptive name of input
                                     inputDescriptiveName = GetDescriptiveNameFromDSL(line, inputDescriptiveName);
-                                    
+
                                     // Register new input
                                     InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
                                 }
@@ -711,7 +808,7 @@ namespace DSL
             /// <param name="multiWord"></param>
             private static void RetrieveKeyCodeAndFunctionality(string line, ref string[] declaration, ref string keyCodeValue, ref string functionalityValue, ref bool multiWord)
             {
-                
+
                 try
                 {
                     //Then, we continue with the declaration itself
@@ -739,7 +836,7 @@ namespace DSL
                     functionalityValue = value[1];
                 }
                 catch { } // We should just get "KEYCODE" "I" "is" or "=" and "PROCEED" 
-                
+
             }
 
             /// <summary>
@@ -771,6 +868,8 @@ namespace DSL
                         {
                             //Read the current line
                             line = fileReader.ReadLine();
+
+                            line = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
 
                             //If we reach the end of the dialogue set, we are done reading it
                             if (line == "<END>" && atTargetLine)
@@ -844,6 +943,88 @@ namespace DSL
                         }
                     }
                 }
+            }
+
+            /// <summary>
+            /// Grabs a keyword defined in the array.
+            /// </summary>
+            /// <param name="_keyword"></param>
+            /// <returns></returns>
+            public static string GetKeyWord(string _keyword)
+            {
+                foreach (string keyword in Keywords)
+                {
+                    if (_keyword == keyword) return keyword;
+                }
+
+                return STRINGNULL;
+            }
+
+            public static void GetOptions(int _position, int _number, int _capacity, ref List<Option> _options)
+            {
+                _options = new List<Option>();
+
+                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                string line = null;
+
+                bool atTargetLine = false;
+
+                int position = 0;
+
+                try
+                {
+                    //We'll be needing a list of Options for this one
+
+                    if (File.Exists(dsPath))
+                    {
+                        //We now create a new prompt, but check if the number of OPTIONS doesn't exceed CAPACITY
+                        Option newOption = null;
+
+                        using (StreamReader fileReader = new StreamReader(dsPath))
+                        {
+                            while (true)
+                            {
+                                line = fileReader.ReadLine();
+
+                                line = line.Trim('\t', ' ');
+
+                                if (line == "<END>" && atTargetLine)
+                                {
+                                    if (Prompt.ValidateCapacity(_capacity, _options.Count))
+                                        return;
+                                    else throw new ExceedsCapacityException("The number of options in Prompt " + _number + " exceeds its capacity of " + _capacity + ": Line " + position);
+                                }
+
+                                if (position > _position)
+                                {
+                                    atTargetLine = true;
+
+                                    //If OPTION is defined before the numerical representation
+                                    if (Has(line, GetKeyWord("OPTION")))
+                                    {
+                                        //We have reached the point where we can add our new options for creating a prompt
+                                        //Options are shown as OPTION 1 >> Do a thing.
+                                        string[] optionData = line.Replace(Keywords[18], STRINGNULL).Split('>');
+
+                                        int optionID = Convert.ToInt32(optionData[0].Replace(WHITESPACE, STRINGNULL));
+
+                                        string optionContent = optionData[2].Trim(WHITESPACE.ToCharArray());
+
+                                        newOption = new Option(optionID, optionContent);
+
+                                        //Create a new option, and add it to our options list
+                                        _options.Add(newOption);
+                                    }
+                                }
+
+                                position++;
+                            }
+                        }
+                    }
+                }
+                catch (ExceedsCapacityException e){ Debug.LogError(e.Message); }
+                _options = null;
             }
 
             /// <summary>

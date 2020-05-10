@@ -387,12 +387,11 @@ namespace DSL
             try
             {
                 string tag = _line.Substring((int)CursorPosition, "<action=".Length);
-
                 if (tag.Contains("action="))
                 {
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
-                    string stringRange = _line.Substring((int)CursorPosition, _line.Length);
+                    string stringRange = _line.Substring((int)CursorPosition, _line.Length - (int)CursorPosition);
                     string value = STRINGNULL;
                     foreach (char letter in stringRange)
                     {
@@ -410,7 +409,7 @@ namespace DSL
                                     string actionWord = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
                                     value = "*" + actionWord + "*";
-
+                                    
                                     _line = ReplaceFirst(_line, tag, value);
 
                                     ShiftCursorPosition(value.Length);
@@ -958,7 +957,11 @@ namespace DSL
                             }
                         }
                         catch { /*This just means there was nothing that we could of done.*/}
+
                         //Now, we then collect all the dialogue knowing how this is going to execute.
+
+                        //This is the function that'll need some modifying.
+                        //We need to make sure it can get all @, no matter how many tabs there are.
                         PARSER.GetDialogue(position);
 
                         return;
@@ -1153,8 +1156,11 @@ namespace DSL
             //Define the characters in the story
             PARSER.DefineCharacters();
 
-            //DefineKeyCodes
+            //Define all key codes
             PARSER.DefineKeyCodes();
+
+            //Define all prompts and their options
+            PARSER.DefinePrompts();
         }
 
         /// <summary>
