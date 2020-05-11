@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using DSL.Styling;
 
-namespace DSL
+namespace DSL.PromptOptionCase
 {
     public class Prompt
     {
@@ -44,5 +45,14 @@ namespace DSL
         /// <param name="_numberOfOptions"></param>
         /// <returns></returns>
         public static bool ValidateCapacity(int _promptCapacity, int _numberOfOptions) => _numberOfOptions <= _promptCapacity;
+
+        /// <summary>
+        /// Show the options for this Prompt
+        /// </summary>
+        public void Show()
+        {
+            //Generate this prompts objects.
+            Styler.GenerateOptions(ButtonStylerFormat.LIST, Options.ToArray());
+        }
     }
 }

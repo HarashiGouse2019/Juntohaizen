@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace DSL
+namespace DSL.Behaviour
 {
     //The DSL equivalent to MonoBehaviour
     //All objects on the "DSL" layer, will be controlled by
@@ -122,6 +123,38 @@ namespace DSL
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Finds all objects under the "DSL" layer
+        /// </summary>
+        /// <returns></returns>
+        public static DSLBehaviour[] FindAllObjectsInDSLLayer()
+        {
+            //First, we get all the game objects currently in the hierarchy
+            DSLBehaviour[] objects = FindObjectsOfType<DSLBehaviour>();
+
+            //We'll have a list of objects that is in the DSL layer
+            List<DSLBehaviour> objectsInDSLLayer = new List<DSLBehaviour>();
+
+            //We'll iterate through our objects array, and add them to the list
+            //if their layer is "DSL"
+            foreach (DSLBehaviour obj in objects)
+            {
+                try
+                {
+                    //If the object layer matches the "DSL" layer
+                    if (obj.gameObject.layer == LayerMask.NameToLayer(DialogueSystem.DSL_LAYER))
+                    {
+                        //Add that object to our list
+                        objectsInDSLLayer.Add(obj);
+                    }
+                }
+                catch { }
+            }
+
+            //Now, we'll return our list as an array
+            return objectsInDSLLayer.ToArray();
         }
     }
 }

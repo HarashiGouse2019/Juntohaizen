@@ -5,11 +5,13 @@ using System.IO;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
 
-using PARSER = DSL.Parser.DialogueSystemParser;
+using DSL.Parser;
+using DSL.Behaviour;
+using DSL.Styling;
+using DSL.InputManagement;
+using DSL.PromptOptionCase;
 
 namespace DSL
 {
@@ -62,14 +64,6 @@ namespace DSL
         [SerializeField]
         private string dslFileName = "";
 
-        //Reference to TextMeshPro
-        [SerializeField]
-        private TextMeshProUGUI TMP_DIALOGUETEXT = null;
-
-        //If there's a frame or dialgoue box, reference it.
-        [SerializeField]
-        private Image textBoxUI = null;
-
         private static TextSpeedValue SpeedValue;
 
         public static float TextSpeed { get; private set; }
@@ -108,7 +102,7 @@ namespace DSL
         public static List<Input> DialogueKeyCodes { get; private set; }
 
         //Fully dedicated objects
-        public static DSLBehaviour[] dedicatedObjects { get; private set; }
+        public static DSLBehaviour[] DedicatedObjects { get; private set; }
 
         //Reset value
         const int reset = 0;
@@ -157,7 +151,7 @@ namespace DSL
 
             //We what to define all values in the .dsl
             //That includes the characters, the scenes, the expressions, poses, sounds, music, etc.
-            PARSER.DefineValues();
+            DialogueSystemParser.DefineValues();
         }
 
         // Start is called before the first frame update
@@ -199,12 +193,12 @@ namespace DSL
                 //If we are not allowed to respone, have it run dialgoue until the full sentence is displayed onto the screen
                 if (IS_TYPE_IN() == false)
                 {
-                    ENABLE_DIALOGUE_BOX();
+                    Styler.EnableDialogueBox();
 
-                    GET_TMPGUI().text = STRINGNULL;
+                    Styler.GetText().text = STRINGNULL;
 
                     //If this is a new sentence, we want to clear the current text that is displaying
-                    var text = GET_TMPGUI().text;
+                    var text = Styler.GetText().text;
 
                     //If we haven't reached the end of the dialogue set, get the next line avaliable
                     if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
@@ -220,7 +214,7 @@ namespace DSL
                             if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
 
                             //We'll update the TMP text
-                            GET_TMPGUI().text = text.Substring(0, (int)CursorPosition);
+                            Styler.GetText().text = text.Substring(0, (int)CursorPosition);
 
                             //And check what speed we are displaying the text
                             UPDATE_TEXT_SPEED(SpeedValue);
@@ -271,7 +265,7 @@ namespace DSL
         static void ExcludeAllFunctionTags(string _text)
         {
 
-            PARSER.ParseLine(_text);
+            DialogueSystemParser.ParseLine(_text);
             //Action tag!
             ExecuteActionFunctionTag(actionRegex, ref _text);
 
@@ -353,7 +347,7 @@ namespace DSL
                             {
 
                                 //<sp=3>
-                                int speed = Convert.ToInt32(tag.Split(PARSER.Delimiters)[1].Split('=')[1]);
+                                int speed = Convert.ToInt32(tag.Split(DialogueSystemParser.Delimiters)[1].Split('=')[1]);
 
                                 SpeedValue = (TextSpeedValue)speed;
 
@@ -405,10 +399,10 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string actionWord = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
+                                    string actionWord = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
 
                                     value = "*" + actionWord + "*";
-                                    
+
                                     _line = ReplaceFirst(_line, tag, value);
 
                                     ShiftCursorPosition(value.Length);
@@ -457,7 +451,7 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
+                                    string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
 
                                     _line = ReplaceFirst(_line, tag, value);
 
@@ -516,7 +510,7 @@ namespace DSL
                                 {
                                     /*Now we do a substring from the current position to 4 digits.*/
 
-                                    int value = Convert.ToInt32(tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1]);
+                                    int value = Convert.ToInt32(tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1]);
 
                                     int millsecs = Convert.ToInt32(value);
 
@@ -571,7 +565,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
+                                string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
@@ -618,7 +612,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
+                                string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
@@ -644,14 +638,17 @@ namespace DSL
         {
             while (true)
             {
+                //Take the keys from the dictionary, and convert to a list
                 List<string> keys = new List<string>(_dictionary.Keys);
 
+                //Iterate through the list of keys until we find what we're looking for
                 foreach (string key in keys)
                 {
                     if (key == _key)
                         return key;
                 }
 
+                //Fail to return the key value, we return null
                 return STRINGNULL;
             }
         }
@@ -666,10 +663,13 @@ namespace DSL
         {
             while (true)
             {
+                //Take keys from dictionary, and convert to a list
                 List<string> keys = new List<string>(_dictionary.Keys);
 
+                //Set an index of one. This will be used to find the index.
                 int index = 1;
 
+                //Iterate through the list of Keys, until we know what index it is.
                 foreach (string key in keys)
                 {
                     if (_value == index)
@@ -678,6 +678,7 @@ namespace DSL
                     index++;
                 }
 
+                //Fail to find the index, we return string null
                 return STRINGNULL;
             }
         }
@@ -744,38 +745,6 @@ namespace DSL
         }
 
         /// <summary>
-        /// Finds all objects under the "DSL" layer
-        /// </summary>
-        /// <returns></returns>
-        static DSLBehaviour[] FindAllObjectsInDSLLayer()
-        {
-            //First, we get all the game objects currently in the hierarchy
-            DSLBehaviour[] objects = FindObjectsOfType<DSLBehaviour>();
-
-            //We'll have a list of objects that is in the DSL layer
-            List<DSLBehaviour> objectsInDSLLayer = new List<DSLBehaviour>();
-
-            //We'll iterate through our objects array, and add them to the list
-            //if their layer is "DSL"
-            foreach (DSLBehaviour obj in objects)
-            {
-                try
-                {
-                    //If the object layer matches the "DSL" layer
-                    if (obj.gameObject.layer == LayerMask.NameToLayer(DSL_LAYER))
-                    {
-                        //Add that object to our list
-                        objectsInDSLLayer.Add(obj);
-                    }
-                }
-                catch { }
-            }
-
-            //Now, we'll return our list as an array
-            return objectsInDSLLayer.ToArray();
-        }
-
-        /// <summary>
         /// Try to go to the next dialogue
         /// </summary>
         static void TryNext()
@@ -825,7 +794,7 @@ namespace DSL
                     if (line.Contains("DIALOGUE_SET_" + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture)))
                     {
                         string[] expressions = null;
-                        try { expressions = line.Replace(" ", "").Split(PARSER.Delimiters); } catch { }
+                        try { expressions = line.Replace(" ", "").Split(DialogueSystemParser.Delimiters); } catch { }
 
                         //Found the dialogue set
                         foundDialogueSet = true;
@@ -841,10 +810,10 @@ namespace DSL
                             foreach (string expression in expressions)
                             {
                                 //If the dialogue is automatic
-                                if (expression == PARSER.Keywords[10]) IsAutomatic = true;
+                                if (expression == DialogueSystemParser.Keywords[10]) IsAutomatic = true;
 
                                 //if the dialogue can't disturb the player
-                                if (expression == PARSER.Keywords[11]) IsDontDisturb = true;
+                                if (expression == DialogueSystemParser.Keywords[11]) IsDontDisturb = true;
 
                             }
                         }
@@ -854,7 +823,7 @@ namespace DSL
 
                         //This is the function that'll need some modifying.
                         //We need to make sure it can get all @, no matter how many tabs there are.
-                        PARSER.GetDialogue(position);
+                        DialogueSystemParser.GetDialogue(position);
 
                         return;
                     }
@@ -918,14 +887,28 @@ namespace DSL
         /// The coroutine for waiting for the response of the player
         /// </summary>
         /// <returns></returns>
-        public static IEnumerator WaitForResponse()
+        public static IEnumerator WaitForResponse(bool _isPromptRunning = false)
         {
             while (IS_TYPE_IN())
             {
-                //Check if we pressed the PROCEED button
-                //We'll also check if it's running automatically or not
-                if ((InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic)
-                    TryNext();
+                //Check if prompt is running
+                switch (_isPromptRunning)
+                {
+                    case false:
+                        //Check if we pressed the PROCEED button
+                        //We'll also check if it's running automatically or not
+                        if ((InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic)
+                            TryNext();
+                        break;
+
+                    case true:
+
+                        break;
+
+                    default:
+                        break;
+
+                }
 
                 yield return null;
             }
@@ -942,7 +925,7 @@ namespace DSL
 
             SET_TYPE_IN_VALUE(false);
 
-            DISABLE_DIALOGUE_BOX();
+            Styler.DisableDialogueBox();
 
             Dialogue.Clear();
 
@@ -951,7 +934,7 @@ namespace DSL
             CursorPosition = reset;
 
             //Rerun all behaviours
-            foreach (DSLBehaviour objectToResume in FindAllObjectsInDSLLayer())
+            foreach (DSLBehaviour objectToResume in DSLBehaviour.FindAllObjectsInDSLLayer())
             {
                 try
                 {
@@ -972,11 +955,11 @@ namespace DSL
 
                 LineIndex += 1;
 
-                GET_TMPGUI().text = STRINGNULL;
+                Styler.GetText().text = STRINGNULL;
 
                 CursorPosition = reset;
                 //We'll parse the next dialogue that is ready to be displayed
-                Dialogue[(int)LineIndex] = PARSER.ParseLine(Dialogue[(int)LineIndex]);
+                Dialogue[(int)LineIndex] = DialogueSystemParser.ParseLine(Dialogue[(int)LineIndex]);
             }
             else
                 End();
@@ -1046,7 +1029,7 @@ namespace DSL
             if (!IsDontDisturb)
             {
 
-                foreach (DSLBehaviour objectToStop in dedicatedObjects)
+                foreach (DSLBehaviour objectToStop in DedicatedObjects)
                     objectToStop.StopBehaviour();
             }
 
@@ -1061,7 +1044,7 @@ namespace DSL
                 RunningDialogue = true;
 
                 //We'll parse the very first dialogue that is ready to be displayed
-                Dialogue[(int)LineIndex] = PARSER.ParseLine(Dialogue[(int)LineIndex]);
+                Dialogue[(int)LineIndex] = DialogueSystemParser.ParseLine(Dialogue[(int)LineIndex]);
 
                 //Start the Printing Cycle
                 Instance.StartCoroutine(PrintCycle());
@@ -1087,22 +1070,6 @@ namespace DSL
         public static void SET_TYPE_IN_VALUE(bool value) => typeIn = value;
 
         /// <summary>
-        /// Get the TextMeshPro that's being used for the Dialgoue System
-        /// </summary>
-        /// <returns></returns>
-        public static TextMeshProUGUI GET_TMPGUI() => Instance.TMP_DIALOGUETEXT;
-
-        /// <summary>
-        /// Enable the Dialogue Box referred in the Dialgoue System
-        /// </summary>
-        public static void ENABLE_DIALOGUE_BOX() => Instance.textBoxUI.gameObject.SetActive(true);
-
-        /// <summary>
-        /// Disable the Dialogue Box referred in the Dialogue System
-        /// </summary>
-        public static void DISABLE_DIALOGUE_BOX() => Instance.textBoxUI.gameObject.SetActive(false);
-
-        /// <summary>
         /// On Scene Loaded Event
         /// </summary>
         /// <param name="scene"></param>
@@ -1110,7 +1077,7 @@ namespace DSL
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             //Find all objects after a new scene has been loaded
-            dedicatedObjects = FindAllObjectsInDSLLayer();
+            DedicatedObjects = DSLBehaviour.FindAllObjectsInDSLLayer();
         }
 
         public void OnEnable()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Alarm;
+using DSL.InputManagement;
 
 public class Player_Controller : Controller
 {

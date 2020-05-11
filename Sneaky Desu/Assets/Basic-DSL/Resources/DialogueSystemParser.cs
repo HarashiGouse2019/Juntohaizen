@@ -5,6 +5,8 @@ using System.Globalization;
 using UnityEngine;
 
 using DSL.Core;
+using DSL.InputManagement;
+using DSL.PromptOptionCase;
 
 namespace DSL.Parser
 {
@@ -62,7 +64,10 @@ namespace DSL.Parser
                 "GRID",
                 "CALL",
                 "OMIT",
-                "PARENT"
+                "PARENT",
+                "CASE",
+                "BREAK",
+                "OUT"
                 };
 
         public static string[] ValidTextSpeeds { get; } = {
@@ -910,6 +915,16 @@ namespace DSL.Parser
                                             //Get the prompt being called
                                             Prompt targetPrompt = GetDefinedPrompt(promptNumber);
 
+                                            //TODO: Enhance the syling portion of DSL, especially for choices.
+                                            //TODO: When prompt is called, have it search for OUT.
+                                            //OUT will find either @, or if it can't find any, dialogue set ends
+
+                                            //We'll find all Option blocks after the call.
+                                            FindOptionCases(targetPrompt);
+
+                                            Debug.Log(targetPrompt.Number);
+
+                                            break;
                                         }
                                         #endregion
                                     }
@@ -1011,6 +1026,93 @@ namespace DSL.Parser
             }
             catch (ExceedsCapacityException e) { Debug.LogError(e.Message); }
             _options = null;
+        }
+
+        public static void FindOptionCases(Prompt _prompt)
+        {
+            try
+            {
+                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+                string line = null;
+
+                int position = 0;
+
+                bool foundCaseOption = false;
+
+                if (File.Exists(dsPath))
+                {
+                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    {
+                        while (true)
+                        {
+                            line = fileReader.ReadLine();
+
+                            line = line.Trim('\t', ' ');
+
+                            if (line == END && foundCaseOption)
+                                return;
+
+
+
+                            if (Has(line, GetKeyWord("CASE") + WHITESPACE + GetKeyWord("OPTION")))
+                            {
+                                foundCaseOption = true;
+
+                                //We're at an option case
+                                //We want to change the reference position for each of these found cases
+                                //So if those options are picked, we change the LineIndex of the DialogueSystem
+
+                                string[] data = line.Replace(":", STRINGNULL).Split(' ');
+                                int optionID = Convert.ToInt32(data[2]);
+
+                                Debug.Log(optionID + " starts at line " + (position + 1));
+
+                                //We iterate through our prompt option, and assign the position where the first ocurring @ is.
+                                foreach (Option option in _prompt.Options)
+                                {
+                                    if (optionID == option.ID)
+                                        AssignReferenceToOption(option, (position + 1), ref line);
+
+                                }
+                            }
+                            position++;
+                        }
+                    }
+                }
+                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+            }
+            catch { }
+        }
+
+        public static void AssignReferenceToOption(Option _option, int _position, ref string _line)
+        {
+            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+
+            int position = 0;
+
+            using (StreamReader fileReader = new StreamReader(dsPath))
+            {
+                while (true)
+                {
+                    _line = fileReader.ReadLine();
+
+                    _line = _line.Trim('\t', ' ');
+
+                    if (position > _position && Has(_line, Tokens[0]))
+                    {
+                        //If the line has @
+                        //I want to use the 
+
+
+                        _option.SetJumpValue(position);
+                        Debug.Log(_line);
+                        return;
+                    }
+
+                    position++;
+                }
+            }
         }
 
         /// <summary>
@@ -1323,7 +1425,7 @@ namespace DSL.Parser
         /// <returns></returns>
         public static string[] ExtractCallFrom(int _position, string _line)
         {
-            
+
             string callMethod = STRINGNULL;
 
             for (int pos = 0; pos < _line.Length; pos++)

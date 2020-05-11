@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace DSL
+namespace DSL.InputManagement
 {
+
     public class InputManager : MonoBehaviour
     {
         static InputManager Instance;
@@ -18,7 +20,8 @@ namespace DSL
             {
                 Instance = this;
                 DontDestroyOnLoad(Instance);
-            } else
+            }
+            else
             {
                 Destroy(gameObject);
             }
@@ -31,7 +34,7 @@ namespace DSL
         /// </summary>
         /// <param name="_buttonName"></param>
         /// <returns></returns>
-        public static bool GetButtonDown(string _buttonName) 
+        public static bool GetButtonDown(string _buttonName)
             => UnityEngine.Input.GetKeyDown(GetKeyCodeByButtonName(_buttonName));
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace DSL
         /// </summary>
         /// <param name="_key"></param>
         /// <returns></returns>
-        public static bool GetButtonDown(KeyCode _key) 
+        public static bool GetButtonDown(KeyCode _key)
             => UnityEngine.Input.GetKeyDown(_key);
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace DSL
         /// </summary>
         /// <param name="_key"></param>
         /// <returns></returns>
-        public static bool GetButton(KeyCode _key) 
+        public static bool GetButton(KeyCode _key)
             => UnityEngine.Input.GetKey(_key);
 
         /// <summary>
@@ -95,7 +98,7 @@ namespace DSL
         /// </summary>
         /// <param name="_key"></param>
         /// <returns></returns>
-        public static bool GetButtonUp(KeyCode _key) 
+        public static bool GetButtonUp(KeyCode _key)
             => UnityEngine.Input.GetKeyUp(_key);
 
         /// <summary>
@@ -138,7 +141,8 @@ namespace DSL
             try
             {
                 Keys.Add(new Input(_name, Input.NO_DESCRIPTIVE_NAME, _newKeyCodeEntry, Functionality.NONE));
-            }catch(CantRegisterException e)
+            }
+            catch (CantRegisterException e)
             {
                 Debug.LogError(e.Message);
             }
@@ -152,9 +156,11 @@ namespace DSL
         /// <param name="_newKeyCodeEntry"></param>
         public static void Register(string _name, string _descriptiveName, KeyCode _newKeyCodeEntry)
         {
-            try{
+            try
+            {
                 Keys.Add(new Input(_name, _descriptiveName, _newKeyCodeEntry, Functionality.NONE));
-            } catch(CantRegisterException e)
+            }
+            catch (CantRegisterException e)
             {
                 Debug.LogError(e.Message);
             }
@@ -172,7 +178,8 @@ namespace DSL
             try
             {
                 Keys.Add(new Input(_name, _descriptiveName, _newKeyCodeEntry, functionality));
-            } catch(CantRegisterException e)
+            }
+            catch (CantRegisterException e)
             {
                 Debug.LogError(e.Message);
             }

@@ -6,7 +6,6 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -64,13 +63,6 @@ public class GameManager : MonoBehaviour
     [Header("Object Pooler")]
     public ObjectPooler ObjectPooler;
 
-    [Header("Text Box")]
-    public RawImage textBoxUI;
-    public TextMeshProUGUI dialogue;
-
-
-    [Header("DSF Name")]
-    public string dsfName;
     void Awake()
     {
         ////If our Game Manager does not exists, create one, and do not destroy it.
