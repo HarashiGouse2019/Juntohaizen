@@ -1,3 +1,6 @@
+March 20th was when DSL project began.
+March 29th was when DSL was created.
+
 TITLE: "JuntohaizenDSL"
 
 AUTHOR: "Miijii"
@@ -14,6 +17,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 	Globby
 	Merchant
 	Austin
+	God
 <END>
 
 ###Keycodes are all set in DSL Input Manager found in the Unity Editor###
@@ -46,10 +50,10 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 ###--------------------------------------------------------------------------------------------------------------------###
 
 ###Actual Dialogue in the Game###
-<DIALOGUE_SET_002 | AUTO | DONT_DISTURB> 
+<DIALOGUE_SET_002 | AUTO> 
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 
-	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<<
+	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< CALL PROMPT 0
 
 	@??? [ACTION::"GASPS"][HALT::500] I see that you are doing well.[HALT::750]<<
 
@@ -64,7 +68,8 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 	@??? [SPEED::FASTEST]WELL, GO FIND HER, GOSH DARN IT!!![HALT::1000]<<
 
 	@Austin [SPEED::NORMAL][INSERT::"Geez!"] [HALT::750][INSERT::"ALRIGHT!"] [HALT::500][INSERT::"ALRIGHT!"] [HALT::1000]I'll go find her.[HALT::1500]<<
-	@Austin [ACTION::"Whispers"][HALT::1000] Jackass...[HALT::500]<<
+	@Austin [HALT::1000]Jackass...[HALT::500]<<
+	
 <END>
 
 ###-----------------------------------------------------------------------------------------------------------------------###
@@ -88,7 +93,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 	@??? [SPEED::FASTEST]WELL, GO FIND HER, GOSH DARN IT!!![HALT::1000]<<
 
 	@Austin [SPEED::NORMAL][INSERT::"Geez!"] [HALT::750][INSERT::"ALRIGHT!"] [HALT::500][INSERT::"ALRIGHT!"] [HALT::1000]I'll go find her.[HALT::1500]<<
-	@Austin [ACTION::"Whispers"] [HALT::1000]Jackass...[HALT::500]<<
+	@Austin [HALT::1000][ITALIZE]Jackass...[ITALIZE::END][HALT::500]<<
 
 	@Austin What should I do?<< CALL PROMPT 0
 		###Basic-DSL must in fact keep track with how many tabs there are, and be able to follow all of this accordingly.###
@@ -135,7 +140,6 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 					@Austin Well okay... Then what should I do?<< CALL PROMPT 0 | OMIT PARENT OPTION ###This is a Recursive Prompt Call, but when displaying the options, it will grey out the 4th option###
 				BREAK
 		BREAK
-
 	###This is just a short project to do in the future in order to give Basic-DSL more functionality.
 	We must also figure how to implement Events as well regarding Unity x Basic-DSL###
 <END>

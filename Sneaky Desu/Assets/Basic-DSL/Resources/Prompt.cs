@@ -5,13 +5,13 @@ namespace DSL
 {
     public class Prompt
     {
-        public List<Option> options = new List<Option>();
+        public List<Option> Options { get; private set; } = new List<Option>();
 
-        public int number;
+        public int Number { get; private set; }
 
-        public int capacity;
+        public int Capacity { get; private set; }
 
-        public int dialogueIndexReference;
+        public int DialogueIndexReference { get; private set; }
 
         public const int DEFAULT_CAPACITY = 4;
 
@@ -22,8 +22,8 @@ namespace DSL
         /// <param name="_options"></param>
         public Prompt(int _number, List<Option> _options, int _capacity = DEFAULT_CAPACITY)
         {
-            capacity = _capacity;
-            number = _number;
+            Capacity = _capacity;
+            Number = _number;
             AddOptions(_options);
         }
 
@@ -34,7 +34,7 @@ namespace DSL
         void AddOptions(List<Option> _options)
         {
             //Create a new array of options
-            options = _options;
+            Options = _options;
         }
 
         /// <summary>

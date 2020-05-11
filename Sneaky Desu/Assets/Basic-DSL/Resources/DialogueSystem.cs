@@ -8,9 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using Input = DSL.Input;
 
-using PARSER = DSL.DSLParser.DialogueSystemParser;
+using PARSER = DSL.Parser.DialogueSystemParser;
 
 namespace DSL
 {
@@ -120,18 +119,18 @@ namespace DSL
         static readonly string UNDERLINE = "<u>", UNDERLINEEND = "</u>";
 
         //The formatting of custom-made tags
-        static readonly Regex ACTION = new Regex(@"(<)+\w*action=\w*[a-zA-Z ]+(>$)");
-        static readonly Regex INSERT = new Regex(@"(<)+\w*ins=\w*[a-zA-Z !@#$%^&*()_\-=\\/<>?,./{}[\|:]+(>$)");
-        static readonly Regex EXPRESSION = new Regex(@"(<)+\w*exp=\w*[A-Z0-9_-]+(>$)");
-        static readonly Regex POSE = new Regex(@"(<)+\w*pose=\w*[A-Z0-9_-]+(>$)");
-        static readonly Regex HALT = new Regex(@"(<)+\w*halt=\w*[0-9]+(>$)");
-        static readonly Regex SPEED = new Regex(@"(<)+\w*sp=\w*[0-6](>$)");
-        static readonly Regex PLAYESOUND = new Regex(@"(<)+\w*ps=\w*[A-Z0-9_-]+(>$)");
-        static readonly Regex VOICE = new Regex(@"(<)+\w*v=\w*[A-Z0-9_-]+(>$)");
-        static readonly Regex TRIGGER = new Regex(@"(<)+\w*tri=\w*[A-Z0-9_-]+(>$)");
+        static readonly Regex actionRegex = new Regex(@"(<)+\w*action=\w*[a-zA-Z ]+(>$)");
+        static readonly Regex insertRegex = new Regex(@"(<)+\w*ins=\w*[a-zA-Z !@#$%^&*()_\-=\\/<>?,./{}[\|:]+(>$)");
+        static readonly Regex expressionRegex = new Regex(@"(<)+\w*exp=\w*[A-Z0-9_-]+(>$)");
+        static readonly Regex poseRegex = new Regex(@"(<)+\w*pose=\w*[A-Z0-9_-]+(>$)");
+        static readonly Regex haltRegex = new Regex(@"(<)+\w*halt=\w*[0-9]+(>$)");
+        static readonly Regex speedRegex = new Regex(@"(<)+\w*sp=\w*[0-6](>$)");
+        static readonly Regex soundRegex = new Regex(@"(<)+\w*ps=\w*[A-Z0-9_-]+(>$)");
+        static readonly Regex voiceRegex = new Regex(@"(<)+\w*v=\w*[A-Z0-9_-]+(>$)");
+        static readonly Regex triggerRegex = new Regex(@"(<)+\w*tri=\w*[A-Z0-9_-]+(>$)");
 
         //DSL file extension
-        static readonly string dslFileExtention = ".dsl";
+        public static readonly string DSLFileExtention = ".dsl";
 
         static readonly string STRINGNULL = "";
 
@@ -143,7 +142,7 @@ namespace DSL
 
         //DSL Layer Constant
         //Objects will be controlled by the Dialogue Scripting System if under this layer.
-        public static string DSL_LAYER { get; } = "DSL";
+        public static readonly string DSL_LAYER = "DSL";
 
         /// <summary>
         /// Execute once instantiated 
@@ -158,7 +157,7 @@ namespace DSL
 
             //We what to define all values in the .dsl
             //That includes the characters, the scenes, the expressions, poses, sounds, music, etc.
-            DefineValues();
+            PARSER.DefineValues();
         }
 
         // Start is called before the first frame update
@@ -168,7 +167,7 @@ namespace DSL
             DialogueSystemSpriteChangers = FIND_ALL_SPRITECHANGERS();
         }
 
-        void FixedUpdate()
+        void Update()
         {
             //If [HALT] command ends, continue to exclude any tags that may be parsered
             if (!OnDelay && Dialogue.Count != 0)
@@ -205,7 +204,7 @@ namespace DSL
                     GET_TMPGUI().text = STRINGNULL;
 
                     //If this is a new sentence, we want to clear the current text that is displaying
-                    var text = STRINGNULL;
+                    var text = GET_TMPGUI().text;
 
                     //If we haven't reached the end of the dialogue set, get the next line avaliable
                     if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
@@ -217,7 +216,7 @@ namespace DSL
                     {
                         try
                         {
-                            //If we head to a next line, we want to assure that we are at the next line
+                            //This helps guide us to taking apart the tags in the string.
                             if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
 
                             //We'll update the TMP text
@@ -274,22 +273,22 @@ namespace DSL
 
             PARSER.ParseLine(_text);
             //Action tag!
-            ExecuteActionFunctionTag(ACTION, ref _text);
+            ExecuteActionFunctionTag(actionRegex, ref _text);
 
             //Insert tag!
-            ExecuteInsertFunctionTag(INSERT, ref _text);
+            ExecuteInsertFunctionTag(insertRegex, ref _text);
 
             //Speed Command Tag: It will consider all of the possible values.
-            ExecuteSpeedFunctionTag(SPEED, ref _text);
+            ExecuteSpeedFunctionTag(speedRegex, ref _text);
 
             //Expression tag!
-            ExecuteExpressionFunctionTag(EXPRESSION, ref _text);
+            ExecuteExpressionFunctionTag(expressionRegex, ref _text);
 
             //Pose tag!
-            ExecutePoseFunctionTag(POSE, ref _text);
+            ExecutePoseFunctionTag(poseRegex, ref _text);
 
             //Halt tage
-            ExecuteHaltFunctionTag(HALT, ref _text);
+            ExecuteHaltFunctionTag(haltRegex, ref _text);
         }
 
         /// <summary>
@@ -358,7 +357,7 @@ namespace DSL
 
                                 SpeedValue = (TextSpeedValue)speed;
 
-                                _line = ReplaceFirst(_line, tag, "");
+                                _line = ReplaceFirst(_line, tag, STRINGNULL);
 
                                 Dialogue[(int)LineIndex] = _line;
 
@@ -444,6 +443,7 @@ namespace DSL
                     int startTagPos = (int)CursorPosition;
                     int endTagPos = 0;
                     string stringRange = _line.Substring((int)CursorPosition, _line.Length - (int)CursorPosition);
+
                     foreach (char letter in stringRange)
                     {
                         if (letter == '>')
@@ -451,7 +451,7 @@ namespace DSL
 
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = _line.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -522,7 +522,7 @@ namespace DSL
 
                                     Instance.StartCoroutine(DelaySpan(millsecs));
 
-                                    _line = ReplaceFirst(_line, tag, "");
+                                    _line = ReplaceFirst(_line, tag, STRINGNULL);
 
                                     Dialogue[(int)LineIndex] = _line;
 
@@ -573,11 +573,11 @@ namespace DSL
 
                                 string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
-                                _line = ReplaceFirst(_line, tag, "");
+                                _line = ReplaceFirst(_line, tag, STRINGNULL);
 
                                 Dialogue[(int)LineIndex] = _line;
 
-                                return ValidateExpressionsAndChange(value, ref notFlaged);
+                                return Validater.ValidateExpressionsAndChange(value, ref notFlaged);
                             }
                         }
                     }
@@ -620,11 +620,11 @@ namespace DSL
 
                                 string value = tag.Trim(PARSER.Delimiters[0], PARSER.Delimiters[1]).Split('=')[1];
 
-                                _line = ReplaceFirst(_line, tag, "");
+                                _line = ReplaceFirst(_line, tag, STRINGNULL);
 
                                 Dialogue[(int)LineIndex] = _line;
 
-                                return ValidatePosesAndChange(value, ref notFlaged);
+                                return Validater.ValidatePosesAndChange(value, ref notFlaged);
                             }
                         }
                     }
@@ -635,120 +635,12 @@ namespace DSL
         }
 
         /// <summary>
-        /// Validate if the Expression is defined in the .dsl file
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="_notFlag"></param>
-        /// <returns></returns>
-        static bool ValidateExpressionsAndChange(string value, ref bool _notFlag)
-        {
-            //Check if a key matches
-            string data = STRINGNULL;
-
-            if (PARSER.DefinedExpressions.ContainsKey(value))
-            {
-                if (value.GetType() == typeof(string))
-                {
-                    data = FindKeyAndConvertToString(value, PARSER.DefinedExpressions);
-                    _notFlag = false;
-                }
-            }
-
-            else if (PARSER.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
-            {
-                if (Convert.ToInt32(value).GetType() == typeof(int))
-                {
-
-                    data = FindValueAndConvertToString(Convert.ToInt32(value), PARSER.DefinedExpressions);
-
-                    _notFlag = false;
-                }
-            }
-
-            if (_notFlag)
-            {
-                //Otherwise, we'll through an error saying this hasn't been defined.
-                Debug.LogError(value + " has not been defined. Perhaps declaring it in the associated .dsl File.");
-                return FAILURE;
-            }
-
-            //We get the name, keep if it's EXPRESSION or POSE, and the emotion value
-            string characterName = data.Split('_')[0];
-            string changeType = data.Split('_')[1];
-            string characterState = data.Split('_')[2];
-
-            //Now we see if we can grab the image, and have it change...
-            DialogueSystemSpriteChanger changer = Find_Sprite_Changer(characterName + "_" + changeType);
-
-            changer.CHANGE_IMAGE(characterState);
-
-            ShiftCursorPosition(-1);
-
-            return SUCCESSFUL;
-        }
-
-        /// <summary>
-        /// Validate if the Pose is defined in the .dsl file
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="_notFlag"></param>
-        /// <returns></returns>
-        static bool ValidatePosesAndChange(string value, ref bool _notFlag)
-        {
-            //Check if a key matches
-            string data = STRINGNULL;
-
-            if (PARSER.DefinedExpressions.ContainsKey(value))
-            {
-                if (value.GetType() == typeof(string))
-                {
-                    data = FindKeyAndConvertToString(value, PARSER.DefinedPoses);
-                    _notFlag = false;
-                }
-            }
-
-            else if (PARSER.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
-            {
-                if (Convert.ToInt32(value).GetType() == typeof(int))
-                {
-
-                    data = FindValueAndConvertToString(Convert.ToInt32(value), PARSER.DefinedPoses);
-
-                    _notFlag = false;
-                }
-            }
-
-            if (_notFlag)
-            {
-                //Otherwise, we'll through an error saying this hasn't been defined.
-                Debug.LogError(value + " has not been defined. Perhaps declaring it in the associated " + dslFileExtention + " File.");
-                return FAILURE;
-            }
-
-            //We get the name, keep if it's EXPRESSION or POSE, and the emotion value
-            string characterName = data.Split('_')[0];
-            string changeType = data.Split('_')[1];
-            string characterState = data.Split('_')[2];
-
-            Debug.Log(characterState);
-
-            //Now we see if we can grab the image, and have it change...
-            DialogueSystemSpriteChanger changer = Find_Sprite_Changer(characterName + "_" + changeType);
-
-            changer.CHANGE_IMAGE(characterState);
-
-            ShiftCursorPosition(-1);
-
-            return SUCCESSFUL;
-        }
-
-        /// <summary>
         /// Find the key value from a defined Dictionary
         /// </summary>
         /// <param name="_key"></param>
         /// <param name="_dictionary"></param>
         /// <returns></returns>
-        static string FindKeyAndConvertToString(string _key, Dictionary<string, int> _dictionary)
+        public static string FindKeyAndConvertToString(string _key, Dictionary<string, int> _dictionary)
         {
             while (true)
             {
@@ -770,7 +662,7 @@ namespace DSL
         /// <param name="_value"></param>
         /// <param name="_dictionary"></param>
         /// <returns></returns>
-        static string FindValueAndConvertToString(int _value, Dictionary<string, int> _dictionary)
+        public static string FindValueAndConvertToString(int _value, Dictionary<string, int> _dictionary)
         {
             while (true)
             {
@@ -821,7 +713,7 @@ namespace DSL
         /// </summary>
         /// <param name="_name"></param>
         /// <returns></returns>
-        static DialogueSystemSpriteChanger Find_Sprite_Changer(string _name)
+        public static DialogueSystemSpriteChanger Find_Sprite_Changer(string _name)
         {
             foreach (DialogueSystemSpriteChanger instance in DialogueSystemSpriteChangers)
             {
@@ -837,7 +729,7 @@ namespace DSL
         /// Returns a list of all existing Sprite Changers in the Unity Scene
         /// </summary>
         /// <returns></returns>
-        static List<DialogueSystemSpriteChanger> FIND_ALL_SPRITECHANGERS()
+        public static List<DialogueSystemSpriteChanger> FIND_ALL_SPRITECHANGERS()
         {
             DialogueSystemSpriteChanger[] instances = FindObjectsOfType<DialogueSystemSpriteChanger>();
 
@@ -1142,28 +1034,6 @@ namespace DSL
         }
 
         /// <summary>
-        /// Defines all values that are typed explicitly in the .dsl file
-        /// </summary>
-        public static void DefineValues()
-        {
-            //Go into file, and check for all defined values
-            //Define the expressions used
-            PARSER.DefineExpressions();
-
-            //Define the poses used
-            PARSER.DefinePoses();
-
-            //Define the characters in the story
-            PARSER.DefineCharacters();
-
-            //Define all key codes
-            PARSER.DefineKeyCodes();
-
-            //Define all prompts and their options
-            PARSER.DefinePrompts();
-        }
-
-        /// <summary>
         /// Runs a dialogue set in the associated .dsl file
         /// </summary>
         /// <param name="_nodeValue"></param>
@@ -1202,7 +1072,7 @@ namespace DSL
         /// Get the file that will be read from the Dialogue System
         /// </summary>
         /// <returns></returns>
-        public static string GET_DIALOGUE_SCRIPTING_FILE() => Instance.dslFileName + dslFileExtention;
+        public static string GET_DIALOGUE_SCRIPTING_FILE() => Instance.dslFileName + DSLFileExtention;
 
         /// <summary>
         /// Return if player can respond with input
