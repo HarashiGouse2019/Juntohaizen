@@ -18,7 +18,7 @@ namespace DSL.PromptOptionCase
 
         public const int DEFAULT_CAPACITY = 4;
 
-        public int CallingLevel { get; private set; }
+        public int CallingLine { get; private set; }
 
         /// <summary>
         /// Create a new prompt
@@ -59,20 +59,29 @@ namespace DSL.PromptOptionCase
             Styler.GenerateOptions(_format, Options.ToArray());
         }
 
+        public Option GetOption(int _optionID)
+        {
+            foreach(Option option in Options)
+            {
+                if (_optionID == option.ID) return option;
+            }
+
+            return null;
+        }
         /// <summary>
         /// Set the calling level of the prompt being called in dialogue
         /// </summary>
         /// <param name="_value"></param>
-        public void SetCallingLevel(int _value) => CallingLevel = _value;
+        public void SetCallingLine(int _value) => CallingLine = _value;
 
         public void SetDialogueReference(string _dialogue) => DialogueReference = _dialogue;
 
         public int FindDialoguePosition() {
             int position = 0;
 
-            foreach(string dialogue in DialogueSystem.Dialogue)
+            foreach(Dialogue dialogue in DialogueSystem.DialogueList)
             {
-                if (DialogueReference.Contains(dialogue))
+                if (DialogueReference.Contains(dialogue.Content))
                 {
                     gotoLine = position;
                     return position;

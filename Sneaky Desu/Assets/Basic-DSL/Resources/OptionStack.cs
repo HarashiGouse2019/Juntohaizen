@@ -4,13 +4,13 @@ namespace DSL.PromptOptionCase
 {
     public class OptionStack
     {
-        public static Queue<Option> StackedOptions = new Queue<Option>(500);
+        public static Stack<Option> StackedOptions = new Stack<Option>(500);
 
-        public static void Enqueue(Option _option)
+        public static void Push(Option _option)
         {
-            StackedOptions.Enqueue(_option);
+            StackedOptions.Push(_option);
         }
 
-        public static Option Dequeue() => StackedOptions.Dequeue();
+        public static Option Pop() => StackedOptions.Pop();
     }
 }

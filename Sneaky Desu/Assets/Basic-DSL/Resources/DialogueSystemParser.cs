@@ -10,7 +10,7 @@ using DSL.PromptOptionCase;
 
 namespace DSL.Parser
 {
-    public class DialogueSystemParser
+    public static class DialogueSystemParser
     {
 
         public static char[] Delimiters { get; } = {
@@ -105,6 +105,11 @@ namespace DSL.Parser
         const string TAB = "\t";
 
         const string END = "<END>";
+
+        static DialogueSystemParser()
+        {
+            new Compiler(DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE());
+        }
 
         /// <summary>
         /// Parse an entire line into tags based on commands calls.
@@ -225,36 +230,28 @@ namespace DSL.Parser
             {
                 string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-                string line = null;
+                string dataLine = null;
 
                 int position = 0;
 
                 bool foundExpression = false;
 
-                if (File.Exists(dsPath))
+                foreach (string line in Compiler.CompiledData)
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (dataLine == END && foundExpression)
+                        return;
+
+                    if (Has(dataLine, "EXPRESSIONS"))
                     {
-                        while (true)
-                        {
-                            line = fileReader.ReadLine();
-
-                            line = line.Trim('\t', ' ');
-
-                            if (line == END && foundExpression)
-                                return;
-
-                            if (Has(line, "EXPRESSIONS"))
-                            {
-                                foundExpression = true;
-                                try { GetExpressions(position); } catch { }
-                            }
-
-                            position++;
-                        }
+                        foundExpression = true;
+                        try { GetExpressions(position); } catch { }
                     }
+
+                    position++;
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
             }
             catch { }
         }
@@ -268,36 +265,29 @@ namespace DSL.Parser
             {
                 string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-                string line = null;
+                string dataLine = null;
 
                 int position = 0;
 
                 bool foundPose = false;
 
-                if (File.Exists(dsPath))
+
+                foreach (string line in Compiler.CompiledData)
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (dataLine == END && foundPose)
+                        return;
+
+                    if (Has(dataLine, "POSES"))
                     {
-                        while (true)
-                        {
-                            line = fileReader.ReadLine();
-
-                            line = line.Trim('\t', ' ');
-
-                            if (line == END && foundPose)
-                                return;
-
-                            if (Has(line, "POSES"))
-                            {
-                                foundPose = true;
-                                try { GetPoses(position); } catch { }
-                            }
-
-                            position++;
-                        }
+                        foundPose = true;
+                        try { GetPoses(position); } catch { }
                     }
+
+                    position++;
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+
             }
             catch { }
         }
@@ -311,36 +301,29 @@ namespace DSL.Parser
             {
                 string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-                string line = null;
+                string dataLine = null;
 
                 int position = 0;
 
                 bool foundCharacter = false;
 
-                if (File.Exists(dsPath))
+                foreach (string line in Compiler.CompiledData)
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (dataLine == END && foundCharacter)
+                        return;
+
+                    if (Has(dataLine, "CHARACTERS"))
                     {
-                        while (true)
-                        {
-                            line = fileReader.ReadLine();
-
-                            line = line.Trim('\t', ' ');
-
-                            if (line == END && foundCharacter)
-                                return;
-
-                            if (Has(line, "CHARACTERS"))
-                            {
-                                foundCharacter = true;
-                                try { GetCharacterNames(position); } catch { }
-                            }
-
-                            position++;
-                        }
+                        foundCharacter = true;
+                        try { GetCharacterNames(position); } catch { }
                     }
+
+                    position++;
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
+
             }
             catch { }
         }
@@ -354,46 +337,41 @@ namespace DSL.Parser
             {
                 string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-                string line = null;
+                string dataLine = null;
 
                 int position = 0;
 
                 bool foundKeyCode = false;
 
-                if (File.Exists(dsPath))
+
+
+                foreach (string line in Compiler.CompiledData)
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (line == END && foundKeyCode)
+                        return;
+
+                    if (Has(dataLine, "KEYCODES"))
                     {
-                        while (true)
+                        string[] expressions = null;
+                        try { expressions = dataLine.Replace(WHITESPACE, STRINGNULL).Split(Delimiters); } catch { }
+
+                        //Check for addition inforamtion
+                        foreach (string expression in expressions)
                         {
-                            line = fileReader.ReadLine();
-
-                            line = line.Trim('\t', ' ');
-
-                            if (line == END && foundKeyCode)
-                                return;
-
-                            if (Has(line, "KEYCODES"))
-                            {
-                                string[] expressions = null;
-                                try { expressions = line.Replace(WHITESPACE, STRINGNULL).Split(Delimiters); } catch { }
-
-                                //Check for addition inforamtion
-                                foreach (string expression in expressions)
-                                {
-                                    //If KeyCodes will be controlled by the InputManager in DSLNative or Unity
-                                    //If controlled by input managers, all the input will be read through those
-                                    //instead of being read in the .dsl directly.
-                                    try { if (expression == Keywords[13]) Is_Using_Input_Manager = true; } catch { };
-                                }
-
-                                foundKeyCode = true;
-                                try { GetKeyCodes(position); } catch { }
-                            }
-
-                            position++;
+                            //If KeyCodes will be controlled by the InputManager in DSLNative or Unity
+                            //If controlled by input managers, all the input will be read through those
+                            //instead of being read in the .dsl directly.
+                            try { if (expression == Keywords[13]) Is_Using_Input_Manager = true; } catch { };
                         }
+
+                        foundKeyCode = true;
+                        try { GetKeyCodes(position); } catch { }
                     }
+
+                    position++;
+
                 }
                 Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
             }
@@ -409,85 +387,77 @@ namespace DSL.Parser
             {
                 string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-                string line = null;
+                string dataLine = null;
 
                 int position = 0;
 
                 bool foundPrompt = false;
 
-                if (File.Exists(dsPath))
+                foreach (string line in Compiler.CompiledData)
                 {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (dataLine == END && foundPrompt)
+                        return;
+
+                    if (Has(line, "<PROMPT"))
                     {
-                        while (true)
+
+                        //First, we want to know what prompt number it is,
+                        //as well as the capacity of the prompt
+                        int promptNumber = 0;
+                        int promptCapacity = Prompt.DEFAULT_CAPACITY;
+
+                        //Now we split the numbers
+                        string[] dataSet = null;
+                        try
                         {
-                            line = fileReader.ReadLine();
+                            //Try to split the information
+                            try { dataSet = dataLine.Trim(Delimiters[0], Delimiters[1]).Split(Delimiters[5]); }
+                            catch { };
 
-                            line = line.Trim('\t', ' ');
+                            promptNumber = Convert.ToInt32(dataSet[0].Split('_')[1], CultureInfo.InvariantCulture);
 
-                            if (line == STRINGNULL && foundPrompt)
-                                return;
-
-                            if (Has(line, "<PROMPT"))
+                            foreach (string keyword in Keywords)
                             {
-
-                                //First, we want to know what prompt number it is,
-                                //as well as the capacity of the prompt
-                                int promptNumber = 0;
-                                int promptCapacity = Prompt.DEFAULT_CAPACITY;
-
-                                //Now we split the numbers
-                                string[] dataSet = null;
                                 try
                                 {
-                                    //Try to split the information
-                                    try { dataSet = line.Trim(Delimiters[0], Delimiters[1]).Split(Delimiters[5]); }
-                                    catch { };
-
-                                    promptNumber = Convert.ToInt32(dataSet[0].Split('_')[1], CultureInfo.InvariantCulture);
-
-                                    foreach (string keyword in Keywords)
-                                    {
-                                        try
+                                    //If CAPACITY is defined
+                                    if (keyword == GetKeyWord("CAPACITY"))
+                                        foreach (string token in Tokens)
                                         {
-                                            //If CAPACITY is defined
-                                            if (keyword == GetKeyWord("CAPACITY"))
-                                                foreach (string token in Tokens)
-                                                {
-                                                    if (token == Tokens[5] || token == Tokens[6])
-                                                        promptCapacity = Convert.ToInt32(dataSet[1].Split(Tokens[6].ToCharArray())[2]);
-                                                }
-
-                                            //IF FORMAT is defined
-                                            if (keyword == GetKeyWord("FORMAT"))
-                                                foreach (string token in Tokens)
-                                                {
-                                                    if (token == Tokens[5] || token == Tokens[6])
-                                                    {
-                                                        //TODO: retrieve the formating data of how the options will display.
-
-                                                    }
-                                                }
+                                            if (token == Tokens[5] || token == Tokens[6])
+                                                promptCapacity = Convert.ToInt32(dataSet[1].Split(Tokens[6].ToCharArray())[2]);
                                         }
-                                        catch { }
-                                    }
 
-                                    List<Option> options = null;
+                                    //IF FORMAT is defined
+                                    if (keyword == GetKeyWord("FORMAT"))
+                                        foreach (string token in Tokens)
+                                        {
+                                            if (token == Tokens[5] || token == Tokens[6])
+                                            {
+                                                //TODO: retrieve the formating data of how the options will display.
 
-                                    //Knowing that we got the information of our prompt, we can collect the options underneath it.
-                                    GetOptions(position, promptNumber, promptCapacity, ref options);
-
-                                    Prompt newPrompt = new Prompt(promptNumber, options, promptCapacity);
-
-                                    DefinedPrompts.Add(newPrompt);
+                                            }
+                                        }
                                 }
                                 catch { }
                             }
-                            position++;
+
+                            List<Option> options = null;
+
+                            //Knowing that we got the information of our prompt, we can collect the options underneath it.
+                            GetOptions(position, promptNumber, promptCapacity, ref options);
+
+                            Prompt newPrompt = new Prompt(promptNumber, options, promptCapacity);
+
+                            DefinedPrompts.Add(newPrompt);
                         }
+                        catch { }
                     }
+                    position++;
                 }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
             }
             catch { }
         }
@@ -500,39 +470,34 @@ namespace DSL.Parser
         {
             string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-            string line = null;
+            string dataLine = null;
 
             bool atTargetLine = false;
 
-            if (File.Exists(dsPath))
+            int position = 0;
+
+            foreach (string line in Compiler.CompiledData)
             {
-                using (StreamReader fileReader = new StreamReader(dsPath))
+                dataLine = line.Trim('\t', ' ');
+
+                if (dataLine == END && atTargetLine)
+                    return;
+
+
+                if (position > _position)
                 {
-                    int position = 0;
+                    atTargetLine = true;
 
-                    while (true)
+                    if (dataLine != STRINGNULL)
                     {
-                        line = fileReader.ReadLine();
-
-                        if (line == STRINGNULL && atTargetLine)
-                            return;
-
-
-                        if (position > _position)
-                        {
-                            atTargetLine = true;
-
-                            if (line != STRINGNULL)
-                            {
-                                string[] data = line.Split('=');
-                                DefinedExpressions.Add(data[0].Replace(WHITESPACE, STRINGNULL), Convert.ToInt32(data[1].Replace(WHITESPACE, STRINGNULL)));
-                            }
-                        }
-
-                        position++;
+                        string[] data = dataLine.Split('=');
+                        DefinedExpressions.Add(data[0].Replace(WHITESPACE, STRINGNULL), Convert.ToInt32(data[1].Replace(WHITESPACE, STRINGNULL)));
                     }
                 }
+
+                position++;
             }
+
         }
 
         /// <summary>
@@ -543,44 +508,33 @@ namespace DSL.Parser
         {
             string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-            string line = null;
+            string dataLine = null;
 
             bool atTargetLine = false;
 
-            if (File.Exists(dsPath))
+            int position = 0;
+
+            foreach (string line in Compiler.CompiledData)
             {
-                using (StreamReader fileReader = new StreamReader(dsPath))
+                dataLine = line.Trim('\t', ' ');
+
+                if (line == STRINGNULL && atTargetLine)
+                    return;
+
+                if (position > _position)
                 {
-                    int position = 0;
+                    atTargetLine = true;
 
-                    while (true)
+                    if (dataLine != STRINGNULL)
                     {
-                        line = fileReader.ReadLine();
-
-                        if (atTargetLine)
-                        {
-                            if (line == STRINGNULL)
-                                return;
-                        }
-
-
-                        if (position > _position)
-                        {
-                            atTargetLine = true;
-
-                            if (line != STRINGNULL)
-                            {
-                                string[] data = line.Split('=');
-                                DefinedPoses.Add(data[0].Replace(WHITESPACE, STRINGNULL), Convert.ToInt32(data[1].Replace(WHITESPACE, STRINGNULL)));
-                            }
-
-                        }
-
-                        position++;
+                        string[] data = dataLine.Split('=');
+                        DefinedPoses.Add(data[0].Replace(WHITESPACE, STRINGNULL), Convert.ToInt32(data[1].Replace(WHITESPACE, STRINGNULL)));
                     }
 
-
                 }
+
+                position++;
+
             }
         }
 
@@ -638,65 +592,59 @@ namespace DSL.Parser
         {
             string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-            string line = null;
-
+            string dataLine = null;
+            int position = 0;
             bool atTargetLine = false;
 
-            if (File.Exists(dsPath))
+
+            foreach (string line in Compiler.CompiledData)
             {
-                using (StreamReader fileReader = new StreamReader(dsPath))
+                dataLine = line.Trim('\t', ' ');
+
+                if (dataLine == STRINGNULL && atTargetLine)
+                    return;
+
+                if (position > _position)
                 {
-                    int position = 0;
+                    atTargetLine = true;
 
-                    while (true)
+                    if (dataLine != STRINGNULL)
                     {
-                        line = fileReader.ReadLine();
+                        //We'll have to do a little something different
+                        //We split KEYCODE.I (is or =) PROCEED (just an example)
+                        string[] declaration = null;
 
-                        if (line == STRINGNULL && atTargetLine)
-                            return;
+                        string keyCodeValue = STRINGNULL;
 
-                        if (position > _position)
-                        {
-                            atTargetLine = true;
+                        string functionalityValue = STRINGNULL;
 
-                            if (line != STRINGNULL)
-                            {
-                                //We'll have to do a little something different
-                                //We split KEYCODE.I (is or =) PROCEED (just an example)
-                                string[] declaration = null;
+                        string inputName = STRINGNULL;
 
-                                string keyCodeValue = STRINGNULL;
+                        string inputDescriptiveName = STRINGNULL;
 
-                                string functionalityValue = STRINGNULL;
+                        KeyCode newKeyCode = KeyCode.None;
 
-                                string inputName = STRINGNULL;
+                        bool multiWord = false;
 
-                                string inputDescriptiveName = STRINGNULL;
+                        // Retrieve KeyCodeValue and FunctionalityValue as strings
+                        RetrieveKeyCodeAndFunctionality(dataLine, ref declaration, ref keyCodeValue, ref functionalityValue, ref multiWord);
 
-                                KeyCode newKeyCode = KeyCode.None;
+                        // Parse string keyCodeValue to actual KeyCode enumerator value
+                        newKeyCode = ParseStringToKeyCode(keyCodeValue, newKeyCode, multiWord);
 
-                                bool multiWord = false;
+                        // Retrieve name of input
+                        inputName = GetInputNameFromDSL(dataLine, inputName);
 
-                                // Retrieve KeyCodeValue and FunctionalityValue as strings
-                                RetrieveKeyCodeAndFunctionality(line, ref declaration, ref keyCodeValue, ref functionalityValue, ref multiWord);
+                        // Retrieve descriptive name of input
+                        inputDescriptiveName = GetDescriptiveNameFromDSL(dataLine, inputDescriptiveName);
 
-                                // Parse string keyCodeValue to actual KeyCode enumerator value
-                                newKeyCode = ParseStringToKeyCode(keyCodeValue, newKeyCode, multiWord);
-
-                                // Retrieve name of input
-                                inputName = GetInputNameFromDSL(line, inputName);
-
-                                // Retrieve descriptive name of input
-                                inputDescriptiveName = GetDescriptiveNameFromDSL(line, inputDescriptiveName);
-
-                                // Register new input
-                                InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
-                            }
-                        }
-                        position++;
+                        // Register new input
+                        InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
                     }
                 }
+                position++;
             }
+
         }
 
         /// <summary>
@@ -842,7 +790,7 @@ namespace DSL.Parser
             string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
             //This is used to read a line in the file when iterating
-            string line = null;
+            string dataLine = null;
 
             //Toggle if we are at a desired position in the file.
             bool atTargetLine = false;
@@ -863,106 +811,97 @@ namespace DSL.Parser
              CALL will be a function that displays the prompts options, which is something we'll have to figure out along the way.
              Not only that, but the nesting part of the program; we need to GetPromptByNumber, and SetLineReference to the current lin*/
 
-            //If the defined path exist, interate through the file
-            if (File.Exists(dsPath))
+            int position = 0;
+
+            foreach (string line in Compiler.CompiledData)
             {
-                //Stream reader allows use to read our file without compromising too much performance.
-                using (StreamReader fileReader = new StreamReader(dsPath))
+
+                dataLine = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
+
+                //If we reach the end of the dialogue set, we are done reading it
+                if (dataLine == END && atTargetLine)
                 {
-                    //We use this to keep track of our position in the file
-                    int position = 0;
-
-                    //Loop until end of file
-                    while (true)
-                    {
-                        //Read the current line
-                        line = fileReader.ReadLine();
-
-                        line = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
-
-                        //If we reach the end of the dialogue set, we are done reading it
-                        if (line == END && atTargetLine)
-                        {
-                            return;
-                        }
-
-                        //However, if we are at the DialogueSet tag with a specified number, we collect all the dialogue that starts with "@"
-                        if (position > _position)
-                        {
-                            atTargetLine = true; //Toggle on
-
-                            
-                            //Collecting Dialogue
-                            #region Dialogue Collection
-                            //Make sure that we are specifically encountering "<...>"
-                            if (line != STRINGNULL && Validater.ValidateLineEndOperartor(line))
-                            {
-                                //Validate the use of a character
-                                line = Validater.ValidateCharacterUsage(line, position);
-
-                                #region CALL PROMPT
-                                if (Validater.ValidateCallFunction(line, out int continuation))
-                                {
-                                    //Get the entire call mehtod "CALL --- ---"
-                                    string[] data = ExtractCallFrom(continuation, line);
-
-                                    //Get what you are calling, and the value
-                                    string callingTarget = data[1];
-
-                                    //Check for any of these keywords
-                                    foreach (string keyword in Keywords)
-                                    {
-
-                                        //If you are calling to show the options from a prompt
-                                        if (callingTarget == GetKeyWord("PROMPT"))
-                                        {
-                                            //Get what prompt number it is, and disply choices
-                                            //We expect only 1 value, which is a number;
-                                            int promptNumber = Convert.ToInt32(data[2]);
-
-                                            //Get the prompt being called
-                                            Prompt targetPrompt = GetDefinedPrompt(promptNumber);
-
-                                            PromptStack.Push(targetPrompt);
-
-                                            //TODO: Enhance the syling portion of DSL, especially for choices.
-                                            //TODO: When prompt is called, have it search for OUT.
-                                            //OUT will find either @, or if it can't find any, dialogue set ends
-
-                                            //We'll find all Option blocks after the call.
-                                            FindOptionCases(targetPrompt);
-                                            break;
-                                        }
-
-                                    }
-                                }
-
-                                #endregion
-                                DialogueSystem.Dialogue.Add(line);
-
-                                if (latestPrompt != null)
-                                {
-                                    //This would be the next avaliable dialogue for the prompt in the stack
-                                    latestPrompt.SetDialogueReference(line);
-                                    latestPrompt.FindDialoguePosition();
-
-                                    latestPrompt = null;
-                                }
-                            }
-                            #endregion
-
-                            //If an OUT is sceen
-                            #region PROMPT OUT CALL
-                            if (line == GetKeyWord("OUT"))
-                            {
-                                //Get the prompt from the stack, and find the next dialogue avaliable
-                                latestPrompt = PromptStack.Pop();
-                            }
-                            #endregion
-                        }
-                        position++;
-                    }
+                    return;
                 }
+
+                //However, if we are at the DialogueSet tag with a specified number, we collect all the dialogue that starts with "@"
+                if (position > _position)
+                {
+                    atTargetLine = true; //Toggle on
+
+
+                    //Collecting Dialogue
+                    #region Dialogue Collection
+                    //Make sure that we are specifically encountering "<...>"
+                    if (dataLine != STRINGNULL && Validater.ValidateLineEndOperartor(dataLine))
+                    {
+                        //Validate the use of a character
+                        dataLine = Validater.ValidateCharacterUsage(dataLine, position);
+
+                        #region CALL PROMPT
+                        if (Validater.ValidateCallFunction(dataLine, out int continuation))
+                        {
+                            //Get the entire call mehtod "CALL --- ---"
+                            string[] data = ExtractCallFrom(continuation, dataLine);
+
+                            //Get what you are calling, and the value
+                            string callingTarget = data[1];
+
+                            //Check for any of these keywords
+                            foreach (string keyword in Keywords)
+                            {
+
+                                //If you are calling to show the options from a prompt
+                                if (callingTarget == GetKeyWord("PROMPT"))
+                                {
+                                    //Get what prompt number it is, and disply choices
+                                    //We expect only 1 value, which is a number;
+                                    int promptNumber = Convert.ToInt32(data[2]);
+
+                                    //Get the prompt being called
+                                    Prompt targetPrompt = GetDefinedPrompt(promptNumber);
+
+                                    targetPrompt.SetCallingLine(position + 1);
+
+                                    PromptStack.Push(targetPrompt);
+
+                                    //TODO: Enhance the syling portion of DSL, especially for choices.
+                                    //TODO: When prompt is called, have it search for OUT.
+                                    //OUT will find either @, or if it can't find any, dialogue set ends
+
+
+
+                                    break;
+                                }
+
+                            }
+                        }
+                        Dialogue newDialogue = new Dialogue(dataLine);
+                        #endregion
+                        DialogueSystem.DialogueList.Add(newDialogue);
+
+                        if (latestPrompt != null)
+                        {
+                            //This would be the next avaliable dialogue for the prompt in the stack
+                            latestPrompt.SetDialogueReference(dataLine);
+                            latestPrompt.FindDialoguePosition();
+
+                            latestPrompt = null;
+                        }
+                    }
+                    #endregion
+
+                    //If an OUT is sceen
+                    #region PROMPT OUT CALL
+                    if (line == GetKeyWord("OUT"))
+                    {
+                        //Get the prompt from the stack, and find the next dialogue avaliable
+                        latestPrompt = PromptStack.Pop();
+                    }
+                    #endregion
+                }
+                position++;
+
             }
         }
 
@@ -994,150 +933,56 @@ namespace DSL.Parser
 
             string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
-            string line = null;
+            string dataLine = null;
 
             bool atTargetLine = false;
 
             int position = 0;
 
+            Option newOption = null;
+
             try
             {
-                //We'll be needing a list of Options for this one
-
-                if (File.Exists(dsPath))
+                foreach (string line in Compiler.CompiledData)
                 {
-                    //We now create a new prompt, but check if the number of OPTIONS doesn't exceed CAPACITY
-                    Option newOption = null;
 
-                    using (StreamReader fileReader = new StreamReader(dsPath))
+                    dataLine = line.Trim('\t', ' ');
+
+                    if (dataLine == END && atTargetLine)
                     {
-                        while (true)
+                        if (Prompt.ValidateCapacity(_capacity, _options.Count))
+                            return;
+                        else throw new ExceedsCapacityException("The number of options in Prompt " + _number + " exceeds its capacity of " + _capacity + ": Line " + position);
+                    }
+
+                    if (position > _position)
+                    {
+                        atTargetLine = true;
+
+                        //If OPTION is defined before the numerical representation
+                        if (Has(dataLine, GetKeyWord("OPTION")))
                         {
-                            line = fileReader.ReadLine();
+                            //We have reached the point where we can add our new options for creating a prompt
+                            //Options are shown as OPTION 1 >> Do a thing.
+                            string[] optionData = dataLine.Replace(Keywords[18], STRINGNULL).Split('>');
 
-                            line = line.Trim('\t', ' ');
+                            int optionID = Convert.ToInt32(optionData[0].Replace(WHITESPACE, STRINGNULL));
 
-                            if (line == END && atTargetLine)
-                            {
-                                if (Prompt.ValidateCapacity(_capacity, _options.Count))
-                                    return;
-                                else throw new ExceedsCapacityException("The number of options in Prompt " + _number + " exceeds its capacity of " + _capacity + ": Line " + position);
-                            }
+                            string optionContent = optionData[2].Trim(WHITESPACE.ToCharArray());
 
-                            if (position > _position)
-                            {
-                                atTargetLine = true;
+                            newOption = new Option(optionID, optionContent);
 
-                                //If OPTION is defined before the numerical representation
-                                if (Has(line, GetKeyWord("OPTION")))
-                                {
-                                    //We have reached the point where we can add our new options for creating a prompt
-                                    //Options are shown as OPTION 1 >> Do a thing.
-                                    string[] optionData = line.Replace(Keywords[18], STRINGNULL).Split('>');
-
-                                    int optionID = Convert.ToInt32(optionData[0].Replace(WHITESPACE, STRINGNULL));
-
-                                    string optionContent = optionData[2].Trim(WHITESPACE.ToCharArray());
-
-                                    newOption = new Option(optionID, optionContent);
-
-                                    //Create a new option, and add it to our options list
-                                    _options.Add(newOption);
-                                }
-                            }
-
-                            position++;
+                            //Create a new option, and add it to our options list
+                            _options.Add(newOption);
                         }
                     }
+
+                    position++;
+
                 }
             }
             catch (ExceedsCapacityException e) { Debug.LogError(e.Message); }
             _options = null;
-        }
-
-        public static void FindOptionCases(Prompt _prompt)
-        {
-            try
-            {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string line = null;
-
-                int position = 0;
-
-                bool foundCaseOption = false;
-
-                if (File.Exists(dsPath))
-                {
-                    using (StreamReader fileReader = new StreamReader(dsPath))
-                    {
-                        while (true)
-                        {
-                            line = fileReader.ReadLine();
-
-                            line = line.Trim('\t', ' ');
-
-                            if (line == END && foundCaseOption)
-                                return;
-
-
-
-                            if (Has(line, GetKeyWord("CASE") + WHITESPACE + GetKeyWord("OPTION")))
-                            {
-                                foundCaseOption = true;
-
-                                //We're at an option case
-                                //We want to change the reference position for each of these found cases
-                                //So if those options are picked, we change the LineIndex of the DialogueSystem
-
-                                string[] data = line.Replace(":", STRINGNULL).Split(' ');
-                                int optionID = Convert.ToInt32(data[2]);
-
-                                //We iterate through our prompt option, and assign the position where the first ocurring @ is.
-                                foreach (Option option in _prompt.Options)
-                                {
-                                    if (optionID == option.ID)
-                                        AssignReferenceToOption(option, (position + 1), ref line);
-
-                                }
-                            }
-                            position++;
-                        }
-                    }
-                }
-                Debug.LogError("File specified doesn't exist. Try creating one in StreamingAssets folder.");
-            }
-            catch { }
-        }
-
-        public static void AssignReferenceToOption(Option _option, int _position, ref string _line)
-        {
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-            int position = 0;
-
-            using (StreamReader fileReader = new StreamReader(dsPath))
-            {
-                while (true)
-                {
-                    _line = fileReader.ReadLine();
-
-                    _line = _line.Trim('\t', ' ');
-
-                    if (position >= _position && Has(_line, Tokens[0]))
-                    {
-                        //If the line has @
-                        //I want to use the 
-                       
-                        _line = Validater.ValidateCharacterUsage(_line, position);
-                        _option.SetDialogueReference(_line);
-                        Debug.Log(_option.DialogueReference);
-                        return;
-                    }
-
-                    position++;
-                }
-            }
         }
 
         /// <summary>

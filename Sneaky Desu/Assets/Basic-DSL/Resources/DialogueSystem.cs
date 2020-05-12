@@ -69,7 +69,7 @@ namespace DSL
         public static float TextSpeed { get; private set; }
 
         //Dialogue that is collected after reading file.
-        public static List<string> Dialogue = new List<string>();
+        public static List<Dialogue> DialogueList = new List<Dialogue>();
 
         //If dialouge is currently running
         public static bool RunningDialogue { get; private set; } = false;
@@ -164,10 +164,10 @@ namespace DSL
         void Update()
         {
             //If [HALT] command ends, continue to exclude any tags that may be parsered
-            if (!OnDelay && Dialogue.Count != 0)
+            if (!OnDelay && DialogueList.Count != 0)
             {
-                ExcludeAllFunctionTags(Dialogue[(int)LineIndex]);
-                ExcludeAllStyleTags(Dialogue[(int)LineIndex]);
+                ExcludeAllFunctionTags(DialogueList[(int)LineIndex].Content);
+                ExcludeAllStyleTags(DialogueList[(int)LineIndex].Content);
             }
         }
 
@@ -201,7 +201,7 @@ namespace DSL
                     var text = Styler.GetText().text;
 
                     //If we haven't reached the end of the dialogue set, get the next line avaliable
-                    if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
+                    if (LineIndex < DialogueList.Count) text = DialogueList[(int)LineIndex].Content;
 
                     //This is our "type writer" effect for our dialogue system.
                     //We'll go through each character one.
@@ -211,7 +211,7 @@ namespace DSL
                         try
                         {
                             //This helps guide us to taking apart the tags in the string.
-                            if (LineIndex < Dialogue.Count) text = Dialogue[(int)LineIndex];
+                            if (LineIndex < DialogueList.Count) text = DialogueList[(int)LineIndex].Content;
 
                             //We'll update the TMP text
                             Styler.GetText().text = text.Substring(0, (int)CursorPosition);
@@ -341,7 +341,7 @@ namespace DSL
 
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -353,7 +353,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                Dialogue[(int)LineIndex] = _line;
+                                DialogueList[(int)LineIndex].AddContent(_line);
 
                                 ShiftCursorPosition(-1);
 
@@ -393,7 +393,7 @@ namespace DSL
 
                             endTagPos = Array.IndexOf(stringRange.ToCharArray(), letter);
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -407,7 +407,7 @@ namespace DSL
 
                                     ShiftCursorPosition(value.Length);
 
-                                    Dialogue[(int)LineIndex] = _line;
+                                    DialogueList[(int)LineIndex].AddContent(_line);
                                 }
                             }
                             return SUCCESSFUL;
@@ -457,7 +457,7 @@ namespace DSL
 
                                     ShiftCursorPosition(value.Length);
 
-                                    Dialogue[(int)LineIndex] = _line;
+                                    DialogueList[(int)LineIndex].AddContent(_line);
 
                                 }
                                 return SUCCESSFUL;
@@ -502,7 +502,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -518,7 +518,7 @@ namespace DSL
 
                                     _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                    Dialogue[(int)LineIndex] = _line;
+                                    DialogueList[(int)LineIndex].AddContent(_line);
 
                                     return SUCCESSFUL;
 
@@ -558,7 +558,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -569,7 +569,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                Dialogue[(int)LineIndex] = _line;
+                                DialogueList[(int)LineIndex].AddContent(_line);
 
                                 return Validater.ValidateExpressionsAndChange(value, ref notFlaged);
                             }
@@ -605,7 +605,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = Dialogue[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -616,7 +616,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                Dialogue[(int)LineIndex] = _line;
+                                DialogueList[(int)LineIndex].AddContent(_line);
 
                                 return Validater.ValidatePosesAndChange(value, ref notFlaged);
                             }
@@ -689,7 +689,7 @@ namespace DSL
         /// <param name="index"></param>
         /// <param name="array"></param>
         /// <returns></returns>
-        static bool InBounds(int index, List<string> array) => (index >= reset) && (index < array.Count);
+        static bool InBounds(int index, List<Dialogue> array) => (index >= reset) && (index < array.Count);
 
         /// <summary>
         /// The coroutine for waiting for a certain amount of milliseconds
@@ -749,7 +749,7 @@ namespace DSL
         /// </summary>
         static void TryNext()
         {
-            if (LineIndex < Dialogue.Count)
+            if (LineIndex < DialogueList.Count)
             {
                 CursorPosition = reset;
                 Proceed();
@@ -933,7 +933,7 @@ namespace DSL
 
             Styler.DisableDialogueBox();
 
-            Dialogue.Clear();
+            DialogueList.Clear();
 
             Instance.StopAllCoroutines();
 
@@ -955,7 +955,7 @@ namespace DSL
         /// </summary>
         public static void Proceed()
         {
-            if (LineIndex < Dialogue.Count - 1 && IS_TYPE_IN() == true)
+            if (LineIndex < DialogueList.Count - 1 && IS_TYPE_IN() == true)
             {
                 SET_TYPE_IN_VALUE(false);
 
@@ -965,7 +965,7 @@ namespace DSL
 
                 CursorPosition = reset;
                 //We'll parse the next dialogue that is ready to be displayed
-                Dialogue[(int)LineIndex] = DialogueSystemParser.ParseLine(Dialogue[(int)LineIndex]);
+                DialogueList[(int)LineIndex].AddContent(DialogueSystemParser.ParseLine(DialogueList[(int)LineIndex].Content));
             }
             else
                 End();
@@ -1040,17 +1040,17 @@ namespace DSL
             }
 
             //Check if we are not passed a index value
-            if (InBounds((int)LineIndex, Dialogue) && IS_TYPE_IN() == false)
+            if (InBounds((int)LineIndex, DialogueList) && IS_TYPE_IN() == false)
             {
                 //If there is no character or "???" operator, we suspect it to just have "@ ", thus we'll remove it.
                 //We will also remove the marker for the end of sentence
-                Dialogue[(int)LineIndex] = Dialogue[(int)LineIndex].Replace("@ ", "").Replace("<< ", "");
+                DialogueList[(int)LineIndex].AddContent(DialogueList[(int)LineIndex].Content.Replace("@ ", "").Replace("<< ", ""));
 
                 //We'll say that we want to run the dialogue
                 RunningDialogue = true;
 
                 //We'll parse the very first dialogue that is ready to be displayed
-                Dialogue[(int)LineIndex] = DialogueSystemParser.ParseLine(Dialogue[(int)LineIndex]);
+                DialogueList[(int)LineIndex].AddContent(DialogueSystemParser.ParseLine(DialogueList[(int)LineIndex].Content));
 
                 //Start the Printing Cycle
                 Instance.StartCoroutine(PrintCycle());
