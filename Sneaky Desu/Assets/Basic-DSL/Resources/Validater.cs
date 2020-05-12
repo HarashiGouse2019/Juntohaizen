@@ -2,7 +2,7 @@
 using UnityEngine;
 using PARSER = DSL.Parser.DialogueSystemParser;
 
-namespace DSL
+namespace DSL.Core
 {
     public class Validater
     {
@@ -18,10 +18,10 @@ namespace DSL
         {
             #region Character Validation
             //We should have a list of defined characters with the DefinedCharacters() function. This is used to validate that that character exists
-            if (PARSER.DefinedCharacters.Count != 0)
+            if (Compiler.DefinedCharacters.Count != 0)
             {
                 //We iterate through our DefinedCharacters
-                foreach (string character in (PARSER.DefinedCharacters))
+                foreach (string character in (Compiler.DefinedCharacters))
                 {
                     string name = STRINGNULL;
 
@@ -31,34 +31,34 @@ namespace DSL
                         name = _targetLine.Substring(1, character.Length) + ":";
 
                         //If this character exist in the list of characters defined, we do some string manipulation
-                        if ((PARSER.Has(name, character)))
+                        if ((Compiler.Has(name, character)))
                         {
                             //For names with _ scores replacing as spaces
                             name = name.Replace(UNDERSCORE, WHITESPACE);
 
                             //Insert the name that's been defined using the Insert command
-                            _targetLine = _targetLine.Replace(PARSER.Tokens[0], STRINGNULL).Replace(PARSER.Tokens[3] + character, "[INSERT::\"" + name + "\"]");
+                            _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + character, "[INSERT::\"" + name + "\"]");
 
 
                             break;
                         }
 
                         //If it has ???, a predefined token that a character's name is not known, we insert it.
-                        else if (PARSER.Has(name.Substring(0, PARSER.Tokens[4].Length), PARSER.Tokens[4]))
+                        else if (Compiler.Has(name.Substring(0, Compiler.Tokens[4].Length), Compiler.Tokens[4]))
                         {
-                            _targetLine = _targetLine.Replace(PARSER.Tokens[0], STRINGNULL).Replace(PARSER.Tokens[3] + PARSER.Tokens[4], "[INSERT::\"" + PARSER.Tokens[4] + ":" + "\"]");
+                            _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + Compiler.Tokens[4], "[INSERT::\"" + Compiler.Tokens[4] + ":" + "\"]");
                             break;
                         }
 
                         //If there's no character or no ??? token, this means the narrator is speaking.
-                        else if (PARSER.Has(name.Substring(0, WHITESPACE.Length), WHITESPACE))
+                        else if (Compiler.Has(name.Substring(0, WHITESPACE.Length), WHITESPACE))
                         {
-                            _targetLine = _targetLine.Replace(PARSER.Tokens[0], STRINGNULL).Replace(PARSER.Tokens[3] + WHITESPACE, STRINGNULL);
+                            _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + WHITESPACE, STRINGNULL);
                             break;
                         }
 
                         //Then we really check if our defined character exist. If we down, we throw an exception, and end the dialogue reading process.
-                        else if (!PARSER.DefinedCharacters.Exists(x => PARSER.Has(x, _targetLine.Substring(1, _targetLine.IndexOf(WHITESPACE) - 1))))
+                        else if (!Compiler.DefinedCharacters.Exists(x => Compiler.Has(x, _targetLine.Substring(1, _targetLine.IndexOf(WHITESPACE) - 1))))
                         {
                             string unidentifiedName = _targetLine.Substring(1, _targetLine.IndexOf(WHITESPACE) - 1);
                             throw new UnknownCharacterDefinedException("Unknown character definition at line " + (_linePosition + 1) + ". Did you define \"" + unidentifiedName + "\" under <CHARACTERS>?");
@@ -69,7 +69,7 @@ namespace DSL
                 }
             }
             else
-                _targetLine = _targetLine.Replace(PARSER.Tokens[0], STRINGNULL).Replace(PARSER.Tokens[3] + WHITESPACE, STRINGNULL);
+                _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + WHITESPACE, STRINGNULL);
             #endregion
 
             return _targetLine;
@@ -86,21 +86,21 @@ namespace DSL
             //Check if a key matches
             string data = STRINGNULL;
 
-            if (PARSER.DefinedExpressions.ContainsKey(value))
+            if (Compiler.DefinedExpressions.ContainsKey(value))
             {
                 if (value.GetType() == typeof(string))
                 {
-                    data = DialogueSystem.FindKeyAndConvertToString(value, PARSER.DefinedExpressions);
+                    data = DialogueSystem.FindKeyAndConvertToString(value, Compiler.DefinedExpressions);
                     _notFlag = false;
                 }
             }
 
-            else if (PARSER.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
+            else if (Compiler.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
             {
                 if (Convert.ToInt32(value).GetType() == typeof(int))
                 {
 
-                    data = DialogueSystem.FindValueAndConvertToString(Convert.ToInt32(value), PARSER.DefinedExpressions);
+                    data = DialogueSystem.FindValueAndConvertToString(Convert.ToInt32(value), Compiler.DefinedExpressions);
 
                     _notFlag = false;
                 }
@@ -139,21 +139,21 @@ namespace DSL
             //Check if a key matches
             string data = STRINGNULL;
 
-            if (PARSER.DefinedExpressions.ContainsKey(value))
+            if (Compiler.DefinedExpressions.ContainsKey(value))
             {
                 if (value.GetType() == typeof(string))
                 {
-                    data = DialogueSystem.FindKeyAndConvertToString(value, PARSER.DefinedPoses);
+                    data = DialogueSystem.FindKeyAndConvertToString(value, Compiler.DefinedPoses);
                     _notFlag = false;
                 }
             }
 
-            else if (PARSER.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
+            else if (Compiler.DefinedExpressions.ContainsValue(Convert.ToInt32(value)))
             {
                 if (Convert.ToInt32(value).GetType() == typeof(int))
                 {
 
-                    data = DialogueSystem.FindValueAndConvertToString(Convert.ToInt32(value), PARSER.DefinedPoses);
+                    data = DialogueSystem.FindValueAndConvertToString(Convert.ToInt32(value), Compiler.DefinedPoses);
 
                     _notFlag = false;
                 }
@@ -186,7 +186,7 @@ namespace DSL
         public static bool ValidateLineEndOperartor(string _targetLine)
         {
             //The operator "<<"
-            string stopOperator = PARSER.Tokens[0];
+            string stopOperator = Compiler.Tokens[0];
 
             string stringScanningRange = null;
             
@@ -205,7 +205,7 @@ namespace DSL
         public static bool ValidateCallFunction(string _targetLine, out int _continuation)
         {
             //The operator "<<"
-            string callMethod = PARSER.GetKeyWord("CALL");
+            string callMethod = Compiler.GetKeyWord("CALL");
 
             string stringScanningRange = null;
 

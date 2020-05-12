@@ -11,6 +11,7 @@ using DSL.Parser;
 using DSL.Behaviour;
 using DSL.Styling;
 using DSL.InputManagement;
+using DSL.Core;
 using DSL.PromptOptionCase;
 
 namespace DSL
@@ -151,7 +152,7 @@ namespace DSL
 
             //We what to define all values in the .dsl
             //That includes the characters, the scenes, the expressions, poses, sounds, music, etc.
-            DialogueSystemParser.DefineValues();
+            new Compiler(GET_DIALOGUE_SCRIPTING_FILE());
         }
 
         // Start is called before the first frame update
@@ -347,7 +348,7 @@ namespace DSL
                             {
 
                                 //<sp=3>
-                                int speed = Convert.ToInt32(tag.Split(DialogueSystemParser.Delimiters)[1].Split('=')[1]);
+                                int speed = Convert.ToInt32(tag.Split(Compiler.Delimiters)[1].Split('=')[1]);
 
                                 SpeedValue = (TextSpeedValue)speed;
 
@@ -399,7 +400,7 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string actionWord = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
+                                    string actionWord = tag.Trim(Compiler.Delimiters[0], Compiler.Delimiters[1]).Split('=')[1];
 
                                     value = "*" + actionWord + "*";
 
@@ -451,7 +452,7 @@ namespace DSL
                             {
                                 if (OnDelay == false)
                                 {
-                                    string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
+                                    string value = tag.Trim(Compiler.Delimiters[0], Compiler.Delimiters[1]).Split('=')[1];
 
                                     _line = ReplaceFirst(_line, tag, value);
 
@@ -510,7 +511,7 @@ namespace DSL
                                 {
                                     /*Now we do a substring from the current position to 4 digits.*/
 
-                                    int value = Convert.ToInt32(tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1]);
+                                    int value = Convert.ToInt32(tag.Trim(Compiler.Delimiters[0], Compiler.Delimiters[1]).Split('=')[1]);
 
                                     int millsecs = Convert.ToInt32(value);
 
@@ -565,7 +566,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
+                                string value = tag.Trim(Compiler.Delimiters[0], Compiler.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
@@ -612,7 +613,7 @@ namespace DSL
                                 /*The system will now take this information, from 0 to the current position
                                  and split it down even further, taking all the information.*/
 
-                                string value = tag.Trim(DialogueSystemParser.Delimiters[0], DialogueSystemParser.Delimiters[1]).Split('=')[1];
+                                string value = tag.Trim(Compiler.Delimiters[0], Compiler.Delimiters[1]).Split('=')[1];
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
@@ -767,71 +768,69 @@ namespace DSL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>")]
         static void CollectDialogue(int _dialogueSet, string dsPath, out string line, ref int position, ref bool foundDialogueSet)
         {
-            //We'll begin to loop through the file
-            using (StreamReader fileReader = new StreamReader(dsPath))
+
+            foreach (string data in Compiler.CompiledData)
             {
-                while (true)
+                //We'll read a line
+                line = data;
+
+                //If the line is null...
+                if (line == null)
                 {
-                    //We'll read a line
-                    line = fileReader.ReadLine();
+                    //Return the dialogue set if we've found it.
+                    if (foundDialogueSet)
+                        return;
 
-                    //If the line is null...
-                    if (line == null)
+                    //Otherwise, we did not find the dialogue set.
+                    else
                     {
-                        //Return the dialogue set if we've found it.
-                        if (foundDialogueSet)
-                            return;
-
-                        //Otherwise, we did not find the dialogue set.
-                        else
-                        {
-                            Debug.Log("Dialogue Set " + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture) + " does not exist. Try adding it to the .dsl referenced.");
-                            return;
-                        }
-                    }
-
-                    //If we find anything resemblins <DIALOGUE_SET_###, we found the dialogue set.
-                    if (line.Contains("DIALOGUE_SET_" + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture)))
-                    {
-                        string[] expressions = null;
-                        try { expressions = line.Replace(" ", "").Split(DialogueSystemParser.Delimiters); } catch { }
-
-                        //Found the dialogue set
-                        foundDialogueSet = true;
-
-                        //Set the set to this one
-                        DialogueSet = _dialogueSet;
-
-                        //We'll also check additional information, like to auto play dialouge, or don't disturb the player
-                        //By using a foreach loop, those who are using DSL can have the expressions in any order, and still
-                        //have it read by the system.
-                        try
-                        {
-                            foreach (string expression in expressions)
-                            {
-                                //If the dialogue is automatic
-                                if (expression == DialogueSystemParser.Keywords[10]) IsAutomatic = true;
-
-                                //if the dialogue can't disturb the player
-                                if (expression == DialogueSystemParser.Keywords[11]) IsDontDisturb = true;
-
-                            }
-                        }
-                        catch { /*This just means there was nothing that we could of done.*/}
-
-                        //Now, we then collect all the dialogue knowing how this is going to execute.
-
-                        //This is the function that'll need some modifying.
-                        //We need to make sure it can get all @, no matter how many tabs there are.
-                        DialogueSystemParser.GetDialogue(position);
-
+                        Debug.Log("Dialogue Set " + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture) + " does not exist. Try adding it to the .dsl referenced.");
                         return;
                     }
-
-                    //Move to the next line in file
-                    position++;
                 }
+
+                //If we find anything resemblins <DIALOGUE_SET_###, we found the dialogue set.
+                if (line.Contains("DIALOGUE_SET_" + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture)))
+                {
+                    string[] expressions = null;
+                    try { expressions = line.Replace(" ", "").Split(Compiler.Delimiters); } catch { }
+
+                    //Found the dialogue set
+                    foundDialogueSet = true;
+
+                    //Set the set to this one
+                    DialogueSet = _dialogueSet;
+
+                    //We'll also check additional information, like to auto play dialouge, or don't disturb the player
+                    //By using a foreach loop, those who are using DSL can have the expressions in any order, and still
+                    //have it read by the system.
+                    try
+                    {
+                        foreach (string expression in expressions)
+                        {
+                            //If the dialogue is automatic
+                            if (expression == Compiler.Keywords[10]) IsAutomatic = true;
+
+                            //if the dialogue can't disturb the player
+                            if (expression == Compiler.Keywords[11]) IsDontDisturb = true;
+
+                        }
+                    }
+                    catch { /*This just means there was nothing that we could of done.*/}
+
+                    //Now, we then collect all the dialogue knowing how this is going to execute.
+
+                    //This is the function that'll need some modifying.
+                    //We need to make sure it can get all @, no matter how many tabs there are.
+                    Compiler.GetDialogue(position);
+
+                    return;
+                }
+
+                //Move to the next line in file
+                position++; 
             }
+            line = null;
         }
 
         /// <summary>
