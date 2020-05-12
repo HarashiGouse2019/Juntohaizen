@@ -150,8 +150,7 @@ namespace DSL
             else
                 Destroy(gameObject);
 
-            //We what to define all values in the .dsl
-            //That includes the characters, the scenes, the expressions, poses, sounds, music, etc.
+            //Run the compiler
             new Compiler(GET_DIALOGUE_SCRIPTING_FILE());
         }
 
@@ -717,13 +716,16 @@ namespace DSL
         /// <returns></returns>
         public static DialogueSystemSpriteChanger Find_Sprite_Changer(string _name)
         {
-            foreach (DialogueSystemSpriteChanger instance in DialogueSystemSpriteChangers)
+            try
             {
-                if (_name == instance.Get_Prefix())
-                    return instance;
+                foreach (DialogueSystemSpriteChanger instance in DialogueSystemSpriteChangers)
+                {
+                    if (_name == instance.Get_Prefix())
+                        return instance;
+                }
+                throw new UnknownSpriteChangerException("The SpriteChange by the name of " + _name + " doesn't exist.");
             }
-
-            Debug.LogError("The SpriteChange by the name of " + _name + " doesn't exist.");
+            catch (UnknownSpriteChangerException unknownSpriteChangerException) { Debug.LogException(unknownSpriteChangerException); }
             return null;
         }
 

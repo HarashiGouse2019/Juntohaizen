@@ -38,8 +38,6 @@ namespace DSL.Core
 
                             //Insert the name that's been defined using the Insert command
                             _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + character, "[INSERT::\"" + name + "\"]");
-
-
                             break;
                         }
 
@@ -64,7 +62,7 @@ namespace DSL.Core
                             throw new UnknownCharacterDefinedException("Unknown character definition at line " + (_linePosition + 1) + ". Did you define \"" + unidentifiedName + "\" under <CHARACTERS>?");
                         }
                     }
-                    catch { }
+                    catch (UnknownCharacterDefinedException unknownCharacterException) { Debug.LogException(unknownCharacterException); break; }
 
                 }
             }

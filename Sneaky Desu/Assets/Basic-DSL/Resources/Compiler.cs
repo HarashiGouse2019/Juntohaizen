@@ -9,7 +9,7 @@ using DSL.InputManagement;
 
 namespace DSL.Core
 {
-    public class Compiler : MonoBehaviour
+    public class Compiler
     {
         public static List<string> CompiledData { get; private set; } = new List<string>();
 
@@ -116,13 +116,16 @@ namespace DSL.Core
                     CompiledData.Add(line);
                 }
             }
-            DefineValues();
+
+            //Initialize all Data
+            try { Init(); }
+            catch { }
         }
 
         /// <summary>
         /// Defines all values that are typed explicitly in the .dsl file
         /// </summary>
-        public static void DefineValues()
+        public static void Init()
         {
             //Go into file, and check for all defined values
             //Define the expressions used
@@ -520,7 +523,7 @@ namespace DSL.Core
             {
                 dataLine = line.Trim('\t', ' ');
 
-                if (dataLine == STRINGNULL && atTargetLine)
+                if (dataLine == END && atTargetLine)
                     return;
 
                 if (position > _position)
@@ -545,20 +548,32 @@ namespace DSL.Core
 
                         bool multiWord = false;
 
-                        // Retrieve KeyCodeValue and FunctionalityValue as strings
-                        RetrieveKeyCodeAndFunctionality(dataLine, ref declaration, ref keyCodeValue, ref functionalityValue, ref multiWord);
+                        try
+                        {
 
-                        // Parse string keyCodeValue to actual KeyCode enumerator value
-                        newKeyCode = ParseStringToKeyCode(keyCodeValue, newKeyCode, multiWord);
+                            // Retrieve KeyCodeValue and FunctionalityValue as strings
+                            RetrieveKeyCodeAndFunctionality(dataLine, ref declaration, ref keyCodeValue, ref functionalityValue, ref multiWord);
 
-                        // Retrieve name of input
-                        inputName = GetInputNameFromDSL(dataLine, inputName);
+                            // Parse string keyCodeValue to actual KeyCode enumerator value
+                            newKeyCode = ParseStringToKeyCode(keyCodeValue, newKeyCode, multiWord, out bool result);
 
-                        // Retrieve descriptive name of input
-                        inputDescriptiveName = GetDescriptiveNameFromDSL(dataLine, inputDescriptiveName);
+                            // Retrieve name of input
+                            inputName = GetInputNameFromDSL(dataLine, inputName);
 
-                        // Register new input
-                        InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
+                            // Retrieve descriptive name of input
+                            inputDescriptiveName = GetDescriptiveNameFromDSL(dataLine, inputDescriptiveName);
+
+                            // Register new input
+                            InvokeRegistrationToInputManager(keyCodeValue, functionalityValue, inputName, inputDescriptiveName, newKeyCode);
+
+                            //Validate
+                            if (!result) throw new CantRegisterException("Input registration failed on line " + (position + 1));
+                        }
+                        catch (CantRegisterException cantRegisterException)
+                        {
+                            Debug.LogException(cantRegisterException);
+                            break;
+                        }
                     }
                 }
                 position++;
@@ -644,7 +659,7 @@ namespace DSL.Core
         /// <param name="newKeyCode"></param>
         /// <param name="multiWord"></param>
         /// <returns></returns>
-        private static KeyCode ParseStringToKeyCode(string keyCodeValue, KeyCode newKeyCode, bool multiWord)
+        private static KeyCode ParseStringToKeyCode(string keyCodeValue, KeyCode newKeyCode, bool multiWord, out bool _result)
         {
             try
             {
@@ -652,8 +667,9 @@ namespace DSL.Core
                 //If it's something like LeftArrow, it has already
                 //set to the right format, so don't Capticalize
                 newKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), multiWord ? keyCodeValue : Capitalize(keyCodeValue));
+                _result = SUCCESSFUL;
             }
-            catch { }
+            catch { _result = FAILURE; }
 
             return newKeyCode;
         }
@@ -739,15 +755,12 @@ namespace DSL.Core
 
                 //If we reach the end of the dialogue set, we are done reading it
                 if (dataLine == END && atTargetLine)
-                {
                     return;
-                }
 
                 //However, if we are at the DialogueSet tag with a specified number, we collect all the dialogue that starts with "@"
                 if (position > _position)
                 {
                     atTargetLine = true; //Toggle on
-
 
                     //Collecting Dialogue
                     #region Dialogue Collection
@@ -820,7 +833,6 @@ namespace DSL.Core
                     #endregion
                 }
                 position++;
-
             }
         }
 
@@ -918,7 +930,6 @@ namespace DSL.Core
 
             return null;
         }
-
 
         /// <summary>
         /// Captitalize the first letter of a word

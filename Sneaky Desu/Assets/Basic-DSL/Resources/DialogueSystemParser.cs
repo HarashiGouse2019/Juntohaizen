@@ -12,8 +12,6 @@ namespace DSL.Parser
 {
     public class DialogueSystemParser
     {
-        
-
         public static int skipValue = 0;
 
         public static object returnedValue = null;

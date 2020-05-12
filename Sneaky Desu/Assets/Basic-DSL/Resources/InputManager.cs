@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.Assertions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -175,14 +176,7 @@ namespace DSL.InputManagement
         /// <param name="functionality"></param>
         public static void Register(string _name, string _descriptiveName, KeyCode _newKeyCodeEntry, Functionality functionality)
         {
-            try
-            {
-                Keys.Add(new Input(_name, _descriptiveName, _newKeyCodeEntry, functionality));
-            }
-            catch (CantRegisterException e)
-            {
-                Debug.LogError(e.Message);
-            }
+            Keys.Add(new Input(_name, _descriptiveName, _newKeyCodeEntry, functionality));
         }
     }
 }
