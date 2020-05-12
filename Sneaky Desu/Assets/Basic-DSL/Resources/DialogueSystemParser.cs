@@ -847,6 +847,8 @@ namespace DSL.Parser
             //Toggle if we are at a desired position in the file.
             bool atTargetLine = false;
 
+            Prompt latestPrompt = null;
+
             /*Before we step into the field of hardship, we gotta set a couple of things:
              First of all, sinze there's only going to be 1 Call Prompt thing after a dialogue,
              you'll look for that specific one.
@@ -880,19 +882,25 @@ namespace DSL.Parser
 
                         //If we reach the end of the dialogue set, we are done reading it
                         if (line == END && atTargetLine)
+                        {
                             return;
+                        }
 
                         //However, if we are at the DialogueSet tag with a specified number, we collect all the dialogue that starts with "@"
                         if (position > _position)
                         {
                             atTargetLine = true; //Toggle on
 
+                            
+                            //Collecting Dialogue
+                            #region Dialogue Collection
                             //Make sure that we are specifically encountering "<...>"
                             if (line != STRINGNULL && Validater.ValidateLineEndOperartor(line))
                             {
                                 //Validate the use of a character
                                 line = Validater.ValidateCharacterUsage(line, position);
 
+                                #region CALL PROMPT
                                 if (Validater.ValidateCallFunction(line, out int continuation))
                                 {
                                     //Get the entire call mehtod "CALL --- ---"
@@ -904,7 +912,7 @@ namespace DSL.Parser
                                     //Check for any of these keywords
                                     foreach (string keyword in Keywords)
                                     {
-                                        #region CALL PROMPT
+
                                         //If you are calling to show the options from a prompt
                                         if (callingTarget == GetKeyWord("PROMPT"))
                                         {
@@ -915,23 +923,42 @@ namespace DSL.Parser
                                             //Get the prompt being called
                                             Prompt targetPrompt = GetDefinedPrompt(promptNumber);
 
+                                            PromptStack.Push(targetPrompt);
+
                                             //TODO: Enhance the syling portion of DSL, especially for choices.
                                             //TODO: When prompt is called, have it search for OUT.
                                             //OUT will find either @, or if it can't find any, dialogue set ends
 
                                             //We'll find all Option blocks after the call.
                                             FindOptionCases(targetPrompt);
-
-                                            Debug.Log(targetPrompt.Number);
-
                                             break;
                                         }
-                                        #endregion
+
                                     }
                                 }
 
+                                #endregion
                                 DialogueSystem.Dialogue.Add(line);
+
+                                if (latestPrompt != null)
+                                {
+                                    //This would be the next avaliable dialogue for the prompt in the stack
+                                    latestPrompt.SetDialogueReference(line);
+                                    latestPrompt.FindDialoguePosition();
+
+                                    latestPrompt = null;
+                                }
                             }
+                            #endregion
+
+                            //If an OUT is sceen
+                            #region PROMPT OUT CALL
+                            if (line == GetKeyWord("OUT"))
+                            {
+                                //Get the prompt from the stack, and find the next dialogue avaliable
+                                latestPrompt = PromptStack.Pop();
+                            }
+                            #endregion
                         }
                         position++;
                     }
@@ -1066,8 +1093,6 @@ namespace DSL.Parser
                                 string[] data = line.Replace(":", STRINGNULL).Split(' ');
                                 int optionID = Convert.ToInt32(data[2]);
 
-                                Debug.Log(optionID + " starts at line " + (position + 1));
-
                                 //We iterate through our prompt option, and assign the position where the first ocurring @ is.
                                 foreach (Option option in _prompt.Options)
                                 {
@@ -1099,14 +1124,14 @@ namespace DSL.Parser
 
                     _line = _line.Trim('\t', ' ');
 
-                    if (position > _position && Has(_line, Tokens[0]))
+                    if (position >= _position && Has(_line, Tokens[0]))
                     {
                         //If the line has @
                         //I want to use the 
-
-
-                        _option.SetJumpValue(position);
-                        Debug.Log(_line);
+                       
+                        _line = Validater.ValidateCharacterUsage(_line, position);
+                        _option.SetDialogueReference(_line);
+                        Debug.Log(_option.DialogueReference);
                         return;
                     }
 

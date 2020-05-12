@@ -4,7 +4,7 @@ using DSL.Styling;
 
 namespace DSL.PromptOptionCase
 {
-    public class Prompt
+    public class Prompt : IDialogueReference
     {
         public List<Option> Options { get; private set; } = new List<Option>();
 
@@ -12,9 +12,13 @@ namespace DSL.PromptOptionCase
 
         public int Capacity { get; private set; }
 
-        public int DialogueIndexReference { get; private set; }
+        public string DialogueReference { get; set; }
+
+        public int gotoLine { get; set; }
 
         public const int DEFAULT_CAPACITY = 4;
+
+        public int CallingLevel { get; private set; }
 
         /// <summary>
         /// Create a new prompt
@@ -49,10 +53,35 @@ namespace DSL.PromptOptionCase
         /// <summary>
         /// Show the options for this Prompt
         /// </summary>
-        public void Show()
+        public void Show(ButtonStylerFormat _format = ButtonStylerFormat.LIST)
         {
             //Generate this prompts objects.
-            Styler.GenerateOptions(ButtonStylerFormat.LIST, Options.ToArray());
+            Styler.GenerateOptions(_format, Options.ToArray());
         }
+
+        /// <summary>
+        /// Set the calling level of the prompt being called in dialogue
+        /// </summary>
+        /// <param name="_value"></param>
+        public void SetCallingLevel(int _value) => CallingLevel = _value;
+
+        public void SetDialogueReference(string _dialogue) => DialogueReference = _dialogue;
+
+        public int FindDialoguePosition() {
+            int position = 0;
+
+            foreach(string dialogue in DialogueSystem.Dialogue)
+            {
+                if (DialogueReference.Contains(dialogue))
+                {
+                    gotoLine = position;
+                    return position;
+                }
+                    position++;
+            }
+
+            return -1;
+        }
+
     }
 }

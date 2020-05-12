@@ -60,25 +60,59 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< CALL PROMPT 0
 		CASE OPTION 1:
 			@??? What da faq?<<
-		BREAK
+			@??? Is this the kind of answer I get?<<
+			@??? That freaking sucks.<<
+			@??? That was the worst thing I have ever tasted...<<
+			@??? And now... my day is ruined.<<
+		OPTION BREAK
 		
 		CASE OPTION 2:
 			@??? Ha wa ha wa ha wa!!!<<
+			@??? Feast your eyes upon your gracefulness.<<
+			@??? Is that even an actual thing?<<
+			@??? No! I mean yes!!! It is an actual thing!<<
+			@??? Did you... Just lie?<<
+			@??? How could a kind like me lie in such a way?<< CALL PROMPT 4
+				CASE OPTION 1:
+					@??? I knew it.<<
+					@??? I wouldn't kill him because of it though...<<
+					@??? Unless if it were to harm the people.<<
+					@??? Then I would not hesistate to have the man executed.<<
+					@??? But of course... He doesn't need to know that.<<
+					
+					@??? Know about what?<<
+					
+					@??? Nothing sir! Just thinking to myself.<<
+					
+					@??? Well quite thinking, and start NOTICING ME SENPAI!!!!<<
+				OPTION BREAK
+				
+				CASE OPTION 2:
+					@??? You would never lie my good sir!<<
+					
+					@??? Excellent!!!<<
+				OPTION BREAK
+			OUT
+			@??? Now, with that out of the way, let's enjoy ourselves.<<
+			@??? It'd be a shame if our whole entire day was ruined.<<
+			@??? Now that would be absurd!<<
+			@??? Absolutely absurd!<<
+			@??? Yes!!<<
 		BREAK
 		
 		CASE OPTION 3:
 			@??? WARIO!!!!<<
-		BREAK
+		OPTION BREAK
 		
 		CASE OPTION 4:
 			@??? WALUIGI!!!<<
-		BREAK
+		OPTION BREAK
 	OUT
 	
 	@??? [ACTION::"GASPS"][HALT::500] I see that you are doing well.[HALT::750]<< CALL PROMPT 1
 		CASE OPTION 1:
 			@??? What da faq?<<
-		BREAK
+		OPTION BREAK
 	OUT
 	
 	@Austin Yeah! [HALT::1000]More or less.[HALT::750]<<
@@ -88,9 +122,24 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 				CASE OPTION 1:
 					@??? DO DA FAQ WHAT?!?!?!<<
 					@??? DO DA FAQ WHAT?!?!?!<<
-				BREAK
+				OPTION BREAK
+				@??? Crazy huh?!<<
+				@??? CRAZY HUH?!<<
+				@??? PUT THEM HANDS UP!<<
+				@??? PUT THEM PAWS UP!!!<<
 			OUT
-		BREAK
+			@??? Alrighty then. Sorry that I got so salty.<<
+			@??? It won't happen again my dude.<<
+			@??? Hello internet, and welcome to best trends.<<
+			@??? Today, we'll be going over...<<
+			@??? 5 Fortnite Youtubers... who've sworn...<<
+		OPTION BREAK
+		
+		CASE OPTION 2:
+			@??? NANI DA DAQ???<<
+			@??? I have no idea what that's even suppose to mean.<<
+			@??? But I guess that is okay. I don't need anyone's help after all of this.<<
+		OPTION BREAK
 	OUT
 
 	@??? Oh...[HALT::2000]<<
@@ -139,7 +188,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 			@Austin [HALT::3000]You know what...<<
 			@Austin I think I will make myself home...<<
 			@Austin Alright! Let's get the bread!!!<<
-		BREAK
+		OPTION BREAK
 	
 		###With the stylers for Basic-DSL, it must be about to display these options as buttons###
 		CASE OPTION 2: ###If second option was selected...###
@@ -149,7 +198,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 			@Austin Game thing...<<
 			@Austin What even is this game suppose to be about??<<
 			@Austin I guess we'll never know for sure.<<
-		BREAK
+		OPTION BREAK
 	
 		###When you click on an option, the Dialogue System should have an object that it must access
 		like for instance, a Prompt class and a Options class to keep track of what prompt associates with
@@ -158,7 +207,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 			@Austin What does the national anthem have to do with this?<<
 			@Austin Whatever. I think I know what I gotta do from here on.<<
 			@Austin And that is... to be Austin.<<
-		BREAK
+		OPTION BREAK
 	
 		###It gets even more complicated with nested options/prompts.
 		Basic-DSL must understand how to do that.###
@@ -170,12 +219,12 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 					@Austin That's not very nice. Seriously man...<<
 					@Austin I really need to know what I'm suppose to do.<<
 					@Austin Otherwise... I might just flip out.<< CALL PROMPT 0 | OMIT PARENT OPTION
-				BREAK
+				OPTION BREAK
 		
 				CASE OPTION 2: ###If second option was selected...###
 					@Austin Oh!<<
 					@Austin Well okay... Then what should I do?<< CALL PROMPT 0 | OMIT PARENT OPTION ###This is a Recursive Prompt Call, but when displaying the options, it will grey out the 4th option###
-				BREAK
+				OPTION BREAK
 			OUT
 		BREAK
 	OUT
@@ -217,4 +266,9 @@ keyword "CAPACITY" and setting a number###
 	OPTION 1 >> KYAAA!!!
 	OPTION 2 >> GAAAAAAAA!
 	OPTION 3 >> ...
+<END>
+
+<PROMPT_004 | CAPACITY is 2>
+	OPTION 1 >> He is lying! Kill the man!
+	OPTION 2 >> He is completely innocent!
 <END>

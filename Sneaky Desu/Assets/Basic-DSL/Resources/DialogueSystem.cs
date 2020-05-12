@@ -915,6 +915,12 @@ namespace DSL
         }
 
         /// <summary>
+        /// Jump to an index in the Dialogue List
+        /// </summary>
+        /// <param name="_index"></param>
+        public static void JumpToLineIndex(int _index) => LineIndex = (uint)_index;
+
+        /// <summary>
         /// In the .dsl file, you have reached the end of the Dialgoue Set being read
         /// </summary>
         public static void End()
