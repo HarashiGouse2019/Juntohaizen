@@ -818,8 +818,8 @@ namespace DSL.Core
 
         public static Option GetDefinedOption(int _optionID, Prompt _originPrompt)
         {
-            foreach(Prompt prompt in DefinedPrompts)
-                if (prompt == _originPrompt) foreach(Option option in _originPrompt.Options)
+            foreach (Prompt prompt in DefinedPrompts)
+                if (prompt == _originPrompt) foreach (Option option in _originPrompt.Options)
                         if (option.ID == _optionID) return option;
 
             return null;
@@ -1015,7 +1015,7 @@ namespace DSL.Core
                     {
                         _currentPrompt = null;
                         return FAILURE;
-                    } 
+                    }
                     #endregion
 
                     // If an OUT occurs
@@ -1028,7 +1028,7 @@ namespace DSL.Core
                     }
                     #endregion
 
-                    
+
 
                 }
                 #endregion
@@ -1037,6 +1037,60 @@ namespace DSL.Core
             }
             _currentPrompt = null;
             return FAILURE;
+        }
+
+        public static bool CheckBreak(int _startPosition)
+        {
+            Debug.Log(_startPosition);
+            int position = 0;
+            foreach (string line in CompiledData)
+            {
+                if (position > _startPosition)
+                {
+                    Debug.Log(line);
+
+                    if (line == END)
+                        return false;
+
+                    if (Has(line, GetKeyWord("BREAK")))
+                    {
+                        Debug.Log("BREAK on Line" + position);
+                        return true;
+                    }
+                    
+                }
+
+                position++;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Take the collected dialogue, and find the position in compiled data.
+        /// </summary>
+        /// <param name="_line"></param>
+        /// <returns></returns>
+        public static int ConvertToCompilerIndex(string _line)
+        {
+            int position = 0;
+
+            foreach (string lineData in CompiledData)
+            {
+                string line = lineData.Trim('\t', ' ');
+
+                if (Validater.ValidateLineEndOperartor(line, out string _moddedLine) && line != STRINGNULL)
+                {
+                    line = Validater.ValidateCharacterUsage(_moddedLine, position);
+
+                    if (Has(_line, line))
+                        return position;
+                }
+
+                position++;
+            }
+
+            return -1;
         }
     }
 }
