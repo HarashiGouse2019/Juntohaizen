@@ -70,8 +70,17 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 
 	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0
 		CASE OPTION 1:
-			@??? This is just an example of what I can do.<<
+			@??? This is just an example of what I can do.<< $ CALL PROMPT 1
+				CASE OPTION 1:
+					@??? And Another 1?<< $ CALL PROMPT 2
+						CASE OPTION 1:
+							@??? Okay.<<
+						BREAK
+					OUT
+				BREAK
+			OUT
 		BREAK
+		
 		CASE OPTION 2:
 			@??? This is just another example of what I can do.<<
 			@??? That's literally the same thing that you did a momenet ago.<<

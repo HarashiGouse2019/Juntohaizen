@@ -100,7 +100,7 @@ namespace DSL.PromptOptionCase
             int position = 0;
             foreach (Option option in Options)
             {
-                if (_optionID == option.ID) { IsChoiceMade = true; return position; }
+                if (_optionID == option.ID) { IsChoiceMade = true; Debug.Log(option.Content); return position; }
                 position++;
             }
             return -1;

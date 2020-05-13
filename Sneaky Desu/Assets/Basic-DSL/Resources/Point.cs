@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace DSL.Core
+﻿namespace DSL.Core
 {
 	/// <summary>
 	/// Specify a jumping point when certain events occur in the dialogue set.
 	/// </summary>
-	public class Point : MonoBehaviour
+	public class Point
 	{
 		public int Location { get; private set; }
 

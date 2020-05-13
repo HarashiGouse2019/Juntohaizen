@@ -916,7 +916,7 @@ namespace DSL.Core
                 #region CALL PROMPT
                 if (position >= _position && line != STRINGNULL)
                 {
-                    if (Validater.ValidateCallFunction(line, out int continuation) && callMade == false)
+                    if (Validater.ValidateCallFunction(line, out int continuation))
                         try
                         {
                             //Get the entire call mehtod "CALL --- ---"
@@ -929,6 +929,10 @@ namespace DSL.Core
                             foreach (string keyword in Keywords)
                             {
 
+                                //TODO: Have it where you iterate through all prompts,
+                                //But you find out which one is the parent prompt, so it doesn't hit into 
+                                //One of the options.
+
                                 //If you are calling to show the options from a prompt
                                 if (callingTarget == GetKeyWord("PROMPT"))
                                 {
@@ -940,8 +944,6 @@ namespace DSL.Core
                                     Prompt targetPrompt = GetDefinedPrompt(promptNumber);
 
                                     targetPrompt.SetCallingLine(position + 1);
-
-                                    Debug.Log("FOUND Prompt " + promptNumber);
 
                                     PromptStack.Push(targetPrompt);
 
@@ -967,14 +969,17 @@ namespace DSL.Core
 
                         moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
 
-                        Debug.Log(moddedLine);
-
                         latestPrompt.SetDialogueReference(moddedLine);
                         latestPrompt.FindDialoguePosition();
 
                         _currentPrompt = latestPrompt;
 
-                        Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.FindDialoguePosition());
+                        Debug.Log(latestPrompt.DialogueReference);
+
+                        Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.gotoLine);
+
+                        JumpPoints.Add(new Point(latestPrompt.gotoLine));
+
                         latestPrompt = null;
                         return SUCCESSFUL;
                     }
@@ -985,8 +990,6 @@ namespace DSL.Core
                     {
                         //Get the prompt from the stack, and find the next dialogue avaliable
                         latestPrompt = PromptStack.Pop();
-
-                        Debug.Log("PROMPT OUT for Prompt " + latestPrompt.Number + " at Line " + (position+1));
                     }
                     #endregion
                 }
