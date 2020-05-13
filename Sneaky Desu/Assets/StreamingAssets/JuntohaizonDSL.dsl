@@ -85,6 +85,7 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 							@??? Hmmmm ke...[HALT::2000]<<
 						BREAK
 					OUT
+					@??? You sure you know you're shit? I have no idea.[HALT::2000]<<
 				BREAK
 			OUT
 		BREAK
