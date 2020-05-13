@@ -73,16 +73,16 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 			@??? You picked Option 2 of Prompt 0.[HALT::2000]<<
 			@??? You don't belong here my good sir.<< $ CALL PROMPT 1
 				CASE OPTION 1:
-					@??? HA!!!<<
+					@??? HA!!![HALT::2000]<<
 				BREAK
 				CASE OPTION 2:
-					@??? HA AGAIN!!!<< $ CALL PROMPT 2
+					@??? HA AGAIN!!![HALT::2000]<< $ CALL PROMPT 2
 						CASE OPTION 1:
-							@??? BIATCH!!!<<
-							@??? Freaking die you weeb!!!<<
+							@??? BIATCH!!![HALT::2000]<<
+							@??? Freaking die you weeb!!![HALT::2000]<<
 						BREAK
 						CASE OPTION 2:
-							@??? Hmmmm ke...<<
+							@??? Hmmmm ke...[HALT::2000]<<
 						BREAK
 					OUT
 				BREAK
@@ -90,8 +90,8 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 		BREAK
 		
 		CASE OPTION 3:
-			@??? Get out of town man!!!!<<
-			@??? Huh.... Okay...<<
+			@??? Get out of town man!!!![HALT::2000]<<
+			@??? Huh.... Okay...[HALT::2000]<<
 		BREAK
 	OUT
 	

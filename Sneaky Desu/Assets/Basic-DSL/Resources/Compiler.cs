@@ -923,7 +923,9 @@ namespace DSL.Core
         /// <param name="_currentLine"></param>
         public static bool CheckPromptCall(int _position, out Prompt _currentPrompt)
         {
-            Prompt latestPrompt = null;
+            Prompt parentPrompt = null;
+
+            Prompt calledPrompt = null;
 
             int position = 0;
 
@@ -931,29 +933,38 @@ namespace DSL.Core
 
             //This will help specify the scope of each prompt
             bool dontSearch = false;
+
             foreach (string dataLine in CompiledData)
             {
                 string line = dataLine.Trim('\t', ' ');
 
-                if (latestPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
-                {
-
-                    moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
-
-                    latestPrompt.SetDialogueReference(moddedLine);
-                    latestPrompt.FindDialoguePosition();
-
-                    _currentPrompt = latestPrompt;
-
-                    JumpPoints.Add(new Point(latestPrompt.gotoLine));
-
-                    latestPrompt = null;
-                    return SUCCESSFUL;
-                }
-
                 #region CALL PROMPT
-                if (position >= _position && line != STRINGNULL)
+                if (position >= _position)
                 {
+                    #region CASE OPTION occurs
+                    if (Has(line, GetKeyWord("CASE") + " " + GetKeyWord("OPTION")))
+                        dontSearch = true;
+                    #endregion
+
+                    if (parentPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
+                    {
+
+                        moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
+
+                        calledPrompt.SetDialogueReference(moddedLine);
+                        calledPrompt.FindDialoguePosition();
+
+                        _currentPrompt = calledPrompt;
+
+                        JumpPoints.Add(new Point(parentPrompt.gotoLine));
+
+                        Debug.Log("Prompt " + calledPrompt.Number + " will goto line " + calledPrompt.gotoLine);
+
+                        parentPrompt = null;
+                        return SUCCESSFUL;
+                    }
+
+                    #region Validate Call Prompt
                     if (Validater.ValidateCallFunction(line, out int continuation))
                         try
                         {
@@ -981,6 +992,10 @@ namespace DSL.Core
                                     //Get the prompt being called
                                     Prompt targetPrompt = GetDefinedPrompt(promptNumber);
 
+                                    Debug.Log("Prompt " + targetPrompt.Number);
+
+                                    if (calledPrompt == null) calledPrompt = targetPrompt;
+
                                     targetPrompt.SetCallingLine(position);
 
                                     PromptStack.Push(targetPrompt);
@@ -1000,24 +1015,23 @@ namespace DSL.Core
                     {
                         _currentPrompt = null;
                         return FAILURE;
-                    }
+                    } 
+                    #endregion
 
                     // If an OUT occurs
                     #region PROMPT OUT CALL
-                    if (line == GetKeyWord("OUT") && PromptStack.StackedPrompts.Count != 0)
+                    if (Has(line, GetKeyWord("OUT")) && PromptStack.StackedPrompts.Count != 0)
                     {
                         //Get the prompt from the stack, and find the next dialogue avaliable
-                        latestPrompt = PromptStack.Pop();
+                        parentPrompt = PromptStack.Pop();
                         dontSearch = false;
                     }
                     #endregion
 
-                    if (line == GetKeyWord("CASE") + " " + GetKeyWord("OPTION"))
-                        dontSearch = true;
+                    
 
                 }
                 #endregion
-
 
                 position++;
             }

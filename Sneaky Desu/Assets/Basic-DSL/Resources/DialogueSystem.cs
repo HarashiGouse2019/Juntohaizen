@@ -950,14 +950,14 @@ namespace DSL
                 return true;
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.D))
             {
                 _result = currentPrompt.SelectOption(3);
                 Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
                 return true;
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.F))
             {
                 _result = currentPrompt.SelectOption(4);
                 Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
