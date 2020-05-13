@@ -909,9 +909,33 @@ namespace DSL.Core
 
             bool callMade = false;
 
+            //This will help specify the scope of each prompt
+            bool dontSearch = false;
             foreach (string dataLine in CompiledData)
             {
                 string line = dataLine.Trim('\t', ' ');
+
+                Debug.Log(dontSearch ? "YES!" : "NO!");
+
+                if (latestPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
+                {
+
+                    moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
+
+                    latestPrompt.SetDialogueReference(moddedLine);
+                    latestPrompt.FindDialoguePosition();
+
+                    _currentPrompt = latestPrompt;
+
+                    Debug.Log(latestPrompt.DialogueReference);
+
+                    Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.gotoLine);
+
+                    JumpPoints.Add(new Point(latestPrompt.gotoLine));
+
+                    latestPrompt = null;
+                    return SUCCESSFUL;
+                }
 
                 #region CALL PROMPT
                 if (position >= _position && line != STRINGNULL)
@@ -964,34 +988,19 @@ namespace DSL.Core
                         return FAILURE;
                     }
 
-                    if (latestPrompt != null && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
-                    {
-
-                        moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
-
-                        latestPrompt.SetDialogueReference(moddedLine);
-                        latestPrompt.FindDialoguePosition();
-
-                        _currentPrompt = latestPrompt;
-
-                        Debug.Log(latestPrompt.DialogueReference);
-
-                        Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.gotoLine);
-
-                        JumpPoints.Add(new Point(latestPrompt.gotoLine));
-
-                        latestPrompt = null;
-                        return SUCCESSFUL;
-                    }
-
-                    // If an OUT is sceen
+                    // If an OUT occurs
                     #region PROMPT OUT CALL
                     if (line == GetKeyWord("OUT") && PromptStack.StackedPrompts.Count != 0)
                     {
                         //Get the prompt from the stack, and find the next dialogue avaliable
                         latestPrompt = PromptStack.Pop();
+                        dontSearch = false;
                     }
                     #endregion
+
+                    if (line == GetKeyWord("CASE") + " " + GetKeyWord("OPTION"))
+                        dontSearch = true;
+
                 }
                 #endregion
 

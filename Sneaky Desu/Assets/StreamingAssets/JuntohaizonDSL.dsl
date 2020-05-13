@@ -36,10 +36,6 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 PlayerPawn is player ###I have reference to all of PlayerPawn's properties and methods###
 <END>
 
-<VOICES>
-
-<END>
-
 ###--------------------------------------------------------------------------------------------------------------------###
 
 ###
@@ -68,23 +64,60 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 <DIALOGUE_SET_002 | AUTO > 
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 
-	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0
+	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0																				
 		CASE OPTION 1:
-			@??? This is just an example of what I can do.<< $ CALL PROMPT 1
-				CASE OPTION 1:
-					@??? And Another 1?<< $ CALL PROMPT 2
-						CASE OPTION 1:
-							@??? Okay.<<
-						BREAK
-					OUT
-				BREAK
-			OUT
+			@??? What da faq?<<
+			@??? Is this the kind of answer I get?<<
+			@??? That freaking sucks.<<
+			@??? That was the worst thing I have ever tasted...<<
+			@??? And now... my day is ruined.<<
 		BREAK
 		
 		CASE OPTION 2:
-			@??? This is just another example of what I can do.<<
-			@??? That's literally the same thing that you did a momenet ago.<<
-			@??? Oops! Sorry!<<
+			@??? Ha wa ha wa ha wa!!!<<
+			@??? Feast your eyes upon your gracefulness.<<
+			@??? Is that even an actual thing?<<
+			@??? No! I mean yes!!! It is an actual thing!<<
+			@??? Did you... Just lie?<<
+			@??? How could a kind like me lie in such a way?<< $ CALL PROMPT 4
+				CASE OPTION 1:
+					@??? I knew it.<<
+					@??? I wouldn't kill him because of it though...<<
+					@??? Unless if it were to harm the people.<<
+					@??? Then I would not hesistate to have the man executed.<<
+					@??? But of course... He doesn't need to know that.<<
+					
+					@??? Know about what?<<
+					
+					@??? Nothing sir! Just thinking to myself.<<
+					
+					@??? Well quite thinking, and start NOTICING ME SENPAI!!!!<<
+				BREAK
+				
+				CASE OPTION 2:
+					@??? You would never lie my good sir!<<
+					
+					@??? Excellent!!!<<
+				BREAK
+				
+				CASE OPTION 3:
+					@??? RANDOM STUFF<<
+				BREAK
+			OUT
+			
+			@??? Now, with that out of the way, let's enjoy ourselves.<<
+			@??? It'd be a shame if our whole entire day was ruined.<<
+			@??? Now that would be absurd!<<
+			@??? Absolutely absurd!<<
+			@??? Yes!!<<
+		BREAK
+		
+		CASE OPTION 3:
+			@??? WARIO!!!!<<
+		BREAK
+		
+		CASE OPTION 4:
+			@??? WALUIGI!!!<<
 		BREAK
 	OUT
 	
@@ -111,29 +144,7 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 <DIALOGUE_SET_003 | AUTO > 
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 	
-	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0
-	
-																									###We need a way to guide DSL to go to one of the options that the player
-																										has picked. One way that we can actually active this is after a decision has
-																										been made from the player, call a function that jumps to that option for 
-																										the propmt.
-																										
-																										Now here's how we can avoid the nested prompts being called; If you see
-																										anything that isn't 0, have a toggle while jumping to the option to EXCLUDE
-																										those options, until an out has been detected.
-																										
-																										If I find any issues with this method, we can always have a stack that takes in 
-																										the many nested things that we should include. If the stack hits 0, it means that we
-																										are back to the original level that we're at. This will assure that we get to the
-																										option position that we want to go to. 
-																										
-																										What's good about this is the dialogue is already collected when we run the dialogue, meaning that
-																										now we can set a DialogueReference, and jump to that value accordingly.
-																										
-																										Once we hit a brake, we'll jump based on the Prompt that's been throw at us, which we'll keep information of that
-																										too.
-																										
-																										But I think that's how we should go about doing this.###
+	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0																				
 		CASE OPTION 1:
 			@??? What da faq?<<
 			@??? Is this the kind of answer I get?<<
@@ -199,7 +210,7 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 	@Austin Yeah! [HALT::1000]More or less.[HALT::750]<<
 	@Austin Gotta go clear out this area. [HALT::750]It's absoulutely dreadful over here.[HALT::750]<< $ CALL PROMPT 2
 		CASE OPTION 1:
-			@??? What da faq?<< $CALL PROMPT 3
+			@??? What da faq?<< $ CALL PROMPT 3
 				CASE OPTION 1:
 					@??? DO DA FAQ WHAT?!?!?!<<
 					@??? DO DA FAQ WHAT?!?!?!<<
