@@ -113,7 +113,7 @@ namespace DSL.Behaviour
         /// </summary>
         private void ValidateLayer()
         {
-            Component[] objDSLBehaviour = GetComponents(typeof(DSLBehaviour));
+            Component[] objDSLBehaviour = GetComponents<DSLBehaviour>();
 
             foreach (Component component in objDSLBehaviour) {
                 if (gameObject.layer != LayerMask.NameToLayer(DialogueSystem.DSL_LAYER) && component.GetType().IsSubclassOf(typeof(DSLBehaviour)))
@@ -122,7 +122,6 @@ namespace DSL.Behaviour
                     throw new InvalidLayerException("This object is running DSLBehaviour, but it's set to the wrong layer.");
                 }
             }
-
         }
 
         /// <summary>

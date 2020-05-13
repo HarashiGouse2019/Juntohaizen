@@ -21,9 +21,9 @@
         {
             int position = 0;
 
-            foreach (Dialogue dialogue in DialogueSystem.DialogueList)
+            foreach (string dialogue in DialogueSystem.DialogueData)
             {
-                if (DialogueReference.Contains(dialogue.Content))
+                if (DialogueReference.Contains(dialogue))
                 {
                     gotoLine = position;
                     return position;

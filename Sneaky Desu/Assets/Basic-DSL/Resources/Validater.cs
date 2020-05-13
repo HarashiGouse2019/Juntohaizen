@@ -70,6 +70,8 @@ namespace DSL.Core
                 _targetLine = _targetLine.Replace(Compiler.Tokens[0], STRINGNULL).Replace(Compiler.Tokens[3] + WHITESPACE, STRINGNULL);
             #endregion
 
+            _targetLine = _targetLine.Replace("<<", STRINGNULL);
+
             return _targetLine;
         }
 
@@ -181,22 +183,25 @@ namespace DSL.Core
             return SUCCESSFUL;
         }
 
-        public static bool ValidateLineEndOperartor(string _targetLine)
+        public static bool ValidateLineEndOperartor(string _targetLine, out string _moddedLine)
         {
             //The operator "<<"
             string stopOperator = Compiler.Tokens[0];
 
-            string stringScanningRange = null;
-            
             for(int pos = 0; pos < _targetLine.Length; pos++)
             {
                 try
                 {
-                    stringScanningRange = _targetLine.Substring(pos, stopOperator.Length);
-                    if (stringScanningRange == stopOperator) return true;
+                    string stringScanningRange = _targetLine.Substring(pos, stopOperator.Length);
+
+                    if (stringScanningRange == stopOperator)
+                    {
+                        _moddedLine = _targetLine.Remove(pos, _targetLine.Length - pos);
+                        return true;
+                    }
                 }catch { }
             }
-
+            _moddedLine = STRINGNULL;
             return false;
         }
 

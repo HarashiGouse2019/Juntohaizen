@@ -20,6 +20,8 @@ namespace DSL.PromptOptionCase
 
         public int CallingLine { get; private set; }
 
+        public bool IsChoiceMade { get; private set; } = false;
+
         /// <summary>
         /// Create a new prompt
         /// </summary>
@@ -61,7 +63,7 @@ namespace DSL.PromptOptionCase
 
         public Option GetOption(int _optionID)
         {
-            foreach(Option option in Options)
+            foreach (Option option in Options)
             {
                 if (_optionID == option.ID) return option;
             }
@@ -76,21 +78,32 @@ namespace DSL.PromptOptionCase
 
         public void SetDialogueReference(string _dialogue) => DialogueReference = _dialogue;
 
-        public int FindDialoguePosition() {
+        public int FindDialoguePosition()
+        {
             int position = 0;
 
-            foreach(Dialogue dialogue in DialogueSystem.DialogueList)
+            foreach (string dialogue in DialogueSystem.DialogueData)
             {
-                if (DialogueReference.Contains(dialogue.Content))
+                if (DialogueReference.Contains(dialogue))
                 {
                     gotoLine = position;
                     return position;
                 }
-                    position++;
+                position++;
             }
 
             return -1;
         }
 
+        public int SelectOption(int _optionID)
+        {
+            int position = 0;
+            foreach (Option option in Options)
+            {
+                if (_optionID == option.ID) { IsChoiceMade = true; return position; }
+                position++;
+            }
+            return -1;
+        }
     }
 }

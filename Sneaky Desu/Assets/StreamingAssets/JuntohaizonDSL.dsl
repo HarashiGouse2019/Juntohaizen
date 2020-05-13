@@ -29,6 +29,17 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 	KEYCODE.RIGHT_ARROW is NAVIGATE_RIGHT | "Right" | "Navigate right"
 <END>
 
+###Roadmap: Add a Object References to the DSLObjectBindings in DSL in order to access it's fields and properties.###
+###Put in the object's name in order to bind to the file. Make sure it's defined in DSLObjectBindings###
+###Also, make sure the object you are referencing derives from DSLBehaviour, and its layer set to DSL.###
+<OBJECT_BINDINGS>
+PlayerPawn is player ###I have reference to all of PlayerPawn's properties and methods###
+<END>
+
+<VOICES>
+
+<END>
+
 ###--------------------------------------------------------------------------------------------------------------------###
 
 ###
@@ -57,7 +68,16 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 <DIALOGUE_SET_002 | AUTO > 
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
 
-	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< 
+	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0
+		CASE OPTION 1:
+			@??? This is just an example of what I can do.<<
+		BREAK
+		CASE OPTION 2:
+			@??? This is just another example of what I can do.<<
+			@??? That's literally the same thing that you did a momenet ago.<<
+			@??? Oops! Sorry!<<
+		BREAK
+	OUT
 	
 	@??? [ACTION::"GASPS"][HALT::500] I see that you are doing well.[HALT::750]<<
 	
@@ -81,8 +101,30 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 ###This is a dialogue set used to improve DSL###
 <DIALOGUE_SET_003 | AUTO > 
 	###The game will proceed to next dialgoue automatically, and player is still allowed to move.###
-
-	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< CALL PROMPT 0
+	
+	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0
+	
+																									###We need a way to guide DSL to go to one of the options that the player
+																										has picked. One way that we can actually active this is after a decision has
+																										been made from the player, call a function that jumps to that option for 
+																										the propmt.
+																										
+																										Now here's how we can avoid the nested prompts being called; If you see
+																										anything that isn't 0, have a toggle while jumping to the option to EXCLUDE
+																										those options, until an out has been detected.
+																										
+																										If I find any issues with this method, we can always have a stack that takes in 
+																										the many nested things that we should include. If the stack hits 0, it means that we
+																										are back to the original level that we're at. This will assure that we get to the
+																										option position that we want to go to. 
+																										
+																										What's good about this is the dialogue is already collected when we run the dialogue, meaning that
+																										now we can set a DialogueReference, and jump to that value accordingly.
+																										
+																										Once we hit a brake, we'll jump based on the Prompt that's been throw at us, which we'll keep information of that
+																										too.
+																										
+																										But I think that's how we should go about doing this.###
 		CASE OPTION 1:
 			@??? What da faq?<<
 			@??? Is this the kind of answer I get?<<
@@ -97,7 +139,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 			@??? Is that even an actual thing?<<
 			@??? No! I mean yes!!! It is an actual thing!<<
 			@??? Did you... Just lie?<<
-			@??? How could a kind like me lie in such a way?<< CALL PROMPT 4
+			@??? How could a kind like me lie in such a way?<< $ CALL PROMPT 4
 				CASE OPTION 1:
 					@??? I knew it.<<
 					@??? I wouldn't kill him because of it though...<<
@@ -122,6 +164,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 					@??? RANDOM STUFF<<
 				BREAK
 			OUT
+			
 			@??? Now, with that out of the way, let's enjoy ourselves.<<
 			@??? It'd be a shame if our whole entire day was ruined.<<
 			@??? Now that would be absurd!<<
@@ -138,16 +181,16 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 		BREAK
 	OUT
 	
-	@??? [ACTION::"GASPS"][HALT::500] I see that you are doing well.[HALT::750]<< CALL PROMPT 1
+	@??? [ACTION::"GASPS"][HALT::500] I see that you are doing well.[HALT::750]<< $ CALL PROMPT 1
 		CASE OPTION 1:
 			@??? What da faq?<<
 		BREAK
 	OUT
 	
 	@Austin Yeah! [HALT::1000]More or less.[HALT::750]<<
-	@Austin Gotta go clear out this area. [HALT::750]It's absoulutely dreadful over here.[HALT::750]<< CALL PROMPT 2
+	@Austin Gotta go clear out this area. [HALT::750]It's absoulutely dreadful over here.[HALT::750]<< $ CALL PROMPT 2
 		CASE OPTION 1:
-			@??? What da faq?<< CALL PROMPT 3
+			@??? What da faq?<< $CALL PROMPT 3
 				CASE OPTION 1:
 					@??? DO DA FAQ WHAT?!?!?!<<
 					@??? DO DA FAQ WHAT?!?!?!<<
@@ -170,7 +213,7 @@ DESCRIPTION: "The basic dialogue that will be seen in the game, Juntohaizen."
 			@??? But I guess that is okay. I don't need anyone's help after all of this.<<
 		BREAK
 	OUT
-
+	
 	@??? Oh...[HALT::2000]<<
 	@??? You should [INSERT::"uh..."] [HALT::1000]probably see how [BOLD]Mary[BOLD::END] is doing.[HALT::2000]<<
 

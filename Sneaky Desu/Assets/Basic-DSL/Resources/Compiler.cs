@@ -9,7 +9,7 @@ using DSL.InputManagement;
 
 namespace DSL.Core
 {
-    public class Compiler
+    public static class Compiler
     {
         public static List<string> CompiledData { get; private set; } = new List<string>();
 
@@ -22,6 +22,8 @@ namespace DSL.Core
         public static List<string> DefinedCharacters { get; private set; } = new List<string>();
 
         public static List<Prompt> DefinedPrompts { get; private set; } = new List<Prompt>();
+
+        public static List<Point> JumpPoints { get; private set; } = new List<Point>();
 
         //Using this to bitmask data for reading if using Input Manager, and if using DSL's or Unity's
         public static bool Is_Using_Input_Manager = false;
@@ -80,7 +82,9 @@ namespace DSL.Core
                 "PARENT",
                 "CASE",
                 "BREAK",
-                "OUT"
+                "OUT",
+                "SET",
+                "THIS"
                 };
 
         public static string[] ValidTextSpeeds { get; } = {
@@ -98,21 +102,17 @@ namespace DSL.Core
         const string STRINGNULL = "";
         const string WHITESPACE = " ";
         const string UNDERSCORE = "_";
-        const string TAB = "\t";
-
         const string END = "<END>";
 
-        public Compiler(string _source)
+        static Compiler()
         {
-            string source = Application.streamingAssetsPath + @"/" + _source;
-
-            string line = null;
+            string source = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
 
             using (StreamReader fileReader = new StreamReader(source))
             {
                 while (!fileReader.EndOfStream)
                 {
-                    line = fileReader.ReadLine();
+                    string line = fileReader.ReadLine();
                     CompiledData.Add(line);
                 }
             }
@@ -151,18 +151,14 @@ namespace DSL.Core
         {
             try
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string dataLine = null;
-
                 int position = 0;
 
                 bool foundExpression = false;
 
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
 
-                    dataLine = line.Trim('\t', ' ');
+                    string dataLine = line.Trim('\t', ' ');
 
                     if (dataLine == END && foundExpression)
                         return;
@@ -186,18 +182,13 @@ namespace DSL.Core
         {
             try
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string dataLine = null;
-
                 int position = 0;
 
                 bool foundPose = false;
 
-
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
-                    dataLine = line.Trim('\t', ' ');
+                    string dataLine = line.Trim('\t', ' ');
 
                     if (dataLine == END && foundPose)
                         return;
@@ -222,18 +213,14 @@ namespace DSL.Core
         {
             try
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string dataLine = null;
-
                 int position = 0;
 
                 bool foundCharacter = false;
 
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
 
-                    dataLine = line.Trim('\t', ' ');
+                    string dataLine = line.Trim('\t', ' ');
 
                     if (dataLine == END && foundCharacter)
                         return;
@@ -258,19 +245,15 @@ namespace DSL.Core
         {
             try
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string dataLine = null;
-
                 int position = 0;
 
                 bool foundKeyCode = false;
 
 
 
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
-                    dataLine = line.Trim('\t', ' ');
+                    string dataLine = line.Trim('\t', ' ');
 
                     if (line == END && foundKeyCode)
                         return;
@@ -307,18 +290,14 @@ namespace DSL.Core
         {
             try
             {
-                string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-                string dataLine = null;
-
                 int position = 0;
 
                 bool foundPrompt = false;
 
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
 
-                    dataLine = line.Trim('\t', ' ');
+                    string dataLine = line.Trim('\t', ' ');
 
                     if (dataLine == END && foundPrompt)
                         return;
@@ -390,17 +369,13 @@ namespace DSL.Core
         /// <param name="_position">Where to start collecting data</param>
         static void GetExpressions(int _position)
         {
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-            string dataLine = null;
-
             bool atTargetLine = false;
 
             int position = 0;
 
-            foreach (string line in Compiler.CompiledData)
+            foreach (string line in CompiledData)
             {
-                dataLine = line.Trim('\t', ' ');
+                string dataLine = line.Trim('\t', ' ');
 
                 if (dataLine == END && atTargetLine)
                     return;
@@ -428,17 +403,13 @@ namespace DSL.Core
         /// <param name="_position">Where to start collecting data.</param>
         static void GetPoses(int _position)
         {
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-            string dataLine = null;
-
             bool atTargetLine = false;
 
             int position = 0;
 
             foreach (string line in Compiler.CompiledData)
             {
-                dataLine = line.Trim('\t', ' ');
+                string dataLine = line.Trim('\t', ' ');
 
                 if (line == STRINGNULL && atTargetLine)
                     return;
@@ -466,44 +437,34 @@ namespace DSL.Core
         /// <param name="_position">Where to start collecting data.</param>
         static void GetCharacterNames(int _position)
         {
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-            string line = null;
-
             bool atTargetLine = false;
 
-            if (File.Exists(dsPath))
+            int position = 0;
+
+            foreach (string line in CompiledData)
             {
-                using (StreamReader fileReader = new StreamReader(dsPath))
+
+                string dataLine = line.Trim('\t', ' ');
+
+                if (atTargetLine)
                 {
-                    int position = 0;
-
-                    while (true)
-                    {
-                        line = fileReader.ReadLine();
-
-                        line = line.Trim('\t', ' ');
-
-                        if (atTargetLine)
-                        {
-                            if (line == STRINGNULL)
-                                return;
-                        }
-
-
-                        if (position > _position)
-                        {
-                            atTargetLine = true;
-
-                            if (line != STRINGNULL)
-                                DefinedCharacters.Add(line);
-
-                        }
-
-                        position++;
-                    }
+                    if (dataLine == STRINGNULL)
+                        return;
                 }
+
+
+                if (position > _position)
+                {
+                    atTargetLine = true;
+
+                    if (dataLine != STRINGNULL)
+                        DefinedCharacters.Add(dataLine);
+
+                }
+
+                position++;
             }
+
         }
 
         /// <summary>
@@ -512,16 +473,13 @@ namespace DSL.Core
         /// <param name="_position"></param>
         static void GetKeyCodes(int _position)
         {
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
-
-            string dataLine = null;
             int position = 0;
             bool atTargetLine = false;
 
 
             foreach (string line in Compiler.CompiledData)
             {
-                dataLine = line.Trim('\t', ' ');
+                string dataLine = line.Trim('\t', ' ');
 
                 if (dataLine == END && atTargetLine)
                     return;
@@ -721,37 +679,20 @@ namespace DSL.Core
         /// <param name="_position">Position to start collecting data</param>
         public static void GetDialogue(int _position)
         {
-            //Access the DSL Path
-            string dsPath = Application.streamingAssetsPath + @"/" + DialogueSystem.GET_DIALOGUE_SCRIPTING_FILE();
+            //TODO: For this function only, collect information such as $ and @, $ stating that it's not dialogue-centric, and @ meaning
+            //that this is actual dialogue.
 
-            //This is used to read a line in the file when iterating
-            string dataLine = null;
+            //That way, commands like CALL, and the start of other code can happen through those points
 
             //Toggle if we are at a desired position in the file.
             bool atTargetLine = false;
-
-            Prompt latestPrompt = null;
-
-            /*Before we step into the field of hardship, we gotta set a couple of things:
-             First of all, sinze there's only going to be 1 Call Prompt thing after a dialogue,
-             you'll look for that specific one.
-
-             Next, we split with "<<" and get the 2nd element.
-             The 2nd element should then be "CALL PROMPT 0"
-
-             We go it with the 2nd element and make a new string "promptCall = line.Split('<')[2]
-
-             promptCall will then be splitted into string[] to take in "CALL" "PROMPT" and "0"
-
-             CALL will be a function that displays the prompts options, which is something we'll have to figure out along the way.
-             Not only that, but the nesting part of the program; we need to GetPromptByNumber, and SetLineReference to the current lin*/
 
             int position = 0;
 
             foreach (string line in CompiledData)
             {
 
-                dataLine = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
+                string dataLine = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
 
                 //If we reach the end of the dialogue set, we are done reading it
                 if (dataLine == END && atTargetLine)
@@ -763,74 +704,17 @@ namespace DSL.Core
                     atTargetLine = true; //Toggle on
 
                     //Collecting Dialogue
-                    #region Dialogue Collection
+                    #region Dialogue Collection ("@")
                     //Make sure that we are specifically encountering "<...>"
-                    if (dataLine != STRINGNULL && Validater.ValidateLineEndOperartor(dataLine))
+                    if (dataLine != STRINGNULL && Validater.ValidateLineEndOperartor(dataLine, out dataLine))
                     {
                         //Validate the use of a character
                         dataLine = Validater.ValidateCharacterUsage(dataLine, position);
-
-                        #region CALL PROMPT
-                        if (Validater.ValidateCallFunction(dataLine, out int continuation))
-                        {
-                            //Get the entire call mehtod "CALL --- ---"
-                            string[] data = ExtractCallFrom(continuation, dataLine);
-
-                            //Get what you are calling, and the value
-                            string callingTarget = data[1];
-
-                            //Check for any of these keywords
-                            foreach (string keyword in Keywords)
-                            {
-
-                                //If you are calling to show the options from a prompt
-                                if (callingTarget == GetKeyWord("PROMPT"))
-                                {
-                                    //Get what prompt number it is, and disply choices
-                                    //We expect only 1 value, which is a number;
-                                    int promptNumber = Convert.ToInt32(data[2]);
-
-                                    //Get the prompt being called
-                                    Prompt targetPrompt = GetDefinedPrompt(promptNumber);
-
-                                    targetPrompt.SetCallingLine(position + 1);
-
-                                    PromptStack.Push(targetPrompt);
-
-                                    //TODO: Enhance the syling portion of DSL, especially for choices.
-                                    //TODO: When prompt is called, have it search for OUT.
-                                    //OUT will find either @, or if it can't find any, dialogue set ends
-
-
-
-                                    break;
-                                }
-
-                            }
-                        }
-                        Dialogue newDialogue = new Dialogue(dataLine);
-                        #endregion
-                        DialogueSystem.DialogueList.Add(newDialogue);
-
-                        if (latestPrompt != null)
-                        {
-                            //This would be the next avaliable dialogue for the prompt in the stack
-                            latestPrompt.SetDialogueReference(dataLine);
-                            latestPrompt.FindDialoguePosition();
-
-                            latestPrompt = null;
-                        }
+                        DialogueSystem.DialogueData.Add(dataLine);
+                        DialogueSystem.DialogueReference.Add(position);
                     }
                     #endregion
 
-                    //If an OUT is sceen
-                    #region PROMPT OUT CALL
-                    if (line == GetKeyWord("OUT"))
-                    {
-                        //Get the prompt from the stack, and find the next dialogue avaliable
-                        latestPrompt = PromptStack.Pop();
-                    }
-                    #endregion
                 }
                 position++;
             }
@@ -1010,6 +894,109 @@ namespace DSL.Core
                 try { callMethod = _line.Substring(_position, pos); } catch { };
 
             return callMethod.Split(' ');
+        }
+
+        /// <summary>
+        /// Looks for the marker ($) either if is stated on the line of a dialogue
+        /// or if in between dialogue.
+        /// </summary>
+        /// <param name="_currentLine"></param>
+        public static bool CheckPromptCall(int _position, out Prompt _currentPrompt)
+        {
+            Prompt latestPrompt = null;
+
+            int position = 0;
+
+            bool callMade = false;
+
+            foreach (string dataLine in CompiledData)
+            {
+                string line = dataLine.Trim('\t', ' ');
+
+                #region CALL PROMPT
+                if (position >= _position && line != STRINGNULL)
+                {
+                    if (Validater.ValidateCallFunction(line, out int continuation) && callMade == false)
+                        try
+                        {
+                            //Get the entire call mehtod "CALL --- ---"
+                            string[] data = ExtractCallFrom(continuation, line);
+
+                            //Get what you are calling, and the value
+                            string callingTarget = data[1];
+
+                            //Check for any of these keywords
+                            foreach (string keyword in Keywords)
+                            {
+
+                                //If you are calling to show the options from a prompt
+                                if (callingTarget == GetKeyWord("PROMPT"))
+                                {
+                                    //Get what prompt number it is, and disply choices
+                                    //We expect only 1 value, which is a number;
+                                    int promptNumber = Convert.ToInt32(data[2]);
+
+                                    //Get the prompt being called
+                                    Prompt targetPrompt = GetDefinedPrompt(promptNumber);
+
+                                    targetPrompt.SetCallingLine(position + 1);
+
+                                    Debug.Log("FOUND Prompt " + promptNumber);
+
+                                    PromptStack.Push(targetPrompt);
+
+                                    //TODO: Enhance the syling portion of DSL, especially for choices.
+                                    //TODO: When prompt is called, have it search for OUT.
+                                    //OUT will find either @, or if it can't find any, dialogue set ends
+
+                                    callMade = true;
+
+                                    break;
+                                }
+                            }
+                        }
+                        catch { }
+                    else if (callMade == false)
+                    {
+                        _currentPrompt = null;
+                        return FAILURE;
+                    }
+
+                    if (latestPrompt != null && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
+                    {
+
+                        moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
+
+                        Debug.Log(moddedLine);
+
+                        latestPrompt.SetDialogueReference(moddedLine);
+                        latestPrompt.FindDialoguePosition();
+
+                        _currentPrompt = latestPrompt;
+
+                        Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.FindDialoguePosition());
+                        latestPrompt = null;
+                        return SUCCESSFUL;
+                    }
+
+                    // If an OUT is sceen
+                    #region PROMPT OUT CALL
+                    if (line == GetKeyWord("OUT") && PromptStack.StackedPrompts.Count != 0)
+                    {
+                        //Get the prompt from the stack, and find the next dialogue avaliable
+                        latestPrompt = PromptStack.Pop();
+
+                        Debug.Log("PROMPT OUT for Prompt " + latestPrompt.Number + " at Line " + (position+1));
+                    }
+                    #endregion
+                }
+                #endregion
+
+
+                position++;
+            }
+            _currentPrompt = null;
+            return FAILURE;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -70,7 +71,11 @@ namespace DSL
         public static float TextSpeed { get; private set; }
 
         //Dialogue that is collected after reading file.
-        public static List<Dialogue> DialogueList = new List<Dialogue>();
+        public static List<string> DialogueData = new List<string>();
+        public static List<int> DialogueReference = new List<int>();
+
+        //The queue of actual dialogue. Print cycle will run when the queue is not 0
+        public static Queue<string> DialogueQueue = new Queue<string>();
 
         //If dialouge is currently running
         public static bool RunningDialogue { get; private set; } = false;
@@ -104,6 +109,9 @@ namespace DSL
 
         //Fully dedicated objects
         public static DSLBehaviour[] DedicatedObjects { get; private set; }
+
+        //Check if at a "@'
+        public static bool atDialogueMark = false;
 
         //Reset value
         const int reset = 0;
@@ -149,9 +157,6 @@ namespace DSL
                 MakeIntoSingleton(out Instance);
             else
                 Destroy(gameObject);
-
-            //Run the compiler
-            new Compiler(GET_DIALOGUE_SCRIPTING_FILE());
         }
 
         // Start is called before the first frame update
@@ -164,10 +169,10 @@ namespace DSL
         void Update()
         {
             //If [HALT] command ends, continue to exclude any tags that may be parsered
-            if (!OnDelay && DialogueList.Count != 0)
+            if (!OnDelay && DialogueData.Count != 0)
             {
-                ExcludeAllFunctionTags(DialogueList[(int)LineIndex].Content);
-                ExcludeAllStyleTags(DialogueList[(int)LineIndex].Content);
+                ExcludeAllFunctionTags(DialogueData[(int)LineIndex]);
+                ExcludeAllStyleTags(DialogueData[(int)LineIndex]);
             }
         }
 
@@ -201,7 +206,7 @@ namespace DSL
                     var text = Styler.GetText().text;
 
                     //If we haven't reached the end of the dialogue set, get the next line avaliable
-                    if (LineIndex < DialogueList.Count) text = DialogueList[(int)LineIndex].Content;
+                    if (LineIndex < DialogueData.Count) text = DialogueData[(int)LineIndex];
 
                     //This is our "type writer" effect for our dialogue system.
                     //We'll go through each character one.
@@ -211,7 +216,7 @@ namespace DSL
                         try
                         {
                             //This helps guide us to taking apart the tags in the string.
-                            if (LineIndex < DialogueList.Count) text = DialogueList[(int)LineIndex].Content;
+                            if (LineIndex < DialogueData.Count) text = DialogueData[(int)LineIndex];
 
                             //We'll update the TMP text
                             Styler.GetText().text = text.Substring(0, (int)CursorPosition);
@@ -341,7 +346,7 @@ namespace DSL
 
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueData[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -353,7 +358,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                DialogueList[(int)LineIndex].AddContent(_line);
+                                DialogueData[(int)LineIndex] = _line;
 
                                 ShiftCursorPosition(-1);
 
@@ -393,7 +398,7 @@ namespace DSL
 
                             endTagPos = Array.IndexOf(stringRange.ToCharArray(), letter);
 
-                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueData[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -407,7 +412,7 @@ namespace DSL
 
                                     ShiftCursorPosition(value.Length);
 
-                                    DialogueList[(int)LineIndex].AddContent(_line);
+                                    DialogueData[(int)LineIndex] = _line;
                                 }
                             }
                             return SUCCESSFUL;
@@ -457,7 +462,7 @@ namespace DSL
 
                                     ShiftCursorPosition(value.Length);
 
-                                    DialogueList[(int)LineIndex].AddContent(_line);
+                                    DialogueData[(int)LineIndex] = _line;
 
                                 }
                                 return SUCCESSFUL;
@@ -502,7 +507,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueData[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -518,7 +523,7 @@ namespace DSL
 
                                     _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                    DialogueList[(int)LineIndex].AddContent(_line);
+                                    DialogueData[(int)LineIndex] = _line;
 
                                     return SUCCESSFUL;
 
@@ -558,7 +563,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueData[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -569,7 +574,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                DialogueList[(int)LineIndex].AddContent(_line);
+                                DialogueData[(int)LineIndex] = _line;
 
                                 return Validater.ValidateExpressionsAndChange(value, ref notFlaged);
                             }
@@ -605,7 +610,7 @@ namespace DSL
                         {
                             endTagPos = (Array.IndexOf(stringRange.ToCharArray(), letter));
 
-                            tag = DialogueList[(int)LineIndex].Content.Substring(startTagPos, endTagPos + 1);
+                            tag = DialogueData[(int)LineIndex].Substring(startTagPos, endTagPos + 1);
 
                             if (_tagExpression.IsMatch(tag))
                             {
@@ -616,7 +621,7 @@ namespace DSL
 
                                 _line = ReplaceFirst(_line, tag, STRINGNULL);
 
-                                DialogueList[(int)LineIndex].AddContent(_line);
+                                DialogueData[(int)LineIndex] = _line;
 
                                 return Validater.ValidatePosesAndChange(value, ref notFlaged);
                             }
@@ -689,7 +694,7 @@ namespace DSL
         /// <param name="index"></param>
         /// <param name="array"></param>
         /// <returns></returns>
-        static bool InBounds(int index, List<Dialogue> array) => (index >= reset) && (index < array.Count);
+        static bool InBounds(int index, List<string> array) => (index >= reset) && (index < array.Count);
 
         /// <summary>
         /// The coroutine for waiting for a certain amount of milliseconds
@@ -752,7 +757,9 @@ namespace DSL
         /// </summary>
         static void TryNext()
         {
-            if (LineIndex < DialogueList.Count)
+            //TODO: Check for Imperative Mark ($)
+
+            if (LineIndex < DialogueData.Count)
             {
                 CursorPosition = reset;
                 Proceed();
@@ -830,7 +837,7 @@ namespace DSL
                 }
 
                 //Move to the next line in file
-                position++; 
+                position++;
             }
             line = null;
         }
@@ -892,27 +899,47 @@ namespace DSL
         {
             while (IS_TYPE_IN())
             {
+                //TODO: See
+                _isPromptRunning = Compiler.CheckPromptCall(DialogueReference[(int)LineIndex], out Prompt currentPrompt);
+
                 //Check if prompt is running
                 switch (_isPromptRunning)
                 {
                     case false:
                         //Check if we pressed the PROCEED button
                         //We'll also check if it's running automatically or not
-                        if ((InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic)
-                            TryNext();
+                        yield return new WaitUntil(new Func<bool>(() => (InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic));
+
+                        TryNext();
+
                         break;
 
                     case true:
 
-                        break;
+                        Debug.Log("Looks like you have a choice to make!!!");
 
-                    default:
-                        break;
+                        yield return new WaitUntil(new Func<bool>(() => Choose(currentPrompt, out int option)));
 
+                        TryNext();
+
+                        break;
                 }
 
                 yield return null;
             }
+        }
+
+        public static bool Choose(Prompt currentPrompt, out int _result)
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("I did it!!!");
+                _result = currentPrompt.SelectOption(1);
+
+                return true;
+            }
+            _result = -1;
+            return false;
         }
 
         /// <summary>
@@ -934,7 +961,7 @@ namespace DSL
 
             Styler.DisableDialogueBox();
 
-            DialogueList.Clear();
+            DialogueData.Clear();
 
             Instance.StopAllCoroutines();
 
@@ -956,7 +983,7 @@ namespace DSL
         /// </summary>
         public static void Proceed()
         {
-            if (LineIndex < DialogueList.Count - 1 && IS_TYPE_IN() == true)
+            if (LineIndex < DialogueData.Count - 1 && IS_TYPE_IN() == true)
             {
                 SET_TYPE_IN_VALUE(false);
 
@@ -966,7 +993,7 @@ namespace DSL
 
                 CursorPosition = reset;
                 //We'll parse the next dialogue that is ready to be displayed
-                DialogueList[(int)LineIndex].AddContent(DialogueSystemParser.ParseLine(DialogueList[(int)LineIndex].Content));
+                DialogueData[(int)LineIndex] = DialogueSystemParser.ParseLine(DialogueData[(int)LineIndex]);
             }
             else
                 End();
@@ -1041,17 +1068,17 @@ namespace DSL
             }
 
             //Check if we are not passed a index value
-            if (InBounds((int)LineIndex, DialogueList) && IS_TYPE_IN() == false)
+            if (InBounds((int)LineIndex, DialogueData) && IS_TYPE_IN() == false)
             {
                 //If there is no character or "???" operator, we suspect it to just have "@ ", thus we'll remove it.
                 //We will also remove the marker for the end of sentence
-                DialogueList[(int)LineIndex].AddContent(DialogueList[(int)LineIndex].Content.Replace("@ ", "").Replace("<< ", ""));
+                DialogueData[(int)LineIndex] = DialogueData[(int)LineIndex].Replace("@ ", "").Replace("<< ", "");
 
                 //We'll say that we want to run the dialogue
                 RunningDialogue = true;
 
                 //We'll parse the very first dialogue that is ready to be displayed
-                DialogueList[(int)LineIndex].AddContent(DialogueSystemParser.ParseLine(DialogueList[(int)LineIndex].Content));
+                DialogueData[(int)LineIndex] = DialogueSystemParser.ParseLine(DialogueData[(int)LineIndex]);
 
                 //Start the Printing Cycle
                 Instance.StartCoroutine(PrintCycle());
