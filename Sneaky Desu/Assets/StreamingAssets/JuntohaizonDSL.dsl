@@ -76,7 +76,7 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 					@??? HA!!![HALT::2000]<<
 				BREAK
 				CASE OPTION 2:
-					@??? HA AGAIN!!![HALT::2000]<< $ CALL PROMPT 2
+					@??? HA AGAIN!!!<< $ CALL PROMPT 2
 						CASE OPTION 1:
 							@??? BIATCH!!![HALT::2000]<<
 							@??? Freaking die you weeb!!![HALT::2000]<<
@@ -86,8 +86,13 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 						BREAK
 					OUT
 					@??? You sure you know you're shit? I have no idea.[HALT::2000]<<
+					@??? I'm very impressed. [HALT::2000]<<
+					@??? You have game a very long way.[HALT::2000]<<
 				BREAK
 			OUT
+			@??? But we still got a problem my good sir...[HALT::2000]<<
+			@??? And that is that after this "BREAK", we wouldn't be able to go to the right dialogue.[HALT::2000]<<
+			@??? But instead, we'll go to CASE OPTION 3!!!![HALT::1000]<<
 		BREAK
 		
 		CASE OPTION 3:
