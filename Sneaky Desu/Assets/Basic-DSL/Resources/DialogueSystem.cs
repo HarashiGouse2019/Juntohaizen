@@ -74,8 +74,10 @@ namespace DSL
         public static List<string> DialogueData = new List<string>();
         public static List<int> DialogueReference = new List<int>();
 
-        //The queue of actual dialogue. Print cycle will run when the queue is not 0
-        public static Queue<string> DialogueQueue = new Queue<string>();
+        //A value set until LineIndex has to jump
+        //-1 is null, while 0 means that it should jump.
+        //After the jump, -1 is reached
+        public static int steps = -1;
 
         //If dialouge is currently running
         public static bool RunningDialogue { get; private set; } = false;
@@ -146,6 +148,9 @@ namespace DSL
         //DSL Layer Constant
         //Objects will be controlled by the Dialogue Scripting System if under this layer.
         public static readonly string DSL_LAYER = "DSL";
+
+        //The prompt that we previously answer. We use this to get back to the "OUT" position after our CASE BREAK
+        public static Prompt PreviouslyAnsweredPrompt { get; private set; } = null;
 
         /// <summary>
         /// Execute once instantiated 
@@ -933,14 +938,36 @@ namespace DSL
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("I did it!!!");
                 _result = currentPrompt.SelectOption(1);
+                Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
+                return true;
+            }
 
+            if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+            {
+                _result = currentPrompt.SelectOption(2);
+                Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
+                return true;
+            }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+            {
+                _result = currentPrompt.SelectOption(3);
+                Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
+                return true;
+            }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+            {
+                _result = currentPrompt.SelectOption(4);
+                Prompt.GetOptionResultContent(_result, currentPrompt.CallingLine, currentPrompt);
                 return true;
             }
             _result = -1;
             return false;
         }
+
+        public static void SetPreviousAnsweredPrompt(Prompt _prompt) => PreviouslyAnsweredPrompt = _prompt;
 
         /// <summary>
         /// Jump to an index in the Dialogue List
@@ -987,11 +1014,21 @@ namespace DSL
             {
                 SET_TYPE_IN_VALUE(false);
 
-                LineIndex += 1;
+                if (steps > 0 || steps < 0)
+                {
+                    steps--;
+                    LineIndex += 1;
+                } else if (steps == 0)
+                {
+                    steps--;
+                    JumpToLineIndex(PreviouslyAnsweredPrompt.gotoLine);
+                }
 
                 Styler.GetText().text = STRINGNULL;
 
                 CursorPosition = reset;
+
+
                 //We'll parse the next dialogue that is ready to be displayed
                 DialogueData[(int)LineIndex] = DialogueSystemParser.ParseLine(DialogueData[(int)LineIndex]);
             }

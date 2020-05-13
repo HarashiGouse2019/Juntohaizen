@@ -210,13 +210,11 @@ namespace DSL.Core
             //The operator "<<"
             string callMethod = Compiler.GetKeyWord("CALL");
 
-            string stringScanningRange = null;
-
             for (int pos = 0; pos < _targetLine.Length; pos++)
             {
                 try
                 {
-                    stringScanningRange = _targetLine.Substring(pos, callMethod.Length);
+                    string stringScanningRange = _targetLine.Substring(pos, callMethod.Length);
 
                     if (stringScanningRange == callMethod)
                     {

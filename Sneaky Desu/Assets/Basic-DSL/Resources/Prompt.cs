@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using DSL.Styling;
+using DSL.Core;
 
 namespace DSL.PromptOptionCase
 {
@@ -97,13 +99,99 @@ namespace DSL.PromptOptionCase
 
         public int SelectOption(int _optionID)
         {
-            int position = 0;
             foreach (Option option in Options)
             {
-                if (_optionID == option.ID) { IsChoiceMade = true; Debug.Log(option.Content); return position; }
+                if (_optionID == option.ID) { IsChoiceMade = true; Debug.Log(option.Content); return option.ID; }
+
+            }
+
+
+            return -1;
+        }
+
+        //It'll find the right Option ID, and count only @.
+        //The count will be assigned to DialogueSystem steps variable
+        public static void GetOptionResultContent(int _optionID, int _startPosition, Prompt _prompt)
+        {
+            string caseOptionKeywords = Compiler.GetKeyWord("CASE") + " " + Compiler.GetKeyWord("OPTION");
+
+            int position = 0;
+
+            int stepAmount = 0;
+
+            Option latestOption = null;
+
+            Option callOption = null;
+
+            int? jumpTo = null;
+
+            bool caseFound = false;
+
+            foreach (string lineData in Compiler.CompiledData)
+            {
+                string line = lineData.Trim('\t', ' ');
+
+                if (position >= _startPosition && line != "")
+                {
+                    if (caseFound && jumpTo == null && Validater.ValidateLineEndOperartor(line, out string _moddedLine))
+                    {
+                        string dialogueReference = Validater.ValidateCharacterUsage(_moddedLine, position);
+
+                        callOption.SetDialogueReference(dialogueReference);
+
+                        callOption.FindDialoguePosition();
+
+                        jumpTo = callOption.gotoLine - 1;
+
+                        DialogueSystem.JumpToLineIndex(jumpTo.GetValueOrDefault());
+                    }
+
+                    if (Validater.ValidateLineEndOperartor(line, out string _stepLine) && caseFound)
+                        stepAmount++;
+
+                    if (OptionStack.StackedOptions.Count == 0 && latestOption != null && latestOption == callOption)
+                    {
+                        DialogueSystem.steps = stepAmount;
+                        DialogueSystem.SetPreviousAnsweredPrompt(_prompt);
+                        return;
+                    }
+
+                    for (int pos = 0; pos < lineData.Length; pos++)
+                    {
+                        try
+                        {
+                            //Search for "CASE OPTION"
+                            string caseOption = line.Substring(pos, caseOptionKeywords.Length);
+
+                            if (caseOption == caseOptionKeywords)
+                            {
+                                string[] data = Compiler.ExtractCaseOptionFrom(pos, line);
+
+                                int optionId = Convert.ToInt32(data[2]);
+
+                                Option targetOption = Compiler.GetDefinedOption(optionId, _prompt);
+
+                                if (targetOption.ID == _optionID && caseFound == false)
+                                {
+                                    callOption = targetOption;
+
+                                    caseFound = true;
+                                }
+
+                                OptionStack.Push(targetOption);
+
+                                break;
+                            } 
+                        }
+                        catch { }
+                    }
+                }
+
+                if (line == Compiler.GetKeyWord("BREAK") && OptionStack.StackedOptions.Count != 0)
+                    latestOption = OptionStack.Pop();
+
                 position++;
             }
-            return -1;
         }
     }
 }

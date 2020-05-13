@@ -66,58 +66,32 @@ PlayerPawn is player ###I have reference to all of PlayerPawn's properties and m
 
 	@??? [ACTION::"JUMPS"][HALT::500][SPEED::NORMAL] Hey there! [HALT::500]This is Austin. [HALT::500]And welcome to my game.[HALT::750]<< $ CALL PROMPT 0																				
 		CASE OPTION 1:
-			@??? What da faq?<<
-			@??? Is this the kind of answer I get?<<
-			@??? That freaking sucks.<<
-			@??? That was the worst thing I have ever tasted...<<
-			@??? And now... my day is ruined.<<
+			@??? You picked Option 1 of Prompt 0.[HALT::2000]<<
 		BREAK
 		
 		CASE OPTION 2:
-			@??? Ha wa ha wa ha wa!!!<<
-			@??? Feast your eyes upon your gracefulness.<<
-			@??? Is that even an actual thing?<<
-			@??? No! I mean yes!!! It is an actual thing!<<
-			@??? Did you... Just lie?<<
-			@??? How could a kind like me lie in such a way?<< $ CALL PROMPT 4
+			@??? You picked Option 2 of Prompt 0.[HALT::2000]<<
+			@??? You don't belong here my good sir.<< $ CALL PROMPT 1
 				CASE OPTION 1:
-					@??? I knew it.<<
-					@??? I wouldn't kill him because of it though...<<
-					@??? Unless if it were to harm the people.<<
-					@??? Then I would not hesistate to have the man executed.<<
-					@??? But of course... He doesn't need to know that.<<
-					
-					@??? Know about what?<<
-					
-					@??? Nothing sir! Just thinking to myself.<<
-					
-					@??? Well quite thinking, and start NOTICING ME SENPAI!!!!<<
+					@??? HA!!!<<
 				BREAK
-				
 				CASE OPTION 2:
-					@??? You would never lie my good sir!<<
-					
-					@??? Excellent!!!<<
-				BREAK
-				
-				CASE OPTION 3:
-					@??? RANDOM STUFF<<
+					@??? HA AGAIN!!!<< $ CALL PROMPT 2
+						CASE OPTION 1:
+							@??? BIATCH!!!<<
+							@??? Freaking die you weeb!!!<<
+						BREAK
+						CASE OPTION 2:
+							@??? Hmmmm ke...<<
+						BREAK
+					OUT
 				BREAK
 			OUT
-			
-			@??? Now, with that out of the way, let's enjoy ourselves.<<
-			@??? It'd be a shame if our whole entire day was ruined.<<
-			@??? Now that would be absurd!<<
-			@??? Absolutely absurd!<<
-			@??? Yes!!<<
 		BREAK
 		
 		CASE OPTION 3:
-			@??? WARIO!!!!<<
-		BREAK
-		
-		CASE OPTION 4:
-			@??? WALUIGI!!!<<
+			@??? Get out of town man!!!!<<
+			@??? Huh.... Okay...<<
 		BREAK
 	OUT
 	

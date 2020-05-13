@@ -113,6 +113,7 @@ namespace DSL.Core
                 while (!fileReader.EndOfStream)
                 {
                     string line = fileReader.ReadLine();
+                    line = line.Trim('\t', ' ');
                     CompiledData.Add(line);
                 }
             }
@@ -815,6 +816,15 @@ namespace DSL.Core
             return null;
         }
 
+        public static Option GetDefinedOption(int _optionID, Prompt _originPrompt)
+        {
+            foreach(Prompt prompt in DefinedPrompts)
+                if (prompt == _originPrompt) foreach(Option option in _originPrompt.Options)
+                        if (option.ID == _optionID) return option;
+
+            return null;
+        }
+
         /// <summary>
         /// Captitalize the first letter of a word
         /// </summary>
@@ -896,6 +906,16 @@ namespace DSL.Core
             return callMethod.Split(' ');
         }
 
+        public static string[] ExtractCaseOptionFrom(int _position, string _line)
+        {
+            string caseOption = STRINGNULL;
+
+            for (int pos = 0; pos < _line.Length; pos++)
+                try { caseOption = _line.Substring(_position, pos); } catch { };
+
+            return caseOption.Split(' ');
+        }
+
         /// <summary>
         /// Looks for the marker ($) either if is stated on the line of a dialogue
         /// or if in between dialogue.
@@ -915,8 +935,6 @@ namespace DSL.Core
             {
                 string line = dataLine.Trim('\t', ' ');
 
-                Debug.Log(dontSearch ? "YES!" : "NO!");
-
                 if (latestPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
                 {
 
@@ -926,10 +944,6 @@ namespace DSL.Core
                     latestPrompt.FindDialoguePosition();
 
                     _currentPrompt = latestPrompt;
-
-                    Debug.Log(latestPrompt.DialogueReference);
-
-                    Debug.Log("Prompt " + latestPrompt.Number + " drop off location is " + latestPrompt.gotoLine);
 
                     JumpPoints.Add(new Point(latestPrompt.gotoLine));
 
@@ -967,7 +981,7 @@ namespace DSL.Core
                                     //Get the prompt being called
                                     Prompt targetPrompt = GetDefinedPrompt(promptNumber);
 
-                                    targetPrompt.SetCallingLine(position + 1);
+                                    targetPrompt.SetCallingLine(position);
 
                                     PromptStack.Push(targetPrompt);
 
