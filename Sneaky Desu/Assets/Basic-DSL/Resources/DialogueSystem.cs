@@ -72,7 +72,6 @@ namespace DSL
 
         //Dialogue that is collected after reading file.
         public static List<string> DialogueData = new List<string>();
-        public static List<int> DialogueReference = new List<int>();
 
         //A value set until LineIndex has to jump
         //-1 is null, while 0 means that it should jump.
@@ -115,6 +114,8 @@ namespace DSL
         //Check if at a "@'
         public static bool atDialogueMark = false;
 
+        public static bool ReadyToBreak { get; set; } = false;
+
         //Reset value
         const int reset = 0;
 
@@ -150,7 +151,7 @@ namespace DSL
         public static readonly string DSL_LAYER = "DSL";
 
         //The prompt that we previously answer. We use this to get back to the "OUT" position after our CASE BREAK
-        public static Prompt PreviouslyAnsweredPrompt { get; private set; } = null;
+        public static Stack<Prompt> PreviouslyAnsweredPrompts { get; private set; } = new Stack<Prompt>();
 
         /// <summary>
         /// Execute once instantiated 
@@ -804,7 +805,7 @@ namespace DSL
                 }
 
                 //If we find anything resemblins <DIALOGUE_SET_###, we found the dialogue set.
-                if (line.Contains("DIALOGUE_SET_" + _dialogueSet.ToString("D3", CultureInfo.InvariantCulture)))
+                if (line.Contains("dialogueSet " + _dialogueSet))
                 {
                     string[] expressions = null;
                     try { expressions = line.Replace(" ", "").Split(Compiler.Delimiters); } catch { }
@@ -905,7 +906,8 @@ namespace DSL
             while (IS_TYPE_IN())
             {
                 //TODO: See
-                _isPromptRunning = Compiler.CheckPromptCall(DialogueReference[(int)LineIndex], out Prompt currentPrompt);
+                int drvPos = Compiler.ConvertToDRV(DialogueData[(int)LineIndex]) - 1;
+                _isPromptRunning = Compiler.PromptCall(drvPos, out Prompt currentPrompt);
 
                 //Check if prompt is running
                 switch (_isPromptRunning)
@@ -913,7 +915,8 @@ namespace DSL
                     case false:
                         //Check if we pressed the PROCEED button
                         //We'll also check if it's running automatically or not
-                        yield return new WaitUntil(new Func<bool>(() => (InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic));
+                        yield return new WaitUntil(new Func<bool>(() =>
+                            (InputManager.GetButtonDown(Functionality.PROCEED) && !IsAutomatic) || IsAutomatic));
 
                         TryNext();
 
@@ -923,7 +926,8 @@ namespace DSL
 
                         Debug.Log("Looks like you have a choice to make!!!");
 
-                        yield return new WaitUntil(new Func<bool>(() => Choose(currentPrompt, out int option)));
+                        yield return new WaitUntil(new Func<bool>(() =>
+                            Choose(currentPrompt, out int option)));
 
                         TryNext();
 
@@ -967,7 +971,7 @@ namespace DSL
             return false;
         }
 
-        public static void SetPreviousAnsweredPrompt(Prompt _prompt) => PreviouslyAnsweredPrompt = _prompt;
+        public static void SetPreviousAnsweredPrompt(Prompt _prompt) => PreviouslyAnsweredPrompts.Push(_prompt);
 
         /// <summary>
         /// Jump to an index in the Dialogue List
@@ -989,6 +993,8 @@ namespace DSL
             Styler.DisableDialogueBox();
 
             DialogueData.Clear();
+
+            Compiler.DialogueReferenceValue.Clear();
 
             Instance.StopAllCoroutines();
 
@@ -1014,20 +1020,11 @@ namespace DSL
             {
                 SET_TYPE_IN_VALUE(false);
 
-                if (steps > 0 || steps < 0)
-                {
-                    steps--;
-                    LineIndex += 1;
-                } else if (steps == 0)
-                {
-                    steps--;
-                    JumpToLineIndex(PreviouslyAnsweredPrompt.gotoLine);
-                }
+                LineIndex += 1;
 
                 Styler.GetText().text = STRINGNULL;
 
                 CursorPosition = reset;
-
 
                 //We'll parse the next dialogue that is ready to be displayed
                 DialogueData[(int)LineIndex] = DialogueSystemParser.ParseLine(DialogueData[(int)LineIndex]);

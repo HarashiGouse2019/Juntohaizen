@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DSL.Text;
+using System;
 using UnityEngine;
 using PARSER = DSL.Parser.DialogueSystemParser;
 
@@ -31,7 +32,7 @@ namespace DSL.Core
                         name = _targetLine.Substring(1, character.Length) + ":";
 
                         //If this character exist in the list of characters defined, we do some string manipulation
-                        if ((Compiler.Has(name, character)))
+                        if (Compiler.Has(name, character))
                         {
                             //For names with _ scores replacing as spaces
                             name = name.Replace(UNDERSCORE, WHITESPACE);

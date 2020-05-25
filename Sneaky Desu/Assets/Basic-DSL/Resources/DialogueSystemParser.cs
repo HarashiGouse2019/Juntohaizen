@@ -7,6 +7,7 @@ using UnityEngine;
 using DSL.Core;
 using DSL.InputManagement;
 using DSL.PromptOptionCase;
+using DSL.Text;
 
 namespace DSL.Parser
 {

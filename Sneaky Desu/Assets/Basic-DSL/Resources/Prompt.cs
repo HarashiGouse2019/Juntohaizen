@@ -24,6 +24,8 @@ namespace DSL.PromptOptionCase
 
         public bool IsChoiceMade { get; private set; } = false;
 
+        public int Steps { get; private set; } = 0;
+
         /// <summary>
         /// Create a new prompt
         /// </summary>
@@ -101,12 +103,14 @@ namespace DSL.PromptOptionCase
         {
             foreach (Option option in Options)
             {
-                if (_optionID == option.ID) { IsChoiceMade = true; Debug.Log(option.Content); return option.ID; }
+                if (_optionID == option.ID) { IsChoiceMade = true; return option.ID; }
 
             }
 
             return -1;
         }
+
+        public void SetSteps(int _value) => Steps = _value;
 
         //It'll find the right Option ID, and count only @.
         //The count will be assigned to DialogueSystem steps variable
@@ -126,13 +130,15 @@ namespace DSL.PromptOptionCase
 
             bool caseFound = false;
 
+            bool dontSearch = false;
+
             foreach (string lineData in Compiler.CompiledData)
             {
                 string line = lineData.Trim('\t', ' ');
 
                 if (position >= _startPosition && line != "")
                 {
-                    if (caseFound && jumpTo == null && Validater.ValidateLineEndOperartor(line, out string _moddedLine))
+                    if (caseFound && jumpTo == null && Validater.ValidateLineEndOperartor(line, out string _moddedLine) && dontSearch == false)
                     {
                         string dialogueReference = Validater.ValidateCharacterUsage(_moddedLine, position);
 
@@ -145,12 +151,14 @@ namespace DSL.PromptOptionCase
                         DialogueSystem.JumpToLineIndex(jumpTo.GetValueOrDefault());
                     }
 
-                    if (Validater.ValidateLineEndOperartor(line, out string _stepLine) && caseFound)
+                    if (Validater.ValidateLineEndOperartor(line, out string _stepLine) && caseFound && dontSearch == false)
                         stepAmount++;
 
                     if (OptionStack.StackedOptions.Count == 0 && latestOption != null && latestOption == callOption)
                     {
                         DialogueSystem.steps = stepAmount;
+
+                        _prompt.SetSteps(stepAmount);
                         DialogueSystem.SetPreviousAnsweredPrompt(_prompt);
                         return;
                     }
@@ -188,6 +196,9 @@ namespace DSL.PromptOptionCase
 
                 if (line == Compiler.GetKeyWord("BREAK") && OptionStack.StackedOptions.Count != 0)
                     latestOption = OptionStack.Pop();
+
+                if (line == Compiler.GetKeyWord("CASE"))
+                    dontSearch = true; 
 
                 position++;
             }

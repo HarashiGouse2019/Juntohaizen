@@ -6,6 +6,7 @@ using UnityEngine;
 
 using DSL.PromptOptionCase;
 using DSL.InputManagement;
+using DSL.Text;
 
 namespace DSL.Core
 {
@@ -24,6 +25,8 @@ namespace DSL.Core
         public static List<Prompt> DefinedPrompts { get; private set; } = new List<Prompt>();
 
         public static List<Point> JumpPoints { get; private set; } = new List<Point>();
+
+        public static List<int> DialogueReferenceValue { get; private set; } = new List<int>();
 
         //Using this to bitmask data for reading if using Input Manager, and if using DSL's or Unity's
         public static bool Is_Using_Input_Manager = false;
@@ -54,37 +57,38 @@ namespace DSL.Core
                 ">>"};
 
         public static string[] Keywords { get; } = {
-                "SPEED",
-                "BOLD",
-                "ITALIZE",
-                "UNDERLINE",
-                "SOUND",
-                "EXPRESSION",
-                "ACTION",
-                "HALT",
-                "POSE",
-                "INSERT",
-                "AUTO",
-                "DONT_DISTURB",
-                "CAPACITY",
-                "CONTROLED_BY_INPUT_MANAGER",
-                "JUMP",
-                "MAX",
-                "MIN",
-                "PROMPT",
-                "OPTION",
-                "FORMAT",
-                "TYPE",
-                "LIST",
-                "GRID",
-                "CALL",
-                "OMIT",
-                "PARENT",
-                "CASE",
-                "BREAK",
-                "OUT",
-                "SET",
-                "THIS"
+                "speed",
+                "bold",
+                "italize",
+                "underline",
+                "sound",
+                "expression",
+                "action",
+                "halt",
+                "pose",
+                "inser",
+                "auto",
+                "dontDetain",
+                "capacity",
+                "CBIM",
+                "jump",
+                "max",
+                "min",
+                "prompt",
+                "option",
+                "format",
+                "type",
+                "list",
+                "grid",
+                "call",
+                "omit",
+                "parent",
+                "case",
+                "break",
+                "out",
+                "set",
+                "this",
+                "exit"
                 };
 
         public static string[] ValidTextSpeeds { get; } = {
@@ -102,6 +106,8 @@ namespace DSL.Core
         const string STRINGNULL = "";
         const string WHITESPACE = " ";
         const string UNDERSCORE = "_";
+        const string TAB = "\t";
+        const string RETURN = "\r";
         const string END = "<END>";
 
         static Compiler()
@@ -116,6 +122,9 @@ namespace DSL.Core
                     line = line.Trim('\t', ' ');
                     CompiledData.Add(line);
                 }
+
+                //Tokenize our long text
+                new Lexer();
             }
 
             //Initialize all Data
@@ -161,10 +170,10 @@ namespace DSL.Core
 
                     string dataLine = line.Trim('\t', ' ');
 
-                    if (dataLine == END && foundExpression)
+                    if (Has(dataLine, "</expressions>") && foundExpression)
                         return;
 
-                    if (Has(dataLine, "EXPRESSIONS"))
+                    if (Has(dataLine, "<expressions>"))
                     {
                         foundExpression = true;
                         try { GetExpressions(position); } catch { }
@@ -191,10 +200,10 @@ namespace DSL.Core
                 {
                     string dataLine = line.Trim('\t', ' ');
 
-                    if (dataLine == END && foundPose)
+                    if (Has(dataLine, "</poses>") && foundPose)
                         return;
 
-                    if (Has(dataLine, "POSES"))
+                    if (Has(dataLine, "<poses>"))
                     {
                         foundPose = true;
                         try { GetPoses(position); } catch { }
@@ -223,10 +232,10 @@ namespace DSL.Core
 
                     string dataLine = line.Trim('\t', ' ');
 
-                    if (dataLine == END && foundCharacter)
+                    if (Has(dataLine, "</characters>") && foundCharacter)
                         return;
 
-                    if (Has(dataLine, "CHARACTERS"))
+                    if (Has(dataLine, "<characters>"))
                     {
                         foundCharacter = true;
                         try { GetCharacterNames(position); } catch { }
@@ -256,10 +265,10 @@ namespace DSL.Core
                 {
                     string dataLine = line.Trim('\t', ' ');
 
-                    if (line == END && foundKeyCode)
+                    if (Has(dataLine, "</keycodes>") && foundKeyCode)
                         return;
 
-                    if (Has(dataLine, "KEYCODES"))
+                    if (Has(dataLine, "<keycodes>"))
                     {
                         string[] expressions = null;
                         try { expressions = dataLine.Replace(WHITESPACE, STRINGNULL).Split(Delimiters); } catch { }
@@ -300,10 +309,10 @@ namespace DSL.Core
 
                     string dataLine = line.Trim('\t', ' ');
 
-                    if (dataLine == END && foundPrompt)
+                    if (Has(dataLine, "</prompt>") && foundPrompt)
                         return;
 
-                    if (Has(line, "<PROMPT"))
+                    if (Has(line, "<prompt"))
                     {
 
                         //First, we want to know what prompt number it is,
@@ -326,7 +335,7 @@ namespace DSL.Core
                                 try
                                 {
                                     //If CAPACITY is defined
-                                    if (keyword == GetKeyWord("CAPACITY"))
+                                    if (keyword == GetKeyWord("capacity"))
                                         foreach (string token in Tokens)
                                         {
                                             if (token == Tokens[5] || token == Tokens[6])
@@ -334,7 +343,7 @@ namespace DSL.Core
                                         }
 
                                     //IF FORMAT is defined
-                                    if (keyword == GetKeyWord("FORMAT"))
+                                    if (keyword == GetKeyWord("format"))
                                         foreach (string token in Tokens)
                                         {
                                             if (token == Tokens[5] || token == Tokens[6])
@@ -378,7 +387,7 @@ namespace DSL.Core
             {
                 string dataLine = line.Trim('\t', ' ');
 
-                if (dataLine == END && atTargetLine)
+                if (Has(dataLine, "</expressions>") && atTargetLine)
                     return;
 
 
@@ -408,11 +417,11 @@ namespace DSL.Core
 
             int position = 0;
 
-            foreach (string line in Compiler.CompiledData)
+            foreach (string line in CompiledData)
             {
                 string dataLine = line.Trim('\t', ' ');
 
-                if (line == STRINGNULL && atTargetLine)
+                if (Has(dataLine, "</poses>") && atTargetLine)
                     return;
 
                 if (position > _position)
@@ -449,7 +458,7 @@ namespace DSL.Core
 
                 if (atTargetLine)
                 {
-                    if (dataLine == STRINGNULL)
+                    if (Has(dataLine, "</characters>"))
                         return;
                 }
 
@@ -478,11 +487,11 @@ namespace DSL.Core
             bool atTargetLine = false;
 
 
-            foreach (string line in Compiler.CompiledData)
+            foreach (string line in CompiledData)
             {
                 string dataLine = line.Trim('\t', ' ');
 
-                if (dataLine == END && atTargetLine)
+                if (Has(dataLine, "</keycodes>") && atTargetLine)
                     return;
 
                 if (position > _position)
@@ -625,7 +634,7 @@ namespace DSL.Core
                 //Parse string into KeyCode
                 //If it's something like LeftArrow, it has already
                 //set to the right format, so don't Capticalize
-                newKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), multiWord ? keyCodeValue : Capitalize(keyCodeValue));
+                newKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), multiWord ? keyCodeValue : StringManip.Capitalize(keyCodeValue));
                 _result = SUCCESSFUL;
             }
             catch { _result = FAILURE; }
@@ -665,7 +674,7 @@ namespace DSL.Core
                 if (Has(keyCodeValue, UNDERSCORE))
                 {
                     multiWord = true;
-                    keyCodeValue = PascalCase(keyCodeValue);
+                    keyCodeValue = StringManip.PascalCase(keyCodeValue);
                 }
 
                 functionalityValue = value[1];
@@ -696,7 +705,7 @@ namespace DSL.Core
                 string dataLine = line.Trim('\t', ' '); //Remove all tabs and spaces, so that we can always get to @
 
                 //If we reach the end of the dialogue set, we are done reading it
-                if (dataLine == END && atTargetLine)
+                if (Has(dataLine, "</dialogueSet>") && atTargetLine)
                     return;
 
                 //However, if we are at the DialogueSet tag with a specified number, we collect all the dialogue that starts with "@"
@@ -711,8 +720,10 @@ namespace DSL.Core
                     {
                         //Validate the use of a character
                         dataLine = Validater.ValidateCharacterUsage(dataLine, position);
+
                         DialogueSystem.DialogueData.Add(dataLine);
-                        DialogueSystem.DialogueReference.Add(position);
+                        //Get the Dialogue Reference Number for use
+                        DialogueReferenceValue.Add(position + 1);
                     }
                     #endregion
 
@@ -759,7 +770,7 @@ namespace DSL.Core
 
             try
             {
-                foreach (string line in Compiler.CompiledData)
+                foreach (string line in CompiledData)
                 {
 
                     dataLine = line.Trim('\t', ' ');
@@ -826,40 +837,160 @@ namespace DSL.Core
         }
 
         /// <summary>
-        /// Captitalize the first letter of a word
+        /// Looks for the marker ($) either if is stated on the line of a dialogue
+        /// or if in between dialogue.
         /// </summary>
-        /// <param name="_word"></param>
-        /// <returns></returns>
-        static string Capitalize(string _word) => _word[0].ToString().ToUpper() + _word.Substring(1, _word.Length - 1).ToLower();
-
-        /// <summary>
-        /// Do PascalCase for any underscore values
-        /// </summary>
-        /// <param name="_word"></param>
-        /// <returns></returns>
-        static string PascalCase(string _word)
+        /// <param name="_currentLine"></param>
+        public static bool PromptCall(int _position, out Prompt _currentPrompt)
         {
-            //Split with "_"
-            string[] words = _word.Split('_');
-            string pascalWord = null;
+            Prompt parentPrompt = null;
 
-            //Capitalize each word, and add it to pascalWord
-            foreach (string word in words)
+            Prompt calledPrompt = null;
+
+            int position = 0;
+
+            bool callMade = false;
+
+            //This will help specify the scope of each prompt
+            bool dontSearch = false;
+
+            foreach (string dataLine in CompiledData)
             {
-                pascalWord += Capitalize(word);
+                string line = dataLine.Trim('\t', ' ');
+
+                #region CALL PROMPT
+                if (position >= _position)
+                {
+                    #region CASE OPTION occurs
+                    if (Has(line, GetKeyWord("CASE") + " " + GetKeyWord("OPTION")))
+                        dontSearch = true;
+                    #endregion
+
+                    if (parentPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
+                    {
+
+                        moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
+
+                        calledPrompt.SetDialogueReference(moddedLine);
+                        calledPrompt.FindDialoguePosition();
+
+                        _currentPrompt = calledPrompt;
+
+                        JumpPoints.Add(new Point(parentPrompt.gotoLine));
+
+                        parentPrompt = null;
+                        return SUCCESSFUL;
+                    }
+
+                    #region Validate Call Prompt
+                    if (Validater.ValidateCallFunction(line, out int continuation))
+                        try
+                        {
+                            //Get the entire call mehtod "CALL --- ---"
+                            string[] data = ExtractCallFrom(continuation, line);
+
+                            //Get what you are calling, and the value
+                            string callingTarget = data[1];
+
+                            //Check for any of these keywords
+                            foreach (string keyword in Keywords)
+                            {
+
+                                //TODO: Have it where you iterate through all prompts,
+                                //But you find out which one is the parent prompt, so it doesn't hit into 
+                                //One of the options.
+
+                                //If you are calling to show the options from a prompt
+                                if (callingTarget == GetKeyWord("PROMPT"))
+                                {
+                                    //Get what prompt number it is, and disply choices
+                                    //We expect only 1 value, which is a number;
+                                    int promptNumber = Convert.ToInt32(data[2]);
+
+                                    //Get the prompt being called
+                                    Prompt targetPrompt = GetDefinedPrompt(promptNumber);
+
+                                    if (calledPrompt == null) calledPrompt = targetPrompt;
+
+                                    targetPrompt.SetCallingLine(position);
+
+                                    PromptStack.Push(targetPrompt);
+
+                                    //TODO: Enhance the syling portion of DSL, especially for choices.
+                                    //TODO: When prompt is called, have it search for OUT.
+                                    //OUT will find either @, or if it can't find any, dialogue set ends
+
+                                    callMade = true;
+                                    break;
+                                }
+                            }
+                        }
+                        catch { }
+                    else if (callMade == false)
+                    {
+                        _currentPrompt = null;
+                        return FAILURE;
+                    }
+                    #endregion
+
+                    // If an OUT occurs
+                    #region PROMPT OUT CALL
+                    if (Has(line, GetKeyWord("OUT")) && PromptStack.StackedPrompts.Count != 0)
+                    {
+                        //Get the prompt from the stack, and find the next dialogue avaliable
+                        parentPrompt = PromptStack.Pop();
+                        dontSearch = false;
+                    }
+                    #endregion
+                }
+                #endregion
+
+                position++;
+            }
+            _currentPrompt = null;
+            return FAILURE;
+        }
+
+        public static bool Break(int _position)
+        {
+            int position = 0;
+            foreach (string line in CompiledData)
+            {
+                if (position >= _position)
+                {
+                    if (Has(line, GetKeyWord("BREAK")))
+                    {
+                        DialogueSystem.ReadyToBreak = true;
+                        return true;
+                    }
+
+                    return false;
+                }
+                position++;
             }
 
-            //And return
-            return pascalWord;
+            return false;
         }
 
         /// <summary>
-        /// Checks if string contains another string
+        /// Take the collected dialogue, and find the position in compiled data.
         /// </summary>
-        /// <param name="line"></param>
-        /// <param name="token"></param>
+        /// <param name="_line"></param>
         /// <returns></returns>
-        public static bool Has(string line, string token) => line.Contains(token);
+        public static int ConvertToDRV(string _line)
+        {
+            int position = 0;
+
+            foreach (string dialogue in DialogueSystem.DialogueData)
+            {
+                if (dialogue == _line)
+                    return DialogueReferenceValue[position];
+
+                position++;
+            }
+
+            return -1;
+        }
 
         /// <summary>
         /// You're able to retrieve all except a single character
@@ -917,180 +1048,11 @@ namespace DSL.Core
         }
 
         /// <summary>
-        /// Looks for the marker ($) either if is stated on the line of a dialogue
-        /// or if in between dialogue.
+        /// Checks if string contains another string
         /// </summary>
-        /// <param name="_currentLine"></param>
-        public static bool CheckPromptCall(int _position, out Prompt _currentPrompt)
-        {
-            Prompt parentPrompt = null;
-
-            Prompt calledPrompt = null;
-
-            int position = 0;
-
-            bool callMade = false;
-
-            //This will help specify the scope of each prompt
-            bool dontSearch = false;
-
-            foreach (string dataLine in CompiledData)
-            {
-                string line = dataLine.Trim('\t', ' ');
-
-                #region CALL PROMPT
-                if (position >= _position)
-                {
-                    #region CASE OPTION occurs
-                    if (Has(line, GetKeyWord("CASE") + " " + GetKeyWord("OPTION")))
-                        dontSearch = true;
-                    #endregion
-
-                    if (parentPrompt != null && dontSearch == false && PromptStack.StackedPrompts.Count == 0 && Validater.ValidateLineEndOperartor(dataLine, out string moddedLine))
-                    {
-
-                        moddedLine = Validater.ValidateCharacterUsage(moddedLine.Trim('\t', ' '), _position);
-
-                        calledPrompt.SetDialogueReference(moddedLine);
-                        calledPrompt.FindDialoguePosition();
-
-                        _currentPrompt = calledPrompt;
-
-                        JumpPoints.Add(new Point(parentPrompt.gotoLine));
-
-                        Debug.Log("Prompt " + calledPrompt.Number + " will goto line " + calledPrompt.gotoLine);
-
-                        parentPrompt = null;
-                        return SUCCESSFUL;
-                    }
-
-                    #region Validate Call Prompt
-                    if (Validater.ValidateCallFunction(line, out int continuation))
-                        try
-                        {
-                            //Get the entire call mehtod "CALL --- ---"
-                            string[] data = ExtractCallFrom(continuation, line);
-
-                            //Get what you are calling, and the value
-                            string callingTarget = data[1];
-
-                            //Check for any of these keywords
-                            foreach (string keyword in Keywords)
-                            {
-
-                                //TODO: Have it where you iterate through all prompts,
-                                //But you find out which one is the parent prompt, so it doesn't hit into 
-                                //One of the options.
-
-                                //If you are calling to show the options from a prompt
-                                if (callingTarget == GetKeyWord("PROMPT"))
-                                {
-                                    //Get what prompt number it is, and disply choices
-                                    //We expect only 1 value, which is a number;
-                                    int promptNumber = Convert.ToInt32(data[2]);
-
-                                    //Get the prompt being called
-                                    Prompt targetPrompt = GetDefinedPrompt(promptNumber);
-
-                                    Debug.Log("Prompt " + targetPrompt.Number);
-
-                                    if (calledPrompt == null) calledPrompt = targetPrompt;
-
-                                    targetPrompt.SetCallingLine(position);
-
-                                    PromptStack.Push(targetPrompt);
-
-                                    //TODO: Enhance the syling portion of DSL, especially for choices.
-                                    //TODO: When prompt is called, have it search for OUT.
-                                    //OUT will find either @, or if it can't find any, dialogue set ends
-
-                                    callMade = true;
-
-                                    break;
-                                }
-                            }
-                        }
-                        catch { }
-                    else if (callMade == false)
-                    {
-                        _currentPrompt = null;
-                        return FAILURE;
-                    }
-                    #endregion
-
-                    // If an OUT occurs
-                    #region PROMPT OUT CALL
-                    if (Has(line, GetKeyWord("OUT")) && PromptStack.StackedPrompts.Count != 0)
-                    {
-                        //Get the prompt from the stack, and find the next dialogue avaliable
-                        parentPrompt = PromptStack.Pop();
-                        dontSearch = false;
-                    }
-                    #endregion
-
-
-
-                }
-                #endregion
-
-                position++;
-            }
-            _currentPrompt = null;
-            return FAILURE;
-        }
-
-        public static bool CheckBreak(int _startPosition)
-        {
-            Debug.Log(_startPosition);
-            int position = 0;
-            foreach (string line in CompiledData)
-            {
-                if (position > _startPosition)
-                {
-                    Debug.Log(line);
-
-                    if (line == END)
-                        return false;
-
-                    if (Has(line, GetKeyWord("BREAK")))
-                    {
-                        Debug.Log("BREAK on Line" + position);
-                        return true;
-                    }
-                    
-                }
-
-                position++;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Take the collected dialogue, and find the position in compiled data.
-        /// </summary>
-        /// <param name="_line"></param>
+        /// <param name="line"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public static int ConvertToCompilerIndex(string _line)
-        {
-            int position = 0;
-
-            foreach (string lineData in CompiledData)
-            {
-                string line = lineData.Trim('\t', ' ');
-
-                if (Validater.ValidateLineEndOperartor(line, out string _moddedLine) && line != STRINGNULL)
-                {
-                    line = Validater.ValidateCharacterUsage(_moddedLine, position);
-
-                    if (Has(_line, line))
-                        return position;
-                }
-
-                position++;
-            }
-
-            return -1;
-        }
+        public static bool Has(string line, string token) => line.Contains(token);
     }
 }

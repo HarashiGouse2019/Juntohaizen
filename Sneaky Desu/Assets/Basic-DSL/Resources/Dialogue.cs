@@ -1,4 +1,6 @@
-﻿namespace DSL
+﻿using UnityEngine;
+
+namespace DSL
 {
     /// <summary>
     /// A line of dialogue from a dialogue set.

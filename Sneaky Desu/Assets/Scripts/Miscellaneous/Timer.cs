@@ -81,13 +81,13 @@ namespace Alarm
             {
                 if (timeStarted[i] == true)
                 {
-                    currentTime[i] += UnityEngine.Time.deltaTime;
+                    currentTime[i] += Time.deltaTime;
                     if (debugEnabled)
                     {
                         if (showFloatingPoint == false)
-                            UnityEngine.Debug.Log("Timer[" + i + "]; Current time: " + UnityEngine.Mathf.FloorToInt(currentTime[i]));
+                            Debug.Log("Timer[" + i + "]; Current time: " + Mathf.FloorToInt(currentTime[i]));
                         else
-                            UnityEngine.Debug.Log("Timer[" + i + "]; Current time: " + currentTime[i]);
+                            Debug.Log("Timer[" + i + "]; Current time: " + currentTime[i]);
                     }
                 }
                 else
@@ -128,7 +128,7 @@ namespace Alarm
         {
             if (currentTime[index] > duration)
             {
-                if (debugEnabled) UnityEngine.Debug.Log("Timer[" + index + "] returned a value of 1!");
+                if (debugEnabled) Debug.Log("Timer[" + index + "] returned a value of 1!");
                 SetToZero(index);
                 return true;
             }
@@ -139,7 +139,7 @@ namespace Alarm
         {
             if (currentTime[index] > duration)
             {
-                if (debugEnabled) UnityEngine.Debug.Log("Timer[" + index + "] returned a value of 1!");
+                if (debugEnabled) Debug.Log("Timer[" + index + "] returned a value of 1!");
                 SetToZero(index, stop);
                 return true;
             }
